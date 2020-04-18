@@ -29,8 +29,15 @@ ID			{LETRA}({LETRA}|{DIGITO}|_)*
 "INT"			{return ENTERO;}
 "BEGIN"			{return INICIO;}
 "END"			{return FIN;}
+"+"			{ return OP_SUMA;}
+"-"			{ return OP_RESTA;}
+"*"			{ return OP_MUL;}
+"/"			{ return OP_DIV;}
+"("			{ return P_A;}
+")"			{ return P_C;}
 {ID}			{return ID;}
-
+{CONSTINT}			{return CONSTINT;}
+{CONSTREAL}			{return CONSTREAL;}
 "\n"      		
 "\t"		
 

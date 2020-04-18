@@ -10,9 +10,10 @@ char *yyltext;
 char *yytext;
 
 %}
-%token ID ENTERO STRING REAL PUNTO_COMA DOS_PUNTOS ENDEF DEFVAR
+%token ID ENTERO STRING REAL PUNTO_COMA DOS_PUNTOS ENDEF DEFVAR CONSTINT CONSTREAL
 %token OP_ASIG
 %token INICIO FIN 
+%token P_A P_C OP_SUMA OP_RESTA OP_MUL OP_DIV
 
 %%
 programa: {printf("Inicio compilador\n");} declaracion algoritmo {printf("fin compilador\n");}
@@ -26,7 +27,17 @@ declaracion_variable: ENTERO DOS_PUNTOS variables {printf("declaracion de variab
 
 variables: ID|ID PUNTO_COMA variables;
 
-algoritmo: {printf("Inicio de programa\n");} INICIO ID FIN {printf("fin del programa\n");} 
+algoritmo: {printf("Inicio de programa\n");} INICIO bloque FIN {printf("fin del programa\n");} 
+
+bloque: sentencia|bloque sentencia;
+sentencia: asignacion;
+asignacion: ID OP_ASIG ID {printf("asignacion a variable\n");}|ID OP_ASIG operacion{printf("asignacion a expresion\n");};
+operacion: operacion OP_SUMA termino {printf("Suma OK\n");}|operacion OP_RESTA termino {printf("Resta OK\n");}|termino;
+
+termino: termino OP_MUL factor {printf("multiplicacion OK\n");}| termino OP_DIV factor {printf("division OK\n");}| factor;
+
+factor: ID| CONSTINT|CONSTREAL |P_A operacion P_C;
+
 
 %%
 int main(int argc,char *argv[])
