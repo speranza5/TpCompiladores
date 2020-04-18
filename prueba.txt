@@ -1,0 +1,9 @@
+DEFVAR 
+	FLOAT : a1; b1             
+	STRING: variable1       
+	FLOAT : p1; p2; p3      
+	INT : a;b 
+ENDEF 
+BEGIN
+puto
+END

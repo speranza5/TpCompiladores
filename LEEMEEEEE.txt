@@ -1,0 +1,11 @@
+Primero armamos el flex
+flex Prueba_Lexico.l
+Despues armamos el bison
+bison -dyv TPFinal2.y
+Despues compilamos y armamos el exe de nuestro compilador
+gcc.exe lex.yy.c y.tab.c -o TPFinal.exe
+Ahora nos queda ejecutar el compilador pasandole por argumento nuestro "programa"
+TPfinal.exe Prueba.txt
+
+Aca pongan los tokens y los nombres que habria que usar
+

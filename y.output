@@ -1,0 +1,299 @@
+Terminals unused in grammar
+
+   OP_ASIG
+
+
+Grammar
+
+    0 $accept: programa $end
+
+    1 $@1: /* empty */
+
+    2 programa: $@1 declaracion algoritmo
+
+    3 $@2: /* empty */
+
+    4 declaracion: DEFVAR $@2 declaraciones_variables ENDEF
+
+    5 declaraciones_variables: declaraciones_variables declaracion_variable
+    6                        | declaracion_variable
+
+    7 declaracion_variable: ENTERO DOS_PUNTOS variables
+    8                     | REAL DOS_PUNTOS variables
+    9                     | STRING DOS_PUNTOS variables
+
+   10 variables: ID
+   11          | ID PUNTO_COMA variables
+
+   12 $@3: /* empty */
+
+   13 algoritmo: $@3 INICIO ID FIN
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+ID (258) 10 11 13
+ENTERO (259) 7
+STRING (260) 9
+REAL (261) 8
+PUNTO_COMA (262) 11
+DOS_PUNTOS (263) 7 8 9
+ENDEF (264) 4
+DEFVAR (265) 4
+OP_ASIG (266)
+INICIO (267) 13
+FIN (268) 13
+
+
+Nonterminals, with rules where they appear
+
+$accept (14)
+    on left: 0
+programa (15)
+    on left: 2, on right: 0
+$@1 (16)
+    on left: 1, on right: 2
+declaracion (17)
+    on left: 4, on right: 2
+$@2 (18)
+    on left: 3, on right: 4
+declaraciones_variables (19)
+    on left: 5 6, on right: 4 5
+declaracion_variable (20)
+    on left: 7 8 9, on right: 5 6
+variables (21)
+    on left: 10 11, on right: 7 8 9 11
+algoritmo (22)
+    on left: 13, on right: 2
+$@3 (23)
+    on left: 12, on right: 13
+
+
+state 0
+
+    0 $accept: . programa $end
+
+    $default  reduce using rule 1 ($@1)
+
+    programa  go to state 1
+    $@1       go to state 2
+
+
+state 1
+
+    0 $accept: programa . $end
+
+    $end  shift, and go to state 3
+
+
+state 2
+
+    2 programa: $@1 . declaracion algoritmo
+
+    DEFVAR  shift, and go to state 4
+
+    declaracion  go to state 5
+
+
+state 3
+
+    0 $accept: programa $end .
+
+    $default  accept
+
+
+state 4
+
+    4 declaracion: DEFVAR . $@2 declaraciones_variables ENDEF
+
+    $default  reduce using rule 3 ($@2)
+
+    $@2  go to state 6
+
+
+state 5
+
+    2 programa: $@1 declaracion . algoritmo
+
+    $default  reduce using rule 12 ($@3)
+
+    algoritmo  go to state 7
+    $@3        go to state 8
+
+
+state 6
+
+    4 declaracion: DEFVAR $@2 . declaraciones_variables ENDEF
+
+    ENTERO  shift, and go to state 9
+    STRING  shift, and go to state 10
+    REAL    shift, and go to state 11
+
+    declaraciones_variables  go to state 12
+    declaracion_variable     go to state 13
+
+
+state 7
+
+    2 programa: $@1 declaracion algoritmo .
+
+    $default  reduce using rule 2 (programa)
+
+
+state 8
+
+   13 algoritmo: $@3 . INICIO ID FIN
+
+    INICIO  shift, and go to state 14
+
+
+state 9
+
+    7 declaracion_variable: ENTERO . DOS_PUNTOS variables
+
+    DOS_PUNTOS  shift, and go to state 15
+
+
+state 10
+
+    9 declaracion_variable: STRING . DOS_PUNTOS variables
+
+    DOS_PUNTOS  shift, and go to state 16
+
+
+state 11
+
+    8 declaracion_variable: REAL . DOS_PUNTOS variables
+
+    DOS_PUNTOS  shift, and go to state 17
+
+
+state 12
+
+    4 declaracion: DEFVAR $@2 declaraciones_variables . ENDEF
+    5 declaraciones_variables: declaraciones_variables . declaracion_variable
+
+    ENTERO  shift, and go to state 9
+    STRING  shift, and go to state 10
+    REAL    shift, and go to state 11
+    ENDEF   shift, and go to state 18
+
+    declaracion_variable  go to state 19
+
+
+state 13
+
+    6 declaraciones_variables: declaracion_variable .
+
+    $default  reduce using rule 6 (declaraciones_variables)
+
+
+state 14
+
+   13 algoritmo: $@3 INICIO . ID FIN
+
+    ID  shift, and go to state 20
+
+
+state 15
+
+    7 declaracion_variable: ENTERO DOS_PUNTOS . variables
+
+    ID  shift, and go to state 21
+
+    variables  go to state 22
+
+
+state 16
+
+    9 declaracion_variable: STRING DOS_PUNTOS . variables
+
+    ID  shift, and go to state 21
+
+    variables  go to state 23
+
+
+state 17
+
+    8 declaracion_variable: REAL DOS_PUNTOS . variables
+
+    ID  shift, and go to state 21
+
+    variables  go to state 24
+
+
+state 18
+
+    4 declaracion: DEFVAR $@2 declaraciones_variables ENDEF .
+
+    $default  reduce using rule 4 (declaracion)
+
+
+state 19
+
+    5 declaraciones_variables: declaraciones_variables declaracion_variable .
+
+    $default  reduce using rule 5 (declaraciones_variables)
+
+
+state 20
+
+   13 algoritmo: $@3 INICIO ID . FIN
+
+    FIN  shift, and go to state 25
+
+
+state 21
+
+   10 variables: ID .
+   11          | ID . PUNTO_COMA variables
+
+    PUNTO_COMA  shift, and go to state 26
+
+    $default  reduce using rule 10 (variables)
+
+
+state 22
+
+    7 declaracion_variable: ENTERO DOS_PUNTOS variables .
+
+    $default  reduce using rule 7 (declaracion_variable)
+
+
+state 23
+
+    9 declaracion_variable: STRING DOS_PUNTOS variables .
+
+    $default  reduce using rule 9 (declaracion_variable)
+
+
+state 24
+
+    8 declaracion_variable: REAL DOS_PUNTOS variables .
+
+    $default  reduce using rule 8 (declaracion_variable)
+
+
+state 25
+
+   13 algoritmo: $@3 INICIO ID FIN .
+
+    $default  reduce using rule 13 (algoritmo)
+
+
+state 26
+
+   11 variables: ID PUNTO_COMA . variables
+
+    ID  shift, and go to state 21
+
+    variables  go to state 27
+
+
+state 27
+
+   11 variables: ID PUNTO_COMA variables .
+
+    $default  reduce using rule 11 (variables)
