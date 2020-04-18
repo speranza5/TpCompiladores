@@ -24,6 +24,7 @@ ID			{LETRA}({LETRA}|{DIGITO}|_)*
 ":="			{return OP_ASIG;}
 ":"			{return DOS_PUNTOS;}
 ";"			{return PUNTO_COMA;}
+","			{return COMA;}
 "FLOAT"			{return REAL;}
 "STRING"			{return STRING;}
 "INT"			{return ENTERO;}
@@ -31,6 +32,7 @@ ID			{LETRA}({LETRA}|{DIGITO}|_)*
 "END"			{return FIN;}
 "if"			{return IF;}
 "else"			{return ELSE;}
+"while"			{return WHILE;}
 "{"			{return LL_A;}
 "}"			{return LL_C;}
 "<"			{return OP_COMPARACION;}

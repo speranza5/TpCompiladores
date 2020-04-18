@@ -10,11 +10,11 @@ char *yyltext;
 char *yytext;
 
 %}
-%token ID ENTERO STRING REAL PUNTO_COMA DOS_PUNTOS ENDEF DEFVAR CONSTINT CONSTREAL
+%token ID ENTERO STRING REAL PUNTO_COMA COMA DOS_PUNTOS ENDEF DEFVAR CONSTINT CONSTREAL
 %token OP_ASIG
 %token INICIO FIN 
 %token P_A P_C OP_SUMA OP_RESTA OP_MUL OP_DIV
-%token IF ELSE LL_A LL_C OP_COMPARACION OP_AND OP_OR OP_NOT
+%token IF ELSE LL_A LL_C OP_COMPARACION OP_AND OP_OR OP_NOT WHILE
 
 %%
 programa: {printf("Inicio compilador\n");} declaracion algoritmo {printf("fin compilador\n");}
@@ -31,8 +31,9 @@ variables: ID|ID PUNTO_COMA variables;
 algoritmo: {printf("Inicio de programa\n");} INICIO bloque FIN {printf("fin del programa\n");} 
 
 bloque: sentencia|bloque sentencia;
-sentencia: asignacion| decision;
-asignacion: ID OP_ASIG ID {printf("asignacion a variable\n");}|ID OP_ASIG operacion{printf("asignacion a expresion\n");};
+sentencia: asignacion| decision| repeticion;
+asignacion: ID OP_ASIG ID {printf("asignacion a variable\n");}|ID OP_ASIG operacion{printf("asignacion a expresion\n");}|
+			ID OP_ASIG IF P_A condicion COMA operacion COMA operacion P_C{printf("IF unario\n");};
 operacion: operacion OP_SUMA termino {printf("Suma OK\n");}|operacion OP_RESTA termino {printf("Resta OK\n");}|termino;
 
 termino: termino OP_MUL factor {printf("multiplicacion OK\n");}| termino OP_DIV factor {printf("division OK\n");}| factor;
@@ -44,6 +45,8 @@ decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");}
 condicion: comparacion | comparacion OP_AND comparacion| comparacion OP_OR comparacion| OP_NOT comparacion;
 
 comparacion: factor OP_COMPARACION factor;
+
+repeticion: WHILE P_A condicion P_C LL_A bloque LL_C {printf("bucle while\n");}
 
 %%
 int main(int argc,char *argv[])
