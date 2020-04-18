@@ -29,12 +29,18 @@ ID			{LETRA}({LETRA}|{DIGITO}|_)*
 "INT"			{return ENTERO;}
 "BEGIN"			{return INICIO;}
 "END"			{return FIN;}
+"if"			{return IF;}
+"else"			{return ELSE;}
+"{"			{return LL_A;}
+"}"			{return LL_C;}
+"<"			{return OP_COMPARACION;}
 "+"			{ return OP_SUMA;}
 "-"			{ return OP_RESTA;}
 "*"			{ return OP_MUL;}
 "/"			{ return OP_DIV;}
 "("			{ return P_A;}
 ")"			{ return P_C;}
+"NOT"		{return	OP_NOT;}
 {ID}			{return ID;}
 {CONSTINT}			{return CONSTINT;}
 {CONSTREAL}			{return CONSTREAL;}

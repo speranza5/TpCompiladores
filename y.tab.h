@@ -47,9 +47,25 @@
      DOS_PUNTOS = 263,
      ENDEF = 264,
      DEFVAR = 265,
-     OP_ASIG = 266,
-     INICIO = 267,
-     FIN = 268
+     CONSTINT = 266,
+     CONSTREAL = 267,
+     OP_ASIG = 268,
+     INICIO = 269,
+     FIN = 270,
+     P_A = 271,
+     P_C = 272,
+     OP_SUMA = 273,
+     OP_RESTA = 274,
+     OP_MUL = 275,
+     OP_DIV = 276,
+     IF = 277,
+     ELSE = 278,
+     LL_A = 279,
+     LL_C = 280,
+     OP_COMPARACION = 281,
+     OP_AND = 282,
+     OP_OR = 283,
+     OP_NOT = 284
    };
 #endif
 /* Tokens.  */
@@ -61,9 +77,25 @@
 #define DOS_PUNTOS 263
 #define ENDEF 264
 #define DEFVAR 265
-#define OP_ASIG 266
-#define INICIO 267
-#define FIN 268
+#define CONSTINT 266
+#define CONSTREAL 267
+#define OP_ASIG 268
+#define INICIO 269
+#define FIN 270
+#define P_A 271
+#define P_C 272
+#define OP_SUMA 273
+#define OP_RESTA 274
+#define OP_MUL 275
+#define OP_DIV 276
+#define IF 277
+#define ELSE 278
+#define LL_A 279
+#define LL_C 280
+#define OP_COMPARACION 281
+#define OP_AND 282
+#define OP_OR 283
+#define OP_NOT 284
 
 
 

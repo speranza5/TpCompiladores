@@ -5,5 +5,13 @@ DEFVAR
 	INT : a;b 
 ENDEF 
 BEGIN
-puto
+a1:= (a1+b1)*((a1-b1)+b1)
+if(a1 < b1){
+	a1:=a1/b1
+}
+else{
+	if (NOT a<b){
+	a1:=b1-b2
+	}
+}
 END
