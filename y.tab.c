@@ -68,7 +68,7 @@
 /* Copy the first part of user declarations.  */
 
 /* Line 189 of yacc.c  */
-#line 1 "sintactico.y"
+#line 1 "semantico.y"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1466,140 +1466,140 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 21 "sintactico.y"
+#line 21 "semantico.y"
     {printf("Inicio compilador\n");}
     break;
 
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 21 "sintactico.y"
+#line 21 "semantico.y"
     {printf("fin compilador\n");}
     break;
 
   case 4:
 
 /* Line 1455 of yacc.c  */
-#line 23 "sintactico.y"
+#line 23 "semantico.y"
     {printf("Inicio de declaraciones\n");}
     break;
 
   case 5:
 
 /* Line 1455 of yacc.c  */
-#line 23 "sintactico.y"
+#line 23 "semantico.y"
     {printf("fin de declaraciones\n");}
     break;
 
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 27 "sintactico.y"
+#line 27 "semantico.y"
     {printf("declaracion de variables enteras\n");}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 28 "sintactico.y"
+#line 28 "semantico.y"
     {printf("declaracion de variables reales\n");}
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 29 "sintactico.y"
+#line 29 "semantico.y"
     {printf("declaracion de variables string\n");}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 34 "sintactico.y"
+#line 34 "semantico.y"
     {printf("Inicio de programa\n");}
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 34 "sintactico.y"
+#line 34 "semantico.y"
     {printf("fin del programa\n");}
     break;
 
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 40 "sintactico.y"
+#line 40 "semantico.y"
     {printf("asignacion a variable\n");}
     break;
 
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 41 "sintactico.y"
+#line 41 "semantico.y"
     {printf("asignacion a expresion\n");}
     break;
 
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 42 "sintactico.y"
+#line 42 "semantico.y"
     {printf("IF unario\n");}
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 43 "sintactico.y"
+#line 43 "semantico.y"
     {printf("asignacion a CTESTRING\n");}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 45 "sintactico.y"
+#line 45 "semantico.y"
     {printf("Suma OK\n");}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 46 "sintactico.y"
+#line 46 "semantico.y"
     {printf("Resta OK\n");}
     break;
 
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 48 "sintactico.y"
+#line 48 "semantico.y"
     {printf("multiplicacion OK\n");}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 49 "sintactico.y"
+#line 49 "semantico.y"
     {printf("division OK\n");}
     break;
 
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 53 "sintactico.y"
+#line 53 "semantico.y"
     {printf("IF sin rama falsa\n");}
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 54 "sintactico.y"
+#line 54 "semantico.y"
     {printf("IF con rama falsa\n");}
     break;
 
   case 42:
 
 /* Line 1455 of yacc.c  */
-#line 60 "sintactico.y"
+#line 60 "semantico.y"
     {printf("bucle while\n");}
     break;
 
@@ -1818,7 +1818,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 62 "sintactico.y"
+#line 62 "semantico.y"
 
 
 
