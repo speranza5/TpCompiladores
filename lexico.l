@@ -7,6 +7,8 @@
 FILE  *yyin;
 int yylval;
 
+void InformarError(char* mensaje);
+
 %}
 %option noyywrap  
 %option yylineno 
@@ -21,6 +23,7 @@ CONSTSTRING         \"{LETRA}({LETRA}|{DIGITO}|_)*\"
 ID			{LETRA}({LETRA}|{DIGITO}|_)*
 
 %%
+
 "DEFVAR"		{ return DEFVAR;}
 "ENDEF"			{return ENDEF;}
 ":="			{return OP_ASIG;}
@@ -45,23 +48,39 @@ ID			{LETRA}({LETRA}|{DIGITO}|_)*
 "("			{ return P_A;}
 ")"			{ return P_C;}
 "NOT"		{return	OP_NOT;}
-{ID}			{	if(strlen(yytext) <= 30){
+
+{ID}		{if(strlen(yytext) <= 30){
 			            return ID;
 			         	}
-			           	printf("Error en la longitud del ID\n");
-						system ("Pause");
-						exit(1);  
+			           	InformarError("Error en la longitud del ID");
 			          }
-{CONSTINT}			{return CONSTINT;}
-{CONSTREAL}			{return CONSTREAL;}
+
+{CONSTINT}	{if(atoll(yytext)>=-32768 && atoll(yytext)<=32767){
+		                      	return CONSTINT;
+		                      }
+		                      InformarError("Error en la longitud del CONSTINT");
+		                     }
+
+{CONSTREAL}	{if(atof(yytext)>=-3.40282347e+38F && atof(yytext)<=3.40282347e+38F){
+		                    	return CONSTREAL;
+		                    }
+		                    InformarError("Error en la longitud del CONSTREAL");
+		                }
+
 {CONSTSTRING}		{if(strlen(yytext) <= 30){
 			            return CONSTSTRING;
 			         	}
-			           	printf("Error en la longitud del string\n");
-						system ("Pause");
-						exit(1);  
+			           InformarError("Error en la longitud del CONSTSTRING");	
 			          }
 "\n"      		
 "\t"		
 
 %%
+
+
+void InformarError(char* mensaje){
+
+		printf("%s",mensaje);
+		system ("Pause");
+		exit(1);  
+}
