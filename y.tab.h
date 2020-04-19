@@ -44,28 +44,33 @@
      STRING = 260,
      REAL = 261,
      PUNTO_COMA = 262,
-     DOS_PUNTOS = 263,
-     ENDEF = 264,
-     DEFVAR = 265,
-     CONSTINT = 266,
-     CONSTREAL = 267,
-     OP_ASIG = 268,
-     INICIO = 269,
-     FIN = 270,
-     P_A = 271,
-     P_C = 272,
-     OP_SUMA = 273,
-     OP_RESTA = 274,
-     OP_MUL = 275,
-     OP_DIV = 276,
-     IF = 277,
-     ELSE = 278,
-     LL_A = 279,
-     LL_C = 280,
-     OP_COMPARACION = 281,
-     OP_AND = 282,
-     OP_OR = 283,
-     OP_NOT = 284
+     COMA = 263,
+     DOS_PUNTOS = 264,
+     ENDEF = 265,
+     DEFVAR = 266,
+     CONSTINT = 267,
+     CONSTREAL = 268,
+     CONSTSTRING = 269,
+     OP_ASIG = 270,
+     ERROR = 271,
+     TEXTO = 272,
+     INICIO = 273,
+     FIN = 274,
+     P_A = 275,
+     P_C = 276,
+     OP_SUMA = 277,
+     OP_RESTA = 278,
+     OP_MUL = 279,
+     OP_DIV = 280,
+     IF = 281,
+     ELSE = 282,
+     LL_A = 283,
+     LL_C = 284,
+     OP_COMPARACION = 285,
+     OP_AND = 286,
+     OP_OR = 287,
+     OP_NOT = 288,
+     WHILE = 289
    };
 #endif
 /* Tokens.  */
@@ -74,28 +79,33 @@
 #define STRING 260
 #define REAL 261
 #define PUNTO_COMA 262
-#define DOS_PUNTOS 263
-#define ENDEF 264
-#define DEFVAR 265
-#define CONSTINT 266
-#define CONSTREAL 267
-#define OP_ASIG 268
-#define INICIO 269
-#define FIN 270
-#define P_A 271
-#define P_C 272
-#define OP_SUMA 273
-#define OP_RESTA 274
-#define OP_MUL 275
-#define OP_DIV 276
-#define IF 277
-#define ELSE 278
-#define LL_A 279
-#define LL_C 280
-#define OP_COMPARACION 281
-#define OP_AND 282
-#define OP_OR 283
-#define OP_NOT 284
+#define COMA 263
+#define DOS_PUNTOS 264
+#define ENDEF 265
+#define DEFVAR 266
+#define CONSTINT 267
+#define CONSTREAL 268
+#define CONSTSTRING 269
+#define OP_ASIG 270
+#define ERROR 271
+#define TEXTO 272
+#define INICIO 273
+#define FIN 274
+#define P_A 275
+#define P_C 276
+#define OP_SUMA 277
+#define OP_RESTA 278
+#define OP_MUL 279
+#define OP_DIV 280
+#define IF 281
+#define ELSE 282
+#define LL_A 283
+#define LL_C 284
+#define OP_COMPARACION 285
+#define OP_AND 286
+#define OP_OR 287
+#define OP_NOT 288
+#define WHILE 289
 
 
 
