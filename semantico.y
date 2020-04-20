@@ -70,7 +70,7 @@ comparacion: factor OP_COMPARACION factor;
 
 repeticion: WHILE P_A condicion P_C LL_A bloque LL_C {printf("bucle while\n");}
 
-between: BEETWEEN P_A ID COMA COR_A operacion COMA operacion COR_C P_C
+between: BEETWEEN P_A ID COMA COR_A operacion COMA operacion COR_C P_C {printf("secuencia between\n");};
 
 %%
 
