@@ -90,7 +90,7 @@ int main(int argc,char *argv[])
 }
 int yyerror(void)
      {
-       printf("Syntax Error\n");
+       printf("Error de sintaxis. Revisar.\n");
 	 system ("Pause");
 	 exit (1);
      }
