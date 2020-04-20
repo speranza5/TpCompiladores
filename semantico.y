@@ -26,6 +26,7 @@ char *str_val;
 %token P_A P_C OP_SUMA OP_RESTA OP_MUL OP_DIV
 %token IF ELSE LL_A LL_C OP_COMPARACION OP_AND OP_OR OP_NOT WHILE
 %token BEETWEEN COR_A COR_C
+%toke LET
 
 %%
 programa: {printf("Inicio compilador\n");} declaracion algoritmo {printf("fin compilador\n");}
@@ -45,7 +46,7 @@ algoritmo: {printf("Inicio de programa\n");} INICIO bloque FIN {printf("fin del 
 
 bloque: sentencia|bloque sentencia;
 
-sentencia: asignacion| decision| repeticion| between;
+sentencia: asignacion| decision| repeticion| between|let ;
 
 asignacion: ID OP_ASIG ID {printf("asignacion a variable\n");}|
             ID OP_ASIG operacion{printf("asignacion a expresion\n");}|
@@ -71,6 +72,12 @@ comparacion: factor OP_COMPARACION factor;
 repeticion: WHILE P_A condicion P_C LL_A bloque LL_C {printf("bucle while\n");}
 
 between: BEETWEEN P_A ID COMA COR_A operacion COMA operacion COR_C P_C {printf("secuencia between\n");};
+
+let: LET lista_let OP_ASIG P_A lista_tuplas P_C {printf("operacion let\n");}
+
+lista_let:ID|lista_let COMA ID;
+
+lista_tuplas: operacion| lista_tuplas PUNTO_COMA operacion;
 
 %%
 

@@ -41,6 +41,7 @@ ID			{LETRA}({LETRA}|{DIGITO}|_)*
 "else"			{return ELSE;}
 "while"			{return WHILE;}
 "BEETWEEN"		{return BEETWEEN;}
+"LET"			{return LET;}
 "{"			{return LL_A;}
 "}"			{return LL_C;}
 "["			{return COR_A;}
