@@ -40,8 +40,8 @@ ID			{LETRA}({LETRA}|{DIGITO}|_)*
 "if"			{return IF;}
 "else"			{return ELSE;}
 "while"			{return WHILE;}
-"BEETWEEN"		{return BEETWEEN;}
-"LET"			{return LET;}
+"BETWEEN"		{return BETWEEN;}
+"let"			{return LET;}
 "{"			{return LL_A;}
 "}"			{return LL_C;}
 "["			{return COR_A;}

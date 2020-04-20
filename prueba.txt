@@ -7,17 +7,17 @@ ENDEF
 BEGIN
 a1:= (a1+b1)*((a1-b1)+b1)
 variable1:= "HOLA"
-if(a1 < b1){
-	a1:=a1/b1
-}
-else{
-	if (NOT a<b){
-	a1:=b1-b2
+while(a<2){
+	a1:="WHILE"
+	if(a<45){
+		a1:="VERDADERA"
 	}
-	while (a>0){
-	a1:=3
-	BETWEEN (a, [b ; 12])
+	else{
+		a1:="FALSA"
+		if(b<12){
+		  a2:="BOKE"
+		}
 	}
 }
-LET  uno, dos, tres = (3; 5; a*b)
+BETWEEN (a, [b ; 12])
 END
