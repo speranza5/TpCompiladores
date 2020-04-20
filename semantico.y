@@ -3,16 +3,25 @@
 #include <stdlib.h>
 #include <conio.h>
 #include "y.tab.h"
-int yylval;
 int yystopparser=0;
 FILE  *yyin;
-char *yyltext;
-char *yytext;
+
 
 %}
-%token ID ENTERO STRING REAL PUNTO_COMA COMA DOS_PUNTOS ENDEF DEFVAR CONSTINT CONSTREAL CONSTSTRING
+
+%union {
+int intval;
+double val;
+char *str_val;
+}
+
+%token <str_val>ID
+%token <int>CONSTINT
+%token <double> CONSTREAL
+%token <str_val> CONSTSTRING
+
+%token ENTERO STRING REAL PUNTO_COMA COMA DOS_PUNTOS ENDEF DEFVAR PALABRA COMILLA
 %token OP_ASIG
-%token ERROR TEXTO
 %token INICIO FIN 
 %token P_A P_C OP_SUMA OP_RESTA OP_MUL OP_DIV
 %token IF ELSE LL_A LL_C OP_COMPARACION OP_AND OP_OR OP_NOT WHILE
@@ -38,9 +47,9 @@ bloque: sentencia|bloque sentencia;
 sentencia: asignacion| decision| repeticion;
 
 asignacion: ID OP_ASIG ID {printf("asignacion a variable\n");}|
+            ID OP_ASIG factor {printf("asignacion a factor\n");}|
             ID OP_ASIG operacion{printf("asignacion a expresion\n");}|
-			      ID OP_ASIG IF P_A condicion COMA operacion COMA operacion P_C{printf("IF unario\n");}|
-            ID OP_ASIG CONSTSTRING {printf("asignacion a CTESTRING\n");};
+			      ID OP_ASIG IF P_A condicion COMA operacion COMA operacion P_C{printf("IF unario\n");};
 
 operacion: operacion OP_SUMA termino {printf("Suma OK\n");}|
            operacion OP_RESTA termino {printf("Resta OK\n");}|termino;
@@ -48,7 +57,10 @@ operacion: operacion OP_SUMA termino {printf("Suma OK\n");}|
 termino: termino OP_MUL factor {printf("multiplicacion OK\n");}| 
          termino OP_DIV factor {printf("division OK\n");}| factor;
 
-factor: ID| CONSTINT|CONSTREAL |CONSTSTRING|P_A operacion P_C;
+factor: ID |CONSTINT
+           |CONSTREAL 
+           |CONSTSTRING {$<str_val>$ = $<str_val>1; printf( "En regla factor es STRING: %s\n", yylval.str_val);} 
+           |P_A operacion P_C;
 
 decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");}| 
           IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C {printf("IF con rama falsa\n");};

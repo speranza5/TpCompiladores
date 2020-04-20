@@ -52,25 +52,23 @@
      CONSTREAL = 268,
      CONSTSTRING = 269,
      OP_ASIG = 270,
-     ERROR = 271,
-     TEXTO = 272,
-     INICIO = 273,
-     FIN = 274,
-     P_A = 275,
-     P_C = 276,
-     OP_SUMA = 277,
-     OP_RESTA = 278,
-     OP_MUL = 279,
-     OP_DIV = 280,
-     IF = 281,
-     ELSE = 282,
-     LL_A = 283,
-     LL_C = 284,
-     OP_COMPARACION = 285,
-     OP_AND = 286,
-     OP_OR = 287,
-     OP_NOT = 288,
-     WHILE = 289
+     INICIO = 271,
+     FIN = 272,
+     P_A = 273,
+     P_C = 274,
+     OP_SUMA = 275,
+     OP_RESTA = 276,
+     OP_MUL = 277,
+     OP_DIV = 278,
+     IF = 279,
+     ELSE = 280,
+     LL_A = 281,
+     LL_C = 282,
+     OP_COMPARACION = 283,
+     OP_AND = 284,
+     OP_OR = 285,
+     OP_NOT = 286,
+     WHILE = 287
    };
 #endif
 /* Tokens.  */
@@ -87,25 +85,23 @@
 #define CONSTREAL 268
 #define CONSTSTRING 269
 #define OP_ASIG 270
-#define ERROR 271
-#define TEXTO 272
-#define INICIO 273
-#define FIN 274
-#define P_A 275
-#define P_C 276
-#define OP_SUMA 277
-#define OP_RESTA 278
-#define OP_MUL 279
-#define OP_DIV 280
-#define IF 281
-#define ELSE 282
-#define LL_A 283
-#define LL_C 284
-#define OP_COMPARACION 285
-#define OP_AND 286
-#define OP_OR 287
-#define OP_NOT 288
-#define WHILE 289
+#define INICIO 271
+#define FIN 272
+#define P_A 273
+#define P_C 274
+#define OP_SUMA 275
+#define OP_RESTA 276
+#define OP_MUL 277
+#define OP_DIV 278
+#define IF 279
+#define ELSE 280
+#define LL_A 281
+#define LL_C 282
+#define OP_COMPARACION 283
+#define OP_AND 284
+#define OP_OR 285
+#define OP_NOT 286
+#define WHILE 287
 
 
 

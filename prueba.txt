@@ -6,7 +6,7 @@ DEFVAR
 ENDEF 
 BEGIN
 a1:= (a1+b1)*((a1-b1)+b1)
-variable1:= Hola
+variable1:= "HOLA"
 if(a1 < b1){
 	a1:=a1/b1
 }

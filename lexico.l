@@ -5,7 +5,7 @@
 #include <string.h>
 #include "y.tab.h"
 FILE  *yyin;
-int yylval;
+
 
 void InformarError(char* mensaje);
 
@@ -15,10 +15,12 @@ void InformarError(char* mensaje);
 
 DIGITO			[0-9]
 LETRA			[a-zA-Z]
+PALABRA			{LETRA}({LETRA}|{DIGITO}|_)*
+COMILLA         \"
 
 CONSTINT			{DIGITO}+
 CONSTREAL			{DIGITO}*"."{DIGITO}+
-CONSTSTRING         \"{LETRA}({LETRA}|{DIGITO}|_)*\"
+CONSTSTRING         {COMILLA}{PALABRA}{COMILLA} 
 
 ID			{LETRA}({LETRA}|{DIGITO}|_)*
 
@@ -50,24 +52,28 @@ ID			{LETRA}({LETRA}|{DIGITO}|_)*
 "NOT"		{return	OP_NOT;}
 
 {ID}		{if(strlen(yytext) <= 30){
+						yylval.str_val = yytext;
 			            return ID;
 			         	}
 			           	InformarError("Error en la longitud del ID");
 			          }
 
 {CONSTINT}	{if(atoll(yytext)>=-32768 && atoll(yytext)<=32767){
+								yylval.intval = atoi(yytext);
 		                      	return CONSTINT;
 		                      }
 		                      InformarError("Error en la longitud del CONSTINT");
 		                     }
 
 {CONSTREAL}	{if(atof(yytext)>=-3.40282347e+38F && atof(yytext)<=3.40282347e+38F){
+								yylval.val = atof(yytext);
 		                    	return CONSTREAL;
 		                    }
 		                    InformarError("Error en la longitud del CONSTREAL");
 		                }
 
 {CONSTSTRING}		{if(strlen(yytext) <= 30){
+						yylval.str_val = yytext;
 			            return CONSTSTRING;
 			         	}
 			           InformarError("Error en la longitud del CONSTSTRING");	
