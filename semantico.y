@@ -25,6 +25,7 @@ char *str_val;
 %token INICIO FIN 
 %token P_A P_C OP_SUMA OP_RESTA OP_MUL OP_DIV
 %token IF ELSE LL_A LL_C OP_COMPARACION OP_AND OP_OR OP_NOT WHILE
+%token BEETWEEN COR_A COR_C
 
 %%
 programa: {printf("Inicio compilador\n");} declaracion algoritmo {printf("fin compilador\n");}
@@ -44,12 +45,11 @@ algoritmo: {printf("Inicio de programa\n");} INICIO bloque FIN {printf("fin del 
 
 bloque: sentencia|bloque sentencia;
 
-sentencia: asignacion| decision| repeticion;
+sentencia: asignacion| decision| repeticion| between;
 
 asignacion: ID OP_ASIG ID {printf("asignacion a variable\n");}|
-            ID OP_ASIG factor {printf("asignacion a factor\n");}|
             ID OP_ASIG operacion{printf("asignacion a expresion\n");}|
-			      ID OP_ASIG IF P_A condicion COMA operacion COMA operacion P_C{printf("IF unario\n");};
+            ID OP_ASIG CONSTSTRING {$<str_val>$ = $<str_val>1; printf( "asignacion a STRING: %s\n", yylval.str_val);};
 
 operacion: operacion OP_SUMA termino {printf("Suma OK\n");}|
            operacion OP_RESTA termino {printf("Resta OK\n");}|termino;
@@ -59,7 +59,6 @@ termino: termino OP_MUL factor {printf("multiplicacion OK\n");}|
 
 factor: ID |CONSTINT
            |CONSTREAL 
-           |CONSTSTRING {$<str_val>$ = $<str_val>1; printf( "En regla factor es STRING: %s\n", yylval.str_val);} 
            |P_A operacion P_C;
 
 decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");}| 
@@ -70,6 +69,8 @@ condicion: comparacion | comparacion OP_AND comparacion| comparacion OP_OR compa
 comparacion: factor OP_COMPARACION factor;
 
 repeticion: WHILE P_A condicion P_C LL_A bloque LL_C {printf("bucle while\n");}
+
+between: BEETWEEN P_A ID COMA COR_A operacion COMA operacion COR_C P_C
 
 %%
 
