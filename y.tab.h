@@ -53,29 +53,33 @@
      DEFVAR = 269,
      PALABRA = 270,
      COMILLA = 271,
-     OP_ASIG = 272,
-     INICIO = 273,
-     FIN = 274,
-     P_A = 275,
-     P_C = 276,
-     OP_SUMA = 277,
-     OP_RESTA = 278,
-     OP_MUL = 279,
-     OP_DIV = 280,
-     IF = 281,
-     ELSE = 282,
-     LL_A = 283,
-     LL_C = 284,
-     OP_COMPARACION = 285,
-     OP_AND = 286,
-     OP_OR = 287,
-     OP_NOT = 288,
-     WHILE = 289,
-     BETWEEN = 290,
-     COR_A = 291,
-     COR_C = 292,
-     LET = 293,
-     OP_IGUAL = 294
+     ESPACIO = 272,
+     TABULACION = 273,
+     CARACTERES_ESPECIALES = 274,
+     COMENTARIO = 275,
+     OP_ASIG = 276,
+     INICIO = 277,
+     FIN = 278,
+     P_A = 279,
+     P_C = 280,
+     OP_SUMA = 281,
+     OP_RESTA = 282,
+     OP_MUL = 283,
+     OP_DIV = 284,
+     IF = 285,
+     ELSE = 286,
+     LL_A = 287,
+     LL_C = 288,
+     OP_COMPARACION = 289,
+     OP_AND = 290,
+     OP_OR = 291,
+     OP_NOT = 292,
+     WHILE = 293,
+     BETWEEN = 294,
+     COR_A = 295,
+     COR_C = 296,
+     LET = 297,
+     OP_IGUAL = 298
    };
 #endif
 /* Tokens.  */
@@ -93,29 +97,33 @@
 #define DEFVAR 269
 #define PALABRA 270
 #define COMILLA 271
-#define OP_ASIG 272
-#define INICIO 273
-#define FIN 274
-#define P_A 275
-#define P_C 276
-#define OP_SUMA 277
-#define OP_RESTA 278
-#define OP_MUL 279
-#define OP_DIV 280
-#define IF 281
-#define ELSE 282
-#define LL_A 283
-#define LL_C 284
-#define OP_COMPARACION 285
-#define OP_AND 286
-#define OP_OR 287
-#define OP_NOT 288
-#define WHILE 289
-#define BETWEEN 290
-#define COR_A 291
-#define COR_C 292
-#define LET 293
-#define OP_IGUAL 294
+#define ESPACIO 272
+#define TABULACION 273
+#define CARACTERES_ESPECIALES 274
+#define COMENTARIO 275
+#define OP_ASIG 276
+#define INICIO 277
+#define FIN 278
+#define P_A 279
+#define P_C 280
+#define OP_SUMA 281
+#define OP_RESTA 282
+#define OP_MUL 283
+#define OP_DIV 284
+#define IF 285
+#define ELSE 286
+#define LL_A 287
+#define LL_C 288
+#define OP_COMPARACION 289
+#define OP_AND 290
+#define OP_OR 291
+#define OP_NOT 292
+#define WHILE 293
+#define BETWEEN 294
+#define COR_A 295
+#define COR_C 296
+#define LET 297
+#define OP_IGUAL 298
 
 
 
@@ -134,7 +142,7 @@ char *str_val;
 
 
 /* Line 1676 of yacc.c  */
-#line 138 "y.tab.h"
+#line 146 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

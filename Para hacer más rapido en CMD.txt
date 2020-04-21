@@ -2,3 +2,6 @@ flex lexico.l
 bison -dyv semantico.y
 gcc.exe lex.yy.c y.tab.c -o Primera.exe
 Primera.exe prueba.txt
+
+
+

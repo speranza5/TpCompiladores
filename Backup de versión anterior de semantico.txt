@@ -20,7 +20,7 @@ char *str_val;
 %token <double> CONSTREAL
 %token <str_val> CONSTSTRING
 
-%token ENTERO STRING REAL PUNTO_COMA COMA DOS_PUNTOS ENDEF DEFVAR PALABRA COMILLA ESPACIO TABULACION CARACTERES_ESPECIALES COMENTARIO
+%token ENTERO STRING REAL PUNTO_COMA COMA DOS_PUNTOS ENDEF DEFVAR PALABRA COMILLA
 %token OP_ASIG
 %token INICIO FIN 
 %token P_A P_C OP_SUMA OP_RESTA OP_MUL OP_DIV
@@ -46,7 +46,7 @@ algoritmo: {printf("Inicio de programa\n");} INICIO bloque FIN {printf("fin del 
 
 bloque: sentencia|bloque sentencia;
 
-sentencia: asignacion| decision| repeticion|between|asignacionlet|COMENTARIO {printf("Se muestra un comentario");};
+sentencia: asignacion| decision| repeticion|between|asignacionlet;
 
 asignacion: ID OP_ASIG ID {printf("asignacion a variable\n");}|
             ID OP_ASIG operacion{printf("asignacion a expresion\n");}|

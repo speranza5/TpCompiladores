@@ -17,17 +17,12 @@ DIGITO			[0-9]
 LETRA			[a-zA-Z]
 PALABRA			{LETRA}({LETRA}|{DIGITO}|_)*
 COMILLA         \"
-ESPACIO         " "
-TABULACION		"	"
-CARACTERES_ESPECIALES	[!,@,%,_,$]
-COMENTARIO  		\*\*\*\/([A-Za-z0-9])*\/\*\*\*
 
 CONSTINT			{DIGITO}+
 CONSTREAL			{DIGITO}*"."{DIGITO}+
-CONSTSTRING         {COMILLA}({PALABRA}|{ESPACIO}|{CARACTERES_ESPECIALES})*{COMILLA} 
+CONSTSTRING         {COMILLA}{PALABRA}{COMILLA} 
 
 ID			{LETRA}({LETRA}|{DIGITO}|_)*
-
 
 %%
 
@@ -60,11 +55,6 @@ ID			{LETRA}({LETRA}|{DIGITO}|_)*
 "("			{ return P_A;}
 ")"			{ return P_C;}
 "NOT"		{return	OP_NOT;}
-"ESPACIO"	{return ESPACIO;}
-"TABULACION" {return TABULACION;}
-"CARACTERES_ESPECIALES" {return CARACTERES_ESPECIALES;}
-"COMENTARIO" {return COMENTARIO;}
-
 
 {ID}		{if(strlen(yytext) <= 30){
 						yylval.str_val = yytext;
