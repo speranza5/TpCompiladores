@@ -74,7 +74,8 @@
      BETWEEN = 290,
      COR_A = 291,
      COR_C = 292,
-     LET = 293
+     LET = 293,
+     OP_IGUAL = 294
    };
 #endif
 /* Tokens.  */
@@ -114,6 +115,7 @@
 #define COR_A 291
 #define COR_C 292
 #define LET 293
+#define OP_IGUAL 294
 
 
 
@@ -132,7 +134,7 @@ char *str_val;
 
 
 /* Line 1676 of yacc.c  */
-#line 136 "y.tab.h"
+#line 138 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

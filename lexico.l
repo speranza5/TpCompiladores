@@ -29,6 +29,7 @@ ID			{LETRA}({LETRA}|{DIGITO}|_)*
 "DEFVAR"		{ return DEFVAR;}
 "ENDEF"			{return ENDEF;}
 ":="			{return OP_ASIG;}
+"="			{return OP_IGUAL;}
 ":"			{return DOS_PUNTOS;}
 ";"			{return PUNTO_COMA;}
 ","			{return COMA;}
@@ -41,7 +42,7 @@ ID			{LETRA}({LETRA}|{DIGITO}|_)*
 "else"			{return ELSE;}
 "while"			{return WHILE;}
 "BETWEEN"		{return BETWEEN;}
-"let"			{return LET;}
+"LET"			{return LET;}
 "{"			{return LL_A;}
 "}"			{return LL_C;}
 "["			{return COR_A;}

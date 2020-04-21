@@ -26,7 +26,7 @@ char *str_val;
 %token P_A P_C OP_SUMA OP_RESTA OP_MUL OP_DIV
 %token IF ELSE LL_A LL_C OP_COMPARACION OP_AND OP_OR OP_NOT WHILE
 %token BETWEEN COR_A COR_C
-%token LET
+%token LET OP_IGUAL
 
 %%
 programa: {printf("Inicio compilador\n");} declaracion algoritmo {printf("fin compilador\n");}
@@ -46,17 +46,12 @@ algoritmo: {printf("Inicio de programa\n");} INICIO bloque FIN {printf("fin del 
 
 bloque: sentencia|bloque sentencia;
 
-sentencia: asignacion| decision| repeticion|between;
+sentencia: asignacion| decision| repeticion|between|asignacionlet;
 
 asignacion: ID OP_ASIG ID {printf("asignacion a variable\n");}|
             ID OP_ASIG operacion{printf("asignacion a expresion\n");}|
             ID OP_ASIG CONSTSTRING {$<str_val>$ = $<str_val>1; printf( "asignacion a STRING: %s\n", yylval.str_val);}|
-            LET lista_let OP_ASIG P_A tupla P_C {printf("asignacion con let\n");};
 
-
-lista_let: ID|ID COMA lista_let;
-
-tupla: operacion| operacion PUNTO_COMA tupla;
 
 operacion: operacion OP_SUMA termino {printf("Suma OK\n");}|
            operacion OP_RESTA termino {printf("Resta OK\n");}|termino;
@@ -78,6 +73,15 @@ comparacion: factor OP_COMPARACION factor;
 repeticion: WHILE P_A condicion P_C LL_A bloque LL_C {printf("bucle while\n");}
 
 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C {printf("secuencia bituin\n");}
+
+asignacionlet: LET lista_var OP_IGUAL tupla {printf("lista let\n");}
+
+tupla: P_A lista_valores P_C {printf("se fue a matar la tupla\n");}
+
+lista_var: ID|ID COMA lista_var {printf("inventaron el var\n");}
+
+lista_valores: operacion|operacion PUNTO_COMA lista_valores {printf("lista de valores \n");}
+
 %%
 
 

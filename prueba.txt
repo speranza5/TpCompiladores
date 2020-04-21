@@ -2,7 +2,7 @@ DEFVAR
 	FLOAT : a1; b1             
 	STRING: variable1       
 	FLOAT : p1; p2; p3      
-	INT : a;b 
+	INT : a;b;uno;dos;tres
 ENDEF 
 BEGIN
 a1:= (a1+b1)*((a1-b1)+b1)
@@ -20,4 +20,5 @@ while(a<2){
 	}
 }
 BETWEEN (a, [b ; 12])
+LET uno, dos, tres = (3; 5; a*b)
 END
