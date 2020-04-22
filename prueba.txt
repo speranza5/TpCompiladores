@@ -6,9 +6,8 @@ DEFVAR
 ENDEF 
 BEGIN
 a1:= (a1+b1)*((a1-b1)+b1)
-variable1:= "HOLA"
 while(a<2){
-	a1:="WHILE"
+	a1:="WHILE DALE QUE VA"
 	if(a<45){
 		a1:="VERDADERA"
 	}
@@ -19,6 +18,8 @@ while(a<2){
 		}
 	}
 }
+
+***/HOLAS/***
 BETWEEN (a, [b ; 12])
 LET uno, dos, tres = (3; 5; a*b)
 END

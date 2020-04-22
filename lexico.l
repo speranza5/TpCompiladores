@@ -17,17 +17,16 @@ DIGITO			[0-9]
 LETRA			[a-zA-Z]
 PALABRA			{LETRA}({LETRA}|{DIGITO}|_)*
 COMILLA         \"
-ESPACIO         " "
-TABULACION		"	"
-CARACTERES_ESPECIALES	[!,@,%,_,$]
-COMENTARIO  		\*\*\*\/([A-Za-z0-9])*\/\*\*\*
-
+ESPACIO         [" "]
+CARACTER			[a-z,A-Z,0-9,=,>,<,!,:,+,-,*,/]
+COM_CIERRE			["/***"]
+COM_APER			["***/"]
 CONSTINT			{DIGITO}+
 CONSTREAL			{DIGITO}*"."{DIGITO}+
-CONSTSTRING         {COMILLA}({PALABRA}|{ESPACIO}|{CARACTERES_ESPECIALES})*{COMILLA} 
-
 ID			{LETRA}({LETRA}|{DIGITO}|_)*
-
+CONSTSTRING         {COMILLA}({CARACTER}+|{ESPACIO})*{COMILLA} 
+TEXTO			{CARACTER}+|{ESPACIO}
+COMETARIO			{COM_APER}{TEXTO}*{COM_CIERRE}
 
 %%
 
@@ -60,11 +59,6 @@ ID			{LETRA}({LETRA}|{DIGITO}|_)*
 "("			{ return P_A;}
 ")"			{ return P_C;}
 "NOT"		{return	OP_NOT;}
-"ESPACIO"	{return ESPACIO;}
-"TABULACION" {return TABULACION;}
-"CARACTERES_ESPECIALES" {return CARACTERES_ESPECIALES;}
-"COMENTARIO" {return COMENTARIO;}
-
 
 {ID}		{if(strlen(yytext) <= 30){
 						yylval.str_val = yytext;
@@ -93,6 +87,10 @@ ID			{LETRA}({LETRA}|{DIGITO}|_)*
 			         	}
 			           InformarError("Error en la longitud del CONSTSTRING");	
 			          }
+
+{COMETARIO}			{return COMENTARIO;}
+
+
 "\n"      		
 "\t"		
 

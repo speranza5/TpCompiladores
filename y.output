@@ -1,32 +1,23 @@
 Terminals unused in grammar
 
    PALABRA
-   COMILLA
-   ESPACIO
-   TABULACION
-   CARACTERES_ESPECIALES
+   TEXTO
+   COM_CIERRE
+   COM_APER
 
 
-Estado 14 conflictos: 6 desplazamiento(s)/reducción(ones)
-Estado 26 conflictos: 7 desplazamiento(s)/reducción(ones)
-Estado 46 conflictos: 8 reducción(ones)/reducción(ones)
-Estado 85 conflictos: 6 desplazamiento(s)/reducción(ones)
-Estado 88 conflictos: 6 desplazamiento(s)/reducción(ones)
-Estado 92 conflictos: 7 desplazamiento(s)/reducción(ones)
-Estado 93 conflictos: 7 desplazamiento(s)/reducción(ones)
-Estado 103 conflictos: 6 desplazamiento(s)/reducción(ones)
-Estado 105 conflictos: 7 desplazamiento(s)/reducción(ones)
+State 47 conflicts: 8 reduce/reduce
 
 
-Gramática
+Grammar
 
     0 $accept: programa $end
 
-    1 $@1: /* vacío */
+    1 $@1: /* empty */
 
     2 programa: $@1 declaracion algoritmo
 
-    3 $@2: /* vacío */
+    3 $@2: /* empty */
 
     4 declaracion: DEFVAR $@2 declaraciones_variables ENDEF
 
@@ -40,7 +31,7 @@ Gramática
    10 variables: ID
    11          | ID PUNTO_COMA variables
 
-   12 $@3: /* vacío */
+   12 $@3: /* empty */
 
    13 algoritmo: $@3 INICIO bloque FIN
 
@@ -52,1300 +43,1253 @@ Gramática
    18          | repeticion
    19          | between
    20          | asignacionlet
-   21          | COMENTARIO
+   21          | comentarios
 
    22 asignacion: ID OP_ASIG ID
    23           | ID OP_ASIG operacion
    24           | ID OP_ASIG CONSTSTRING
-   25           | /* vacío */
 
-   26 operacion: operacion OP_SUMA termino
-   27          | operacion OP_RESTA termino
-   28          | termino
+   25 operacion: operacion OP_SUMA termino
+   26          | operacion OP_RESTA termino
+   27          | termino
 
-   29 termino: termino OP_MUL factor
-   30        | termino OP_DIV factor
-   31        | factor
+   28 termino: termino OP_MUL factor
+   29        | termino OP_DIV factor
+   30        | factor
 
-   32 factor: ID
-   33       | CONSTINT
-   34       | CONSTREAL
-   35       | P_A operacion P_C
+   31 factor: ID
+   32       | CONSTINT
+   33       | CONSTREAL
+   34       | P_A operacion P_C
 
-   36 decision: IF P_A condicion P_C LL_A bloque LL_C
-   37         | IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C
+   35 decision: IF P_A condicion P_C LL_A bloque LL_C
+   36         | IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C
 
-   38 condicion: comparacion
-   39          | comparacion OP_AND comparacion
-   40          | comparacion OP_OR comparacion
-   41          | OP_NOT comparacion
+   37 condicion: comparacion
+   38          | comparacion OP_AND comparacion
+   39          | comparacion OP_OR comparacion
+   40          | OP_NOT comparacion
 
-   42 comparacion: factor OP_COMPARACION factor
+   41 comparacion: factor OP_COMPARACION factor
 
-   43 repeticion: WHILE P_A condicion P_C LL_A bloque LL_C
+   42 repeticion: WHILE P_A condicion P_C LL_A bloque LL_C
 
-   44 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C
+   43 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C
 
-   45 asignacionlet: LET lista_var OP_IGUAL tupla
+   44 asignacionlet: LET lista_var OP_IGUAL tupla
 
-   46 tupla: P_A lista_valores P_C
+   45 tupla: P_A lista_valores P_C
 
-   47 lista_var: ID
-   48          | ID COMA lista_var
+   46 lista_var: ID
+   47          | ID COMA lista_var
 
-   49 lista_valores: operacion
-   50              | operacion PUNTO_COMA lista_valores
+   48 lista_valores: operacion
+   49              | operacion PUNTO_COMA lista_valores
+
+   50 comentarios: COMENTARIO
 
 
-Terminales con las reglas donde aparecen
+Terminals, with rules where they appear
 
 $end (0) 0
 error (256)
-ID (258) 10 11 22 23 24 32 44 47 48
-CONSTINT (259) 33
-CONSTREAL (260) 34
+ID (258) 10 11 22 23 24 31 43 46 47
+CONSTINT (259) 32
+CONSTREAL (260) 33
 CONSTSTRING (261) 24
 ENTERO (262) 7
 STRING (263) 9
 REAL (264) 8
-PUNTO_COMA (265) 11 44 50
-COMA (266) 44 48
+PUNTO_COMA (265) 11 43 49
+COMA (266) 43 47
 DOS_PUNTOS (267) 7 8 9
 ENDEF (268) 4
 DEFVAR (269) 4
 PALABRA (270)
-COMILLA (271)
-ESPACIO (272)
-TABULACION (273)
-CARACTERES_ESPECIALES (274)
-COMENTARIO (275) 21
-OP_ASIG (276) 22 23 24
-INICIO (277) 13
-FIN (278) 13
-P_A (279) 35 36 37 43 44 46
-P_C (280) 35 36 37 43 44 46
-OP_SUMA (281) 26
-OP_RESTA (282) 27
-OP_MUL (283) 29
-OP_DIV (284) 30
-IF (285) 36 37
-ELSE (286) 37
-LL_A (287) 36 37 43
-LL_C (288) 36 37 43
-OP_COMPARACION (289) 42
-OP_AND (290) 39
-OP_OR (291) 40
-OP_NOT (292) 41
-WHILE (293) 43
-BETWEEN (294) 44
-COR_A (295) 44
-COR_C (296) 44
-LET (297) 45
-OP_IGUAL (298) 45
+TEXTO (271)
+COMENTARIO (272) 50
+OP_ASIG (273) 22 23 24
+INICIO (274) 13
+FIN (275) 13
+P_A (276) 34 35 36 42 43 45
+P_C (277) 34 35 36 42 43 45
+OP_SUMA (278) 25
+OP_RESTA (279) 26
+OP_MUL (280) 28
+OP_DIV (281) 29
+IF (282) 35 36
+ELSE (283) 36
+LL_A (284) 35 36 42
+LL_C (285) 35 36 42
+OP_COMPARACION (286) 41
+OP_AND (287) 38
+OP_OR (288) 39
+OP_NOT (289) 40
+WHILE (290) 42
+BETWEEN (291) 43
+COR_A (292) 43
+COR_C (293) 43
+LET (294) 44
+OP_IGUAL (295) 44
+COM_CIERRE (296)
+COM_APER (297)
 
 
-No terminales con las reglas donde aparecen
+Nonterminals, with rules where they appear
 
-$accept (44)
-    en la izquierda: 0
-programa (45)
-    en la izquierda: 2, en la derecha: 0
-$@1 (46)
-    en la izquierda: 1, en la derecha: 2
-declaracion (47)
-    en la izquierda: 4, en la derecha: 2
-$@2 (48)
-    en la izquierda: 3, en la derecha: 4
-declaraciones_variables (49)
-    en la izquierda: 5 6, en la derecha: 4 5
-declaracion_variable (50)
-    en la izquierda: 7 8 9, en la derecha: 5 6
-variables (51)
-    en la izquierda: 10 11, en la derecha: 7 8 9 11
-algoritmo (52)
-    en la izquierda: 13, en la derecha: 2
-$@3 (53)
-    en la izquierda: 12, en la derecha: 13
-bloque (54)
-    en la izquierda: 14 15, en la derecha: 13 15 36 37 43
-sentencia (55)
-    en la izquierda: 16 17 18 19 20 21, en la derecha: 14 15
-asignacion (56)
-    en la izquierda: 22 23 24 25, en la derecha: 16
-operacion (57)
-    en la izquierda: 26 27 28, en la derecha: 23 26 27 35 44 49 50
-termino (58)
-    en la izquierda: 29 30 31, en la derecha: 26 27 28 29 30
-factor (59)
-    en la izquierda: 32 33 34 35, en la derecha: 29 30 31 42
-decision (60)
-    en la izquierda: 36 37, en la derecha: 17
-condicion (61)
-    en la izquierda: 38 39 40 41, en la derecha: 36 37 43
-comparacion (62)
-    en la izquierda: 42, en la derecha: 38 39 40 41
-repeticion (63)
-    en la izquierda: 43, en la derecha: 18
-between (64)
-    en la izquierda: 44, en la derecha: 19
-asignacionlet (65)
-    en la izquierda: 45, en la derecha: 20
-tupla (66)
-    en la izquierda: 46, en la derecha: 45
-lista_var (67)
-    en la izquierda: 47 48, en la derecha: 45 48
-lista_valores (68)
-    en la izquierda: 49 50, en la derecha: 46 50
+$accept (43)
+    on left: 0
+programa (44)
+    on left: 2, on right: 0
+$@1 (45)
+    on left: 1, on right: 2
+declaracion (46)
+    on left: 4, on right: 2
+$@2 (47)
+    on left: 3, on right: 4
+declaraciones_variables (48)
+    on left: 5 6, on right: 4 5
+declaracion_variable (49)
+    on left: 7 8 9, on right: 5 6
+variables (50)
+    on left: 10 11, on right: 7 8 9 11
+algoritmo (51)
+    on left: 13, on right: 2
+$@3 (52)
+    on left: 12, on right: 13
+bloque (53)
+    on left: 14 15, on right: 13 15 35 36 42
+sentencia (54)
+    on left: 16 17 18 19 20 21, on right: 14 15
+asignacion (55)
+    on left: 22 23 24, on right: 16
+operacion (56)
+    on left: 25 26 27, on right: 23 25 26 34 43 48 49
+termino (57)
+    on left: 28 29 30, on right: 25 26 27 28 29
+factor (58)
+    on left: 31 32 33 34, on right: 28 29 30 41
+decision (59)
+    on left: 35 36, on right: 17
+condicion (60)
+    on left: 37 38 39 40, on right: 35 36 42
+comparacion (61)
+    on left: 41, on right: 37 38 39 40
+repeticion (62)
+    on left: 42, on right: 18
+between (63)
+    on left: 43, on right: 19
+asignacionlet (64)
+    on left: 44, on right: 20
+tupla (65)
+    on left: 45, on right: 44
+lista_var (66)
+    on left: 46 47, on right: 44 47
+lista_valores (67)
+    on left: 48 49, on right: 45 49
+comentarios (68)
+    on left: 50, on right: 21
 
 
-estado 0
+state 0
 
     0 $accept: . programa $end
 
-    $default  reduce usando la regla 1 ($@1)
+    $default  reduce using rule 1 ($@1)
 
-    programa  ir al estado 1
-    $@1       ir al estado 2
+    programa  go to state 1
+    $@1       go to state 2
 
 
-estado 1
+state 1
 
     0 $accept: programa . $end
 
-    $end  desplazar e ir al estado 3
+    $end  shift, and go to state 3
 
 
-estado 2
+state 2
 
     2 programa: $@1 . declaracion algoritmo
 
-    DEFVAR  desplazar e ir al estado 4
+    DEFVAR  shift, and go to state 4
 
-    declaracion  ir al estado 5
+    declaracion  go to state 5
 
 
-estado 3
+state 3
 
     0 $accept: programa $end .
 
-    $default  aceptar
+    $default  accept
 
 
-estado 4
+state 4
 
     4 declaracion: DEFVAR . $@2 declaraciones_variables ENDEF
 
-    $default  reduce usando la regla 3 ($@2)
+    $default  reduce using rule 3 ($@2)
 
-    $@2  ir al estado 6
+    $@2  go to state 6
 
 
-estado 5
+state 5
 
     2 programa: $@1 declaracion . algoritmo
 
-    $default  reduce usando la regla 12 ($@3)
+    $default  reduce using rule 12 ($@3)
 
-    algoritmo  ir al estado 7
-    $@3        ir al estado 8
+    algoritmo  go to state 7
+    $@3        go to state 8
 
 
-estado 6
+state 6
 
     4 declaracion: DEFVAR $@2 . declaraciones_variables ENDEF
 
-    ENTERO  desplazar e ir al estado 9
-    STRING  desplazar e ir al estado 10
-    REAL    desplazar e ir al estado 11
+    ENTERO  shift, and go to state 9
+    STRING  shift, and go to state 10
+    REAL    shift, and go to state 11
 
-    declaraciones_variables  ir al estado 12
-    declaracion_variable     ir al estado 13
+    declaraciones_variables  go to state 12
+    declaracion_variable     go to state 13
 
 
-estado 7
+state 7
 
     2 programa: $@1 declaracion algoritmo .
 
-    $default  reduce usando la regla 2 (programa)
+    $default  reduce using rule 2 (programa)
 
 
-estado 8
+state 8
 
    13 algoritmo: $@3 . INICIO bloque FIN
 
-    INICIO  desplazar e ir al estado 14
+    INICIO  shift, and go to state 14
 
 
-estado 9
+state 9
 
     7 declaracion_variable: ENTERO . DOS_PUNTOS variables
 
-    DOS_PUNTOS  desplazar e ir al estado 15
+    DOS_PUNTOS  shift, and go to state 15
 
 
-estado 10
+state 10
 
     9 declaracion_variable: STRING . DOS_PUNTOS variables
 
-    DOS_PUNTOS  desplazar e ir al estado 16
+    DOS_PUNTOS  shift, and go to state 16
 
 
-estado 11
+state 11
 
     8 declaracion_variable: REAL . DOS_PUNTOS variables
 
-    DOS_PUNTOS  desplazar e ir al estado 17
+    DOS_PUNTOS  shift, and go to state 17
 
 
-estado 12
+state 12
 
     4 declaracion: DEFVAR $@2 declaraciones_variables . ENDEF
     5 declaraciones_variables: declaraciones_variables . declaracion_variable
 
-    ENTERO  desplazar e ir al estado 9
-    STRING  desplazar e ir al estado 10
-    REAL    desplazar e ir al estado 11
-    ENDEF   desplazar e ir al estado 18
+    ENTERO  shift, and go to state 9
+    STRING  shift, and go to state 10
+    REAL    shift, and go to state 11
+    ENDEF   shift, and go to state 18
 
-    declaracion_variable  ir al estado 19
+    declaracion_variable  go to state 19
 
 
-estado 13
+state 13
 
     6 declaraciones_variables: declaracion_variable .
 
-    $default  reduce usando la regla 6 (declaraciones_variables)
+    $default  reduce using rule 6 (declaraciones_variables)
 
 
-estado 14
+state 14
 
    13 algoritmo: $@3 INICIO . bloque FIN
 
-    ID          desplazar e ir al estado 20
-    COMENTARIO  desplazar e ir al estado 21
-    IF          desplazar e ir al estado 22
-    WHILE       desplazar e ir al estado 23
-    BETWEEN     desplazar e ir al estado 24
-    LET         desplazar e ir al estado 25
+    ID          shift, and go to state 20
+    COMENTARIO  shift, and go to state 21
+    IF          shift, and go to state 22
+    WHILE       shift, and go to state 23
+    BETWEEN     shift, and go to state 24
+    LET         shift, and go to state 25
 
-    ID          [reduce usando la regla 25 (asignacion)]
-    COMENTARIO  [reduce usando la regla 25 (asignacion)]
-    IF          [reduce usando la regla 25 (asignacion)]
-    WHILE       [reduce usando la regla 25 (asignacion)]
-    BETWEEN     [reduce usando la regla 25 (asignacion)]
-    LET         [reduce usando la regla 25 (asignacion)]
-    $default    reduce usando la regla 25 (asignacion)
-
-    bloque         ir al estado 26
-    sentencia      ir al estado 27
-    asignacion     ir al estado 28
-    decision       ir al estado 29
-    repeticion     ir al estado 30
-    between        ir al estado 31
-    asignacionlet  ir al estado 32
+    bloque         go to state 26
+    sentencia      go to state 27
+    asignacion     go to state 28
+    decision       go to state 29
+    repeticion     go to state 30
+    between        go to state 31
+    asignacionlet  go to state 32
+    comentarios    go to state 33
 
 
-estado 15
+state 15
 
     7 declaracion_variable: ENTERO DOS_PUNTOS . variables
 
-    ID  desplazar e ir al estado 33
+    ID  shift, and go to state 34
 
-    variables  ir al estado 34
+    variables  go to state 35
 
 
-estado 16
+state 16
 
     9 declaracion_variable: STRING DOS_PUNTOS . variables
 
-    ID  desplazar e ir al estado 33
+    ID  shift, and go to state 34
 
-    variables  ir al estado 35
+    variables  go to state 36
 
 
-estado 17
+state 17
 
     8 declaracion_variable: REAL DOS_PUNTOS . variables
 
-    ID  desplazar e ir al estado 33
+    ID  shift, and go to state 34
 
-    variables  ir al estado 36
+    variables  go to state 37
 
 
-estado 18
+state 18
 
     4 declaracion: DEFVAR $@2 declaraciones_variables ENDEF .
 
-    $default  reduce usando la regla 4 (declaracion)
+    $default  reduce using rule 4 (declaracion)
 
 
-estado 19
+state 19
 
     5 declaraciones_variables: declaraciones_variables declaracion_variable .
 
-    $default  reduce usando la regla 5 (declaraciones_variables)
+    $default  reduce using rule 5 (declaraciones_variables)
 
 
-estado 20
+state 20
 
    22 asignacion: ID . OP_ASIG ID
    23           | ID . OP_ASIG operacion
    24           | ID . OP_ASIG CONSTSTRING
 
-    OP_ASIG  desplazar e ir al estado 37
+    OP_ASIG  shift, and go to state 38
 
 
-estado 21
+state 21
 
-   21 sentencia: COMENTARIO .
+   50 comentarios: COMENTARIO .
 
-    $default  reduce usando la regla 21 (sentencia)
-
-
-estado 22
-
-   36 decision: IF . P_A condicion P_C LL_A bloque LL_C
-   37         | IF . P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C
-
-    P_A  desplazar e ir al estado 38
+    $default  reduce using rule 50 (comentarios)
 
 
-estado 23
+state 22
 
-   43 repeticion: WHILE . P_A condicion P_C LL_A bloque LL_C
+   35 decision: IF . P_A condicion P_C LL_A bloque LL_C
+   36         | IF . P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C
 
-    P_A  desplazar e ir al estado 39
-
-
-estado 24
-
-   44 between: BETWEEN . P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C
-
-    P_A  desplazar e ir al estado 40
+    P_A  shift, and go to state 39
 
 
-estado 25
+state 23
 
-   45 asignacionlet: LET . lista_var OP_IGUAL tupla
+   42 repeticion: WHILE . P_A condicion P_C LL_A bloque LL_C
 
-    ID  desplazar e ir al estado 41
-
-    lista_var  ir al estado 42
+    P_A  shift, and go to state 40
 
 
-estado 26
+state 24
+
+   43 between: BETWEEN . P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C
+
+    P_A  shift, and go to state 41
+
+
+state 25
+
+   44 asignacionlet: LET . lista_var OP_IGUAL tupla
+
+    ID  shift, and go to state 42
+
+    lista_var  go to state 43
+
+
+state 26
 
    13 algoritmo: $@3 INICIO bloque . FIN
    15 bloque: bloque . sentencia
 
-    ID          desplazar e ir al estado 20
-    COMENTARIO  desplazar e ir al estado 21
-    FIN         desplazar e ir al estado 43
-    IF          desplazar e ir al estado 22
-    WHILE       desplazar e ir al estado 23
-    BETWEEN     desplazar e ir al estado 24
-    LET         desplazar e ir al estado 25
+    ID          shift, and go to state 20
+    COMENTARIO  shift, and go to state 21
+    FIN         shift, and go to state 44
+    IF          shift, and go to state 22
+    WHILE       shift, and go to state 23
+    BETWEEN     shift, and go to state 24
+    LET         shift, and go to state 25
 
-    ID          [reduce usando la regla 25 (asignacion)]
-    COMENTARIO  [reduce usando la regla 25 (asignacion)]
-    FIN         [reduce usando la regla 25 (asignacion)]
-    IF          [reduce usando la regla 25 (asignacion)]
-    WHILE       [reduce usando la regla 25 (asignacion)]
-    BETWEEN     [reduce usando la regla 25 (asignacion)]
-    LET         [reduce usando la regla 25 (asignacion)]
-
-    sentencia      ir al estado 44
-    asignacion     ir al estado 28
-    decision       ir al estado 29
-    repeticion     ir al estado 30
-    between        ir al estado 31
-    asignacionlet  ir al estado 32
+    sentencia      go to state 45
+    asignacion     go to state 28
+    decision       go to state 29
+    repeticion     go to state 30
+    between        go to state 31
+    asignacionlet  go to state 32
+    comentarios    go to state 33
 
 
-estado 27
+state 27
 
    14 bloque: sentencia .
 
-    $default  reduce usando la regla 14 (bloque)
+    $default  reduce using rule 14 (bloque)
 
 
-estado 28
+state 28
 
    16 sentencia: asignacion .
 
-    $default  reduce usando la regla 16 (sentencia)
+    $default  reduce using rule 16 (sentencia)
 
 
-estado 29
+state 29
 
    17 sentencia: decision .
 
-    $default  reduce usando la regla 17 (sentencia)
+    $default  reduce using rule 17 (sentencia)
 
 
-estado 30
+state 30
 
    18 sentencia: repeticion .
 
-    $default  reduce usando la regla 18 (sentencia)
+    $default  reduce using rule 18 (sentencia)
 
 
-estado 31
+state 31
 
    19 sentencia: between .
 
-    $default  reduce usando la regla 19 (sentencia)
+    $default  reduce using rule 19 (sentencia)
 
 
-estado 32
+state 32
 
    20 sentencia: asignacionlet .
 
-    $default  reduce usando la regla 20 (sentencia)
+    $default  reduce using rule 20 (sentencia)
 
 
-estado 33
+state 33
+
+   21 sentencia: comentarios .
+
+    $default  reduce using rule 21 (sentencia)
+
+
+state 34
 
    10 variables: ID .
    11          | ID . PUNTO_COMA variables
 
-    PUNTO_COMA  desplazar e ir al estado 45
+    PUNTO_COMA  shift, and go to state 46
 
-    $default  reduce usando la regla 10 (variables)
+    $default  reduce using rule 10 (variables)
 
 
-estado 34
+state 35
 
     7 declaracion_variable: ENTERO DOS_PUNTOS variables .
 
-    $default  reduce usando la regla 7 (declaracion_variable)
+    $default  reduce using rule 7 (declaracion_variable)
 
 
-estado 35
+state 36
 
     9 declaracion_variable: STRING DOS_PUNTOS variables .
 
-    $default  reduce usando la regla 9 (declaracion_variable)
+    $default  reduce using rule 9 (declaracion_variable)
 
 
-estado 36
+state 37
 
     8 declaracion_variable: REAL DOS_PUNTOS variables .
 
-    $default  reduce usando la regla 8 (declaracion_variable)
+    $default  reduce using rule 8 (declaracion_variable)
 
 
-estado 37
+state 38
 
    22 asignacion: ID OP_ASIG . ID
    23           | ID OP_ASIG . operacion
    24           | ID OP_ASIG . CONSTSTRING
 
-    ID           desplazar e ir al estado 46
-    CONSTINT     desplazar e ir al estado 47
-    CONSTREAL    desplazar e ir al estado 48
-    CONSTSTRING  desplazar e ir al estado 49
-    P_A          desplazar e ir al estado 50
+    ID           shift, and go to state 47
+    CONSTINT     shift, and go to state 48
+    CONSTREAL    shift, and go to state 49
+    CONSTSTRING  shift, and go to state 50
+    P_A          shift, and go to state 51
 
-    operacion  ir al estado 51
-    termino    ir al estado 52
-    factor     ir al estado 53
-
-
-estado 38
-
-   36 decision: IF P_A . condicion P_C LL_A bloque LL_C
-   37         | IF P_A . condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C
-
-    ID         desplazar e ir al estado 54
-    CONSTINT   desplazar e ir al estado 47
-    CONSTREAL  desplazar e ir al estado 48
-    P_A        desplazar e ir al estado 50
-    OP_NOT     desplazar e ir al estado 55
-
-    factor       ir al estado 56
-    condicion    ir al estado 57
-    comparacion  ir al estado 58
+    operacion  go to state 52
+    termino    go to state 53
+    factor     go to state 54
 
 
-estado 39
+state 39
 
-   43 repeticion: WHILE P_A . condicion P_C LL_A bloque LL_C
+   35 decision: IF P_A . condicion P_C LL_A bloque LL_C
+   36         | IF P_A . condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C
 
-    ID         desplazar e ir al estado 54
-    CONSTINT   desplazar e ir al estado 47
-    CONSTREAL  desplazar e ir al estado 48
-    P_A        desplazar e ir al estado 50
-    OP_NOT     desplazar e ir al estado 55
+    ID         shift, and go to state 55
+    CONSTINT   shift, and go to state 48
+    CONSTREAL  shift, and go to state 49
+    P_A        shift, and go to state 51
+    OP_NOT     shift, and go to state 56
 
-    factor       ir al estado 56
-    condicion    ir al estado 59
-    comparacion  ir al estado 58
-
-
-estado 40
-
-   44 between: BETWEEN P_A . ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C
-
-    ID  desplazar e ir al estado 60
+    factor       go to state 57
+    condicion    go to state 58
+    comparacion  go to state 59
 
 
-estado 41
+state 40
 
-   47 lista_var: ID .
-   48          | ID . COMA lista_var
+   42 repeticion: WHILE P_A . condicion P_C LL_A bloque LL_C
 
-    COMA  desplazar e ir al estado 61
+    ID         shift, and go to state 55
+    CONSTINT   shift, and go to state 48
+    CONSTREAL  shift, and go to state 49
+    P_A        shift, and go to state 51
+    OP_NOT     shift, and go to state 56
 
-    $default  reduce usando la regla 47 (lista_var)
-
-
-estado 42
-
-   45 asignacionlet: LET lista_var . OP_IGUAL tupla
-
-    OP_IGUAL  desplazar e ir al estado 62
+    factor       go to state 57
+    condicion    go to state 60
+    comparacion  go to state 59
 
 
-estado 43
+state 41
+
+   43 between: BETWEEN P_A . ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C
+
+    ID  shift, and go to state 61
+
+
+state 42
+
+   46 lista_var: ID .
+   47          | ID . COMA lista_var
+
+    COMA  shift, and go to state 62
+
+    $default  reduce using rule 46 (lista_var)
+
+
+state 43
+
+   44 asignacionlet: LET lista_var . OP_IGUAL tupla
+
+    OP_IGUAL  shift, and go to state 63
+
+
+state 44
 
    13 algoritmo: $@3 INICIO bloque FIN .
 
-    $default  reduce usando la regla 13 (algoritmo)
+    $default  reduce using rule 13 (algoritmo)
 
 
-estado 44
+state 45
 
    15 bloque: bloque sentencia .
 
-    $default  reduce usando la regla 15 (bloque)
+    $default  reduce using rule 15 (bloque)
 
 
-estado 45
+state 46
 
    11 variables: ID PUNTO_COMA . variables
 
-    ID  desplazar e ir al estado 33
+    ID  shift, and go to state 34
 
-    variables  ir al estado 63
+    variables  go to state 64
 
 
-estado 46
+state 47
 
    22 asignacion: ID OP_ASIG ID .
-   32 factor: ID .
+   31 factor: ID .
 
-    ID          reduce usando la regla 22 (asignacion)
-    ID          [reduce usando la regla 32 (factor)]
-    COMENTARIO  reduce usando la regla 22 (asignacion)
-    COMENTARIO  [reduce usando la regla 32 (factor)]
-    FIN         reduce usando la regla 22 (asignacion)
-    FIN         [reduce usando la regla 32 (factor)]
-    OP_SUMA     reduce usando la regla 32 (factor)
-    OP_RESTA    reduce usando la regla 32 (factor)
-    OP_MUL      reduce usando la regla 32 (factor)
-    OP_DIV      reduce usando la regla 32 (factor)
-    IF          reduce usando la regla 22 (asignacion)
-    IF          [reduce usando la regla 32 (factor)]
-    LL_C        reduce usando la regla 22 (asignacion)
-    LL_C        [reduce usando la regla 32 (factor)]
-    WHILE       reduce usando la regla 22 (asignacion)
-    WHILE       [reduce usando la regla 32 (factor)]
-    BETWEEN     reduce usando la regla 22 (asignacion)
-    BETWEEN     [reduce usando la regla 32 (factor)]
-    LET         reduce usando la regla 22 (asignacion)
-    LET         [reduce usando la regla 32 (factor)]
-    $default    reduce usando la regla 22 (asignacion)
-
-
-estado 47
-
-   33 factor: CONSTINT .
-
-    $default  reduce usando la regla 33 (factor)
+    ID          reduce using rule 22 (asignacion)
+    ID          [reduce using rule 31 (factor)]
+    COMENTARIO  reduce using rule 22 (asignacion)
+    COMENTARIO  [reduce using rule 31 (factor)]
+    FIN         reduce using rule 22 (asignacion)
+    FIN         [reduce using rule 31 (factor)]
+    OP_SUMA     reduce using rule 31 (factor)
+    OP_RESTA    reduce using rule 31 (factor)
+    OP_MUL      reduce using rule 31 (factor)
+    OP_DIV      reduce using rule 31 (factor)
+    IF          reduce using rule 22 (asignacion)
+    IF          [reduce using rule 31 (factor)]
+    LL_C        reduce using rule 22 (asignacion)
+    LL_C        [reduce using rule 31 (factor)]
+    WHILE       reduce using rule 22 (asignacion)
+    WHILE       [reduce using rule 31 (factor)]
+    BETWEEN     reduce using rule 22 (asignacion)
+    BETWEEN     [reduce using rule 31 (factor)]
+    LET         reduce using rule 22 (asignacion)
+    LET         [reduce using rule 31 (factor)]
+    $default    reduce using rule 22 (asignacion)
 
 
-estado 48
+state 48
 
-   34 factor: CONSTREAL .
+   32 factor: CONSTINT .
 
-    $default  reduce usando la regla 34 (factor)
+    $default  reduce using rule 32 (factor)
 
 
-estado 49
+state 49
+
+   33 factor: CONSTREAL .
+
+    $default  reduce using rule 33 (factor)
+
+
+state 50
 
    24 asignacion: ID OP_ASIG CONSTSTRING .
 
-    $default  reduce usando la regla 24 (asignacion)
+    $default  reduce using rule 24 (asignacion)
 
 
-estado 50
+state 51
 
-   35 factor: P_A . operacion P_C
+   34 factor: P_A . operacion P_C
 
-    ID         desplazar e ir al estado 54
-    CONSTINT   desplazar e ir al estado 47
-    CONSTREAL  desplazar e ir al estado 48
-    P_A        desplazar e ir al estado 50
+    ID         shift, and go to state 55
+    CONSTINT   shift, and go to state 48
+    CONSTREAL  shift, and go to state 49
+    P_A        shift, and go to state 51
 
-    operacion  ir al estado 64
-    termino    ir al estado 52
-    factor     ir al estado 53
+    operacion  go to state 65
+    termino    go to state 53
+    factor     go to state 54
 
 
-estado 51
+state 52
 
    23 asignacion: ID OP_ASIG operacion .
-   26 operacion: operacion . OP_SUMA termino
-   27          | operacion . OP_RESTA termino
+   25 operacion: operacion . OP_SUMA termino
+   26          | operacion . OP_RESTA termino
 
-    OP_SUMA   desplazar e ir al estado 65
-    OP_RESTA  desplazar e ir al estado 66
+    OP_SUMA   shift, and go to state 66
+    OP_RESTA  shift, and go to state 67
 
-    $default  reduce usando la regla 23 (asignacion)
-
-
-estado 52
-
-   28 operacion: termino .
-   29 termino: termino . OP_MUL factor
-   30        | termino . OP_DIV factor
-
-    OP_MUL  desplazar e ir al estado 67
-    OP_DIV  desplazar e ir al estado 68
-
-    $default  reduce usando la regla 28 (operacion)
+    $default  reduce using rule 23 (asignacion)
 
 
-estado 53
+state 53
 
-   31 termino: factor .
+   27 operacion: termino .
+   28 termino: termino . OP_MUL factor
+   29        | termino . OP_DIV factor
 
-    $default  reduce usando la regla 31 (termino)
+    OP_MUL  shift, and go to state 68
+    OP_DIV  shift, and go to state 69
 
-
-estado 54
-
-   32 factor: ID .
-
-    $default  reduce usando la regla 32 (factor)
+    $default  reduce using rule 27 (operacion)
 
 
-estado 55
+state 54
 
-   41 condicion: OP_NOT . comparacion
+   30 termino: factor .
 
-    ID         desplazar e ir al estado 54
-    CONSTINT   desplazar e ir al estado 47
-    CONSTREAL  desplazar e ir al estado 48
-    P_A        desplazar e ir al estado 50
-
-    factor       ir al estado 56
-    comparacion  ir al estado 69
+    $default  reduce using rule 30 (termino)
 
 
-estado 56
+state 55
 
-   42 comparacion: factor . OP_COMPARACION factor
+   31 factor: ID .
 
-    OP_COMPARACION  desplazar e ir al estado 70
-
-
-estado 57
-
-   36 decision: IF P_A condicion . P_C LL_A bloque LL_C
-   37         | IF P_A condicion . P_C LL_A bloque LL_C ELSE LL_A bloque LL_C
-
-    P_C  desplazar e ir al estado 71
+    $default  reduce using rule 31 (factor)
 
 
-estado 58
+state 56
 
-   38 condicion: comparacion .
-   39          | comparacion . OP_AND comparacion
-   40          | comparacion . OP_OR comparacion
+   40 condicion: OP_NOT . comparacion
 
-    OP_AND  desplazar e ir al estado 72
-    OP_OR   desplazar e ir al estado 73
+    ID         shift, and go to state 55
+    CONSTINT   shift, and go to state 48
+    CONSTREAL  shift, and go to state 49
+    P_A        shift, and go to state 51
 
-    $default  reduce usando la regla 38 (condicion)
-
-
-estado 59
-
-   43 repeticion: WHILE P_A condicion . P_C LL_A bloque LL_C
-
-    P_C  desplazar e ir al estado 74
+    factor       go to state 57
+    comparacion  go to state 70
 
 
-estado 60
+state 57
 
-   44 between: BETWEEN P_A ID . COMA COR_A operacion PUNTO_COMA operacion COR_C P_C
+   41 comparacion: factor . OP_COMPARACION factor
 
-    COMA  desplazar e ir al estado 75
-
-
-estado 61
-
-   48 lista_var: ID COMA . lista_var
-
-    ID  desplazar e ir al estado 41
-
-    lista_var  ir al estado 76
+    OP_COMPARACION  shift, and go to state 71
 
 
-estado 62
+state 58
 
-   45 asignacionlet: LET lista_var OP_IGUAL . tupla
+   35 decision: IF P_A condicion . P_C LL_A bloque LL_C
+   36         | IF P_A condicion . P_C LL_A bloque LL_C ELSE LL_A bloque LL_C
 
-    P_A  desplazar e ir al estado 77
-
-    tupla  ir al estado 78
+    P_C  shift, and go to state 72
 
 
-estado 63
+state 59
+
+   37 condicion: comparacion .
+   38          | comparacion . OP_AND comparacion
+   39          | comparacion . OP_OR comparacion
+
+    OP_AND  shift, and go to state 73
+    OP_OR   shift, and go to state 74
+
+    $default  reduce using rule 37 (condicion)
+
+
+state 60
+
+   42 repeticion: WHILE P_A condicion . P_C LL_A bloque LL_C
+
+    P_C  shift, and go to state 75
+
+
+state 61
+
+   43 between: BETWEEN P_A ID . COMA COR_A operacion PUNTO_COMA operacion COR_C P_C
+
+    COMA  shift, and go to state 76
+
+
+state 62
+
+   47 lista_var: ID COMA . lista_var
+
+    ID  shift, and go to state 42
+
+    lista_var  go to state 77
+
+
+state 63
+
+   44 asignacionlet: LET lista_var OP_IGUAL . tupla
+
+    P_A  shift, and go to state 78
+
+    tupla  go to state 79
+
+
+state 64
 
    11 variables: ID PUNTO_COMA variables .
 
-    $default  reduce usando la regla 11 (variables)
+    $default  reduce using rule 11 (variables)
 
 
-estado 64
+state 65
 
-   26 operacion: operacion . OP_SUMA termino
-   27          | operacion . OP_RESTA termino
-   35 factor: P_A operacion . P_C
+   25 operacion: operacion . OP_SUMA termino
+   26          | operacion . OP_RESTA termino
+   34 factor: P_A operacion . P_C
 
-    P_C       desplazar e ir al estado 79
-    OP_SUMA   desplazar e ir al estado 65
-    OP_RESTA  desplazar e ir al estado 66
+    P_C       shift, and go to state 80
+    OP_SUMA   shift, and go to state 66
+    OP_RESTA  shift, and go to state 67
 
 
-estado 65
+state 66
 
-   26 operacion: operacion OP_SUMA . termino
+   25 operacion: operacion OP_SUMA . termino
 
-    ID         desplazar e ir al estado 54
-    CONSTINT   desplazar e ir al estado 47
-    CONSTREAL  desplazar e ir al estado 48
-    P_A        desplazar e ir al estado 50
+    ID         shift, and go to state 55
+    CONSTINT   shift, and go to state 48
+    CONSTREAL  shift, and go to state 49
+    P_A        shift, and go to state 51
 
-    termino  ir al estado 80
-    factor   ir al estado 53
+    termino  go to state 81
+    factor   go to state 54
 
 
-estado 66
+state 67
 
-   27 operacion: operacion OP_RESTA . termino
+   26 operacion: operacion OP_RESTA . termino
 
-    ID         desplazar e ir al estado 54
-    CONSTINT   desplazar e ir al estado 47
-    CONSTREAL  desplazar e ir al estado 48
-    P_A        desplazar e ir al estado 50
+    ID         shift, and go to state 55
+    CONSTINT   shift, and go to state 48
+    CONSTREAL  shift, and go to state 49
+    P_A        shift, and go to state 51
 
-    termino  ir al estado 81
-    factor   ir al estado 53
+    termino  go to state 82
+    factor   go to state 54
 
 
-estado 67
+state 68
 
-   29 termino: termino OP_MUL . factor
+   28 termino: termino OP_MUL . factor
 
-    ID         desplazar e ir al estado 54
-    CONSTINT   desplazar e ir al estado 47
-    CONSTREAL  desplazar e ir al estado 48
-    P_A        desplazar e ir al estado 50
+    ID         shift, and go to state 55
+    CONSTINT   shift, and go to state 48
+    CONSTREAL  shift, and go to state 49
+    P_A        shift, and go to state 51
 
-    factor  ir al estado 82
+    factor  go to state 83
 
 
-estado 68
+state 69
 
-   30 termino: termino OP_DIV . factor
+   29 termino: termino OP_DIV . factor
 
-    ID         desplazar e ir al estado 54
-    CONSTINT   desplazar e ir al estado 47
-    CONSTREAL  desplazar e ir al estado 48
-    P_A        desplazar e ir al estado 50
+    ID         shift, and go to state 55
+    CONSTINT   shift, and go to state 48
+    CONSTREAL  shift, and go to state 49
+    P_A        shift, and go to state 51
 
-    factor  ir al estado 83
+    factor  go to state 84
 
 
-estado 69
+state 70
 
-   41 condicion: OP_NOT comparacion .
+   40 condicion: OP_NOT comparacion .
 
-    $default  reduce usando la regla 41 (condicion)
+    $default  reduce using rule 40 (condicion)
 
 
-estado 70
+state 71
 
-   42 comparacion: factor OP_COMPARACION . factor
+   41 comparacion: factor OP_COMPARACION . factor
 
-    ID         desplazar e ir al estado 54
-    CONSTINT   desplazar e ir al estado 47
-    CONSTREAL  desplazar e ir al estado 48
-    P_A        desplazar e ir al estado 50
+    ID         shift, and go to state 55
+    CONSTINT   shift, and go to state 48
+    CONSTREAL  shift, and go to state 49
+    P_A        shift, and go to state 51
 
-    factor  ir al estado 84
+    factor  go to state 85
 
 
-estado 71
+state 72
 
-   36 decision: IF P_A condicion P_C . LL_A bloque LL_C
-   37         | IF P_A condicion P_C . LL_A bloque LL_C ELSE LL_A bloque LL_C
+   35 decision: IF P_A condicion P_C . LL_A bloque LL_C
+   36         | IF P_A condicion P_C . LL_A bloque LL_C ELSE LL_A bloque LL_C
 
-    LL_A  desplazar e ir al estado 85
+    LL_A  shift, and go to state 86
 
 
-estado 72
+state 73
 
-   39 condicion: comparacion OP_AND . comparacion
+   38 condicion: comparacion OP_AND . comparacion
 
-    ID         desplazar e ir al estado 54
-    CONSTINT   desplazar e ir al estado 47
-    CONSTREAL  desplazar e ir al estado 48
-    P_A        desplazar e ir al estado 50
+    ID         shift, and go to state 55
+    CONSTINT   shift, and go to state 48
+    CONSTREAL  shift, and go to state 49
+    P_A        shift, and go to state 51
 
-    factor       ir al estado 56
-    comparacion  ir al estado 86
+    factor       go to state 57
+    comparacion  go to state 87
 
 
-estado 73
+state 74
 
-   40 condicion: comparacion OP_OR . comparacion
+   39 condicion: comparacion OP_OR . comparacion
 
-    ID         desplazar e ir al estado 54
-    CONSTINT   desplazar e ir al estado 47
-    CONSTREAL  desplazar e ir al estado 48
-    P_A        desplazar e ir al estado 50
+    ID         shift, and go to state 55
+    CONSTINT   shift, and go to state 48
+    CONSTREAL  shift, and go to state 49
+    P_A        shift, and go to state 51
 
-    factor       ir al estado 56
-    comparacion  ir al estado 87
+    factor       go to state 57
+    comparacion  go to state 88
 
 
-estado 74
+state 75
 
-   43 repeticion: WHILE P_A condicion P_C . LL_A bloque LL_C
+   42 repeticion: WHILE P_A condicion P_C . LL_A bloque LL_C
 
-    LL_A  desplazar e ir al estado 88
+    LL_A  shift, and go to state 89
 
 
-estado 75
+state 76
 
-   44 between: BETWEEN P_A ID COMA . COR_A operacion PUNTO_COMA operacion COR_C P_C
+   43 between: BETWEEN P_A ID COMA . COR_A operacion PUNTO_COMA operacion COR_C P_C
 
-    COR_A  desplazar e ir al estado 89
+    COR_A  shift, and go to state 90
 
 
-estado 76
+state 77
 
-   48 lista_var: ID COMA lista_var .
+   47 lista_var: ID COMA lista_var .
 
-    $default  reduce usando la regla 48 (lista_var)
+    $default  reduce using rule 47 (lista_var)
 
 
-estado 77
+state 78
 
-   46 tupla: P_A . lista_valores P_C
+   45 tupla: P_A . lista_valores P_C
 
-    ID         desplazar e ir al estado 54
-    CONSTINT   desplazar e ir al estado 47
-    CONSTREAL  desplazar e ir al estado 48
-    P_A        desplazar e ir al estado 50
+    ID         shift, and go to state 55
+    CONSTINT   shift, and go to state 48
+    CONSTREAL  shift, and go to state 49
+    P_A        shift, and go to state 51
 
-    operacion      ir al estado 90
-    termino        ir al estado 52
-    factor         ir al estado 53
-    lista_valores  ir al estado 91
+    operacion      go to state 91
+    termino        go to state 53
+    factor         go to state 54
+    lista_valores  go to state 92
 
 
-estado 78
+state 79
 
-   45 asignacionlet: LET lista_var OP_IGUAL tupla .
+   44 asignacionlet: LET lista_var OP_IGUAL tupla .
 
-    $default  reduce usando la regla 45 (asignacionlet)
+    $default  reduce using rule 44 (asignacionlet)
 
 
-estado 79
+state 80
 
-   35 factor: P_A operacion P_C .
+   34 factor: P_A operacion P_C .
 
-    $default  reduce usando la regla 35 (factor)
+    $default  reduce using rule 34 (factor)
 
 
-estado 80
+state 81
 
-   26 operacion: operacion OP_SUMA termino .
-   29 termino: termino . OP_MUL factor
-   30        | termino . OP_DIV factor
+   25 operacion: operacion OP_SUMA termino .
+   28 termino: termino . OP_MUL factor
+   29        | termino . OP_DIV factor
 
-    OP_MUL  desplazar e ir al estado 67
-    OP_DIV  desplazar e ir al estado 68
+    OP_MUL  shift, and go to state 68
+    OP_DIV  shift, and go to state 69
 
-    $default  reduce usando la regla 26 (operacion)
+    $default  reduce using rule 25 (operacion)
 
 
-estado 81
+state 82
 
-   27 operacion: operacion OP_RESTA termino .
-   29 termino: termino . OP_MUL factor
-   30        | termino . OP_DIV factor
+   26 operacion: operacion OP_RESTA termino .
+   28 termino: termino . OP_MUL factor
+   29        | termino . OP_DIV factor
 
-    OP_MUL  desplazar e ir al estado 67
-    OP_DIV  desplazar e ir al estado 68
+    OP_MUL  shift, and go to state 68
+    OP_DIV  shift, and go to state 69
 
-    $default  reduce usando la regla 27 (operacion)
+    $default  reduce using rule 26 (operacion)
 
 
-estado 82
+state 83
 
-   29 termino: termino OP_MUL factor .
+   28 termino: termino OP_MUL factor .
 
-    $default  reduce usando la regla 29 (termino)
+    $default  reduce using rule 28 (termino)
 
 
-estado 83
+state 84
 
-   30 termino: termino OP_DIV factor .
+   29 termino: termino OP_DIV factor .
 
-    $default  reduce usando la regla 30 (termino)
+    $default  reduce using rule 29 (termino)
 
 
-estado 84
+state 85
 
-   42 comparacion: factor OP_COMPARACION factor .
+   41 comparacion: factor OP_COMPARACION factor .
 
-    $default  reduce usando la regla 42 (comparacion)
+    $default  reduce using rule 41 (comparacion)
 
 
-estado 85
+state 86
 
-   36 decision: IF P_A condicion P_C LL_A . bloque LL_C
-   37         | IF P_A condicion P_C LL_A . bloque LL_C ELSE LL_A bloque LL_C
+   35 decision: IF P_A condicion P_C LL_A . bloque LL_C
+   36         | IF P_A condicion P_C LL_A . bloque LL_C ELSE LL_A bloque LL_C
 
-    ID          desplazar e ir al estado 20
-    COMENTARIO  desplazar e ir al estado 21
-    IF          desplazar e ir al estado 22
-    WHILE       desplazar e ir al estado 23
-    BETWEEN     desplazar e ir al estado 24
-    LET         desplazar e ir al estado 25
+    ID          shift, and go to state 20
+    COMENTARIO  shift, and go to state 21
+    IF          shift, and go to state 22
+    WHILE       shift, and go to state 23
+    BETWEEN     shift, and go to state 24
+    LET         shift, and go to state 25
 
-    ID          [reduce usando la regla 25 (asignacion)]
-    COMENTARIO  [reduce usando la regla 25 (asignacion)]
-    IF          [reduce usando la regla 25 (asignacion)]
-    WHILE       [reduce usando la regla 25 (asignacion)]
-    BETWEEN     [reduce usando la regla 25 (asignacion)]
-    LET         [reduce usando la regla 25 (asignacion)]
-    $default    reduce usando la regla 25 (asignacion)
+    bloque         go to state 93
+    sentencia      go to state 27
+    asignacion     go to state 28
+    decision       go to state 29
+    repeticion     go to state 30
+    between        go to state 31
+    asignacionlet  go to state 32
+    comentarios    go to state 33
 
-    bloque         ir al estado 92
-    sentencia      ir al estado 27
-    asignacion     ir al estado 28
-    decision       ir al estado 29
-    repeticion     ir al estado 30
-    between        ir al estado 31
-    asignacionlet  ir al estado 32
 
+state 87
 
-estado 86
+   38 condicion: comparacion OP_AND comparacion .
 
-   39 condicion: comparacion OP_AND comparacion .
+    $default  reduce using rule 38 (condicion)
 
-    $default  reduce usando la regla 39 (condicion)
 
+state 88
 
-estado 87
+   39 condicion: comparacion OP_OR comparacion .
 
-   40 condicion: comparacion OP_OR comparacion .
+    $default  reduce using rule 39 (condicion)
 
-    $default  reduce usando la regla 40 (condicion)
 
+state 89
 
-estado 88
+   42 repeticion: WHILE P_A condicion P_C LL_A . bloque LL_C
 
-   43 repeticion: WHILE P_A condicion P_C LL_A . bloque LL_C
+    ID          shift, and go to state 20
+    COMENTARIO  shift, and go to state 21
+    IF          shift, and go to state 22
+    WHILE       shift, and go to state 23
+    BETWEEN     shift, and go to state 24
+    LET         shift, and go to state 25
 
-    ID          desplazar e ir al estado 20
-    COMENTARIO  desplazar e ir al estado 21
-    IF          desplazar e ir al estado 22
-    WHILE       desplazar e ir al estado 23
-    BETWEEN     desplazar e ir al estado 24
-    LET         desplazar e ir al estado 25
+    bloque         go to state 94
+    sentencia      go to state 27
+    asignacion     go to state 28
+    decision       go to state 29
+    repeticion     go to state 30
+    between        go to state 31
+    asignacionlet  go to state 32
+    comentarios    go to state 33
 
-    ID          [reduce usando la regla 25 (asignacion)]
-    COMENTARIO  [reduce usando la regla 25 (asignacion)]
-    IF          [reduce usando la regla 25 (asignacion)]
-    WHILE       [reduce usando la regla 25 (asignacion)]
-    BETWEEN     [reduce usando la regla 25 (asignacion)]
-    LET         [reduce usando la regla 25 (asignacion)]
-    $default    reduce usando la regla 25 (asignacion)
 
-    bloque         ir al estado 93
-    sentencia      ir al estado 27
-    asignacion     ir al estado 28
-    decision       ir al estado 29
-    repeticion     ir al estado 30
-    between        ir al estado 31
-    asignacionlet  ir al estado 32
+state 90
 
+   43 between: BETWEEN P_A ID COMA COR_A . operacion PUNTO_COMA operacion COR_C P_C
 
-estado 89
+    ID         shift, and go to state 55
+    CONSTINT   shift, and go to state 48
+    CONSTREAL  shift, and go to state 49
+    P_A        shift, and go to state 51
 
-   44 between: BETWEEN P_A ID COMA COR_A . operacion PUNTO_COMA operacion COR_C P_C
+    operacion  go to state 95
+    termino    go to state 53
+    factor     go to state 54
 
-    ID         desplazar e ir al estado 54
-    CONSTINT   desplazar e ir al estado 47
-    CONSTREAL  desplazar e ir al estado 48
-    P_A        desplazar e ir al estado 50
 
-    operacion  ir al estado 94
-    termino    ir al estado 52
-    factor     ir al estado 53
+state 91
 
+   25 operacion: operacion . OP_SUMA termino
+   26          | operacion . OP_RESTA termino
+   48 lista_valores: operacion .
+   49              | operacion . PUNTO_COMA lista_valores
 
-estado 90
+    PUNTO_COMA  shift, and go to state 96
+    OP_SUMA     shift, and go to state 66
+    OP_RESTA    shift, and go to state 67
 
-   26 operacion: operacion . OP_SUMA termino
-   27          | operacion . OP_RESTA termino
-   49 lista_valores: operacion .
-   50              | operacion . PUNTO_COMA lista_valores
+    $default  reduce using rule 48 (lista_valores)
 
-    PUNTO_COMA  desplazar e ir al estado 95
-    OP_SUMA     desplazar e ir al estado 65
-    OP_RESTA    desplazar e ir al estado 66
 
-    $default  reduce usando la regla 49 (lista_valores)
+state 92
 
+   45 tupla: P_A lista_valores . P_C
 
-estado 91
+    P_C  shift, and go to state 97
 
-   46 tupla: P_A lista_valores . P_C
 
-    P_C  desplazar e ir al estado 96
-
-
-estado 92
+state 93
 
    15 bloque: bloque . sentencia
-   36 decision: IF P_A condicion P_C LL_A bloque . LL_C
-   37         | IF P_A condicion P_C LL_A bloque . LL_C ELSE LL_A bloque LL_C
+   35 decision: IF P_A condicion P_C LL_A bloque . LL_C
+   36         | IF P_A condicion P_C LL_A bloque . LL_C ELSE LL_A bloque LL_C
 
-    ID          desplazar e ir al estado 20
-    COMENTARIO  desplazar e ir al estado 21
-    IF          desplazar e ir al estado 22
-    LL_C        desplazar e ir al estado 97
-    WHILE       desplazar e ir al estado 23
-    BETWEEN     desplazar e ir al estado 24
-    LET         desplazar e ir al estado 25
+    ID          shift, and go to state 20
+    COMENTARIO  shift, and go to state 21
+    IF          shift, and go to state 22
+    LL_C        shift, and go to state 98
+    WHILE       shift, and go to state 23
+    BETWEEN     shift, and go to state 24
+    LET         shift, and go to state 25
 
-    ID          [reduce usando la regla 25 (asignacion)]
-    COMENTARIO  [reduce usando la regla 25 (asignacion)]
-    IF          [reduce usando la regla 25 (asignacion)]
-    LL_C        [reduce usando la regla 25 (asignacion)]
-    WHILE       [reduce usando la regla 25 (asignacion)]
-    BETWEEN     [reduce usando la regla 25 (asignacion)]
-    LET         [reduce usando la regla 25 (asignacion)]
-
-    sentencia      ir al estado 44
-    asignacion     ir al estado 28
-    decision       ir al estado 29
-    repeticion     ir al estado 30
-    between        ir al estado 31
-    asignacionlet  ir al estado 32
+    sentencia      go to state 45
+    asignacion     go to state 28
+    decision       go to state 29
+    repeticion     go to state 30
+    between        go to state 31
+    asignacionlet  go to state 32
+    comentarios    go to state 33
 
 
-estado 93
+state 94
 
    15 bloque: bloque . sentencia
-   43 repeticion: WHILE P_A condicion P_C LL_A bloque . LL_C
+   42 repeticion: WHILE P_A condicion P_C LL_A bloque . LL_C
 
-    ID          desplazar e ir al estado 20
-    COMENTARIO  desplazar e ir al estado 21
-    IF          desplazar e ir al estado 22
-    LL_C        desplazar e ir al estado 98
-    WHILE       desplazar e ir al estado 23
-    BETWEEN     desplazar e ir al estado 24
-    LET         desplazar e ir al estado 25
+    ID          shift, and go to state 20
+    COMENTARIO  shift, and go to state 21
+    IF          shift, and go to state 22
+    LL_C        shift, and go to state 99
+    WHILE       shift, and go to state 23
+    BETWEEN     shift, and go to state 24
+    LET         shift, and go to state 25
 
-    ID          [reduce usando la regla 25 (asignacion)]
-    COMENTARIO  [reduce usando la regla 25 (asignacion)]
-    IF          [reduce usando la regla 25 (asignacion)]
-    LL_C        [reduce usando la regla 25 (asignacion)]
-    WHILE       [reduce usando la regla 25 (asignacion)]
-    BETWEEN     [reduce usando la regla 25 (asignacion)]
-    LET         [reduce usando la regla 25 (asignacion)]
-
-    sentencia      ir al estado 44
-    asignacion     ir al estado 28
-    decision       ir al estado 29
-    repeticion     ir al estado 30
-    between        ir al estado 31
-    asignacionlet  ir al estado 32
+    sentencia      go to state 45
+    asignacion     go to state 28
+    decision       go to state 29
+    repeticion     go to state 30
+    between        go to state 31
+    asignacionlet  go to state 32
+    comentarios    go to state 33
 
 
-estado 94
+state 95
 
-   26 operacion: operacion . OP_SUMA termino
-   27          | operacion . OP_RESTA termino
-   44 between: BETWEEN P_A ID COMA COR_A operacion . PUNTO_COMA operacion COR_C P_C
+   25 operacion: operacion . OP_SUMA termino
+   26          | operacion . OP_RESTA termino
+   43 between: BETWEEN P_A ID COMA COR_A operacion . PUNTO_COMA operacion COR_C P_C
 
-    PUNTO_COMA  desplazar e ir al estado 99
-    OP_SUMA     desplazar e ir al estado 65
-    OP_RESTA    desplazar e ir al estado 66
-
-
-estado 95
-
-   50 lista_valores: operacion PUNTO_COMA . lista_valores
-
-    ID         desplazar e ir al estado 54
-    CONSTINT   desplazar e ir al estado 47
-    CONSTREAL  desplazar e ir al estado 48
-    P_A        desplazar e ir al estado 50
-
-    operacion      ir al estado 90
-    termino        ir al estado 52
-    factor         ir al estado 53
-    lista_valores  ir al estado 100
+    PUNTO_COMA  shift, and go to state 100
+    OP_SUMA     shift, and go to state 66
+    OP_RESTA    shift, and go to state 67
 
 
-estado 96
+state 96
 
-   46 tupla: P_A lista_valores P_C .
+   49 lista_valores: operacion PUNTO_COMA . lista_valores
 
-    $default  reduce usando la regla 46 (tupla)
+    ID         shift, and go to state 55
+    CONSTINT   shift, and go to state 48
+    CONSTREAL  shift, and go to state 49
+    P_A        shift, and go to state 51
 
-
-estado 97
-
-   36 decision: IF P_A condicion P_C LL_A bloque LL_C .
-   37         | IF P_A condicion P_C LL_A bloque LL_C . ELSE LL_A bloque LL_C
-
-    ELSE  desplazar e ir al estado 101
-
-    $default  reduce usando la regla 36 (decision)
+    operacion      go to state 91
+    termino        go to state 53
+    factor         go to state 54
+    lista_valores  go to state 101
 
 
-estado 98
+state 97
 
-   43 repeticion: WHILE P_A condicion P_C LL_A bloque LL_C .
+   45 tupla: P_A lista_valores P_C .
 
-    $default  reduce usando la regla 43 (repeticion)
-
-
-estado 99
-
-   44 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA . operacion COR_C P_C
-
-    ID         desplazar e ir al estado 54
-    CONSTINT   desplazar e ir al estado 47
-    CONSTREAL  desplazar e ir al estado 48
-    P_A        desplazar e ir al estado 50
-
-    operacion  ir al estado 102
-    termino    ir al estado 52
-    factor     ir al estado 53
+    $default  reduce using rule 45 (tupla)
 
 
-estado 100
+state 98
 
-   50 lista_valores: operacion PUNTO_COMA lista_valores .
+   35 decision: IF P_A condicion P_C LL_A bloque LL_C .
+   36         | IF P_A condicion P_C LL_A bloque LL_C . ELSE LL_A bloque LL_C
 
-    $default  reduce usando la regla 50 (lista_valores)
+    ELSE  shift, and go to state 102
 
-
-estado 101
-
-   37 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE . LL_A bloque LL_C
-
-    LL_A  desplazar e ir al estado 103
+    $default  reduce using rule 35 (decision)
 
 
-estado 102
+state 99
 
-   26 operacion: operacion . OP_SUMA termino
-   27          | operacion . OP_RESTA termino
-   44 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion . COR_C P_C
+   42 repeticion: WHILE P_A condicion P_C LL_A bloque LL_C .
 
-    OP_SUMA   desplazar e ir al estado 65
-    OP_RESTA  desplazar e ir al estado 66
-    COR_C     desplazar e ir al estado 104
+    $default  reduce using rule 42 (repeticion)
 
 
-estado 103
+state 100
 
-   37 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A . bloque LL_C
+   43 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA . operacion COR_C P_C
 
-    ID          desplazar e ir al estado 20
-    COMENTARIO  desplazar e ir al estado 21
-    IF          desplazar e ir al estado 22
-    WHILE       desplazar e ir al estado 23
-    BETWEEN     desplazar e ir al estado 24
-    LET         desplazar e ir al estado 25
+    ID         shift, and go to state 55
+    CONSTINT   shift, and go to state 48
+    CONSTREAL  shift, and go to state 49
+    P_A        shift, and go to state 51
 
-    ID          [reduce usando la regla 25 (asignacion)]
-    COMENTARIO  [reduce usando la regla 25 (asignacion)]
-    IF          [reduce usando la regla 25 (asignacion)]
-    WHILE       [reduce usando la regla 25 (asignacion)]
-    BETWEEN     [reduce usando la regla 25 (asignacion)]
-    LET         [reduce usando la regla 25 (asignacion)]
-    $default    reduce usando la regla 25 (asignacion)
-
-    bloque         ir al estado 105
-    sentencia      ir al estado 27
-    asignacion     ir al estado 28
-    decision       ir al estado 29
-    repeticion     ir al estado 30
-    between        ir al estado 31
-    asignacionlet  ir al estado 32
+    operacion  go to state 103
+    termino    go to state 53
+    factor     go to state 54
 
 
-estado 104
+state 101
 
-   44 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C . P_C
+   49 lista_valores: operacion PUNTO_COMA lista_valores .
 
-    P_C  desplazar e ir al estado 106
+    $default  reduce using rule 49 (lista_valores)
 
 
-estado 105
+state 102
+
+   36 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE . LL_A bloque LL_C
+
+    LL_A  shift, and go to state 104
+
+
+state 103
+
+   25 operacion: operacion . OP_SUMA termino
+   26          | operacion . OP_RESTA termino
+   43 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion . COR_C P_C
+
+    OP_SUMA   shift, and go to state 66
+    OP_RESTA  shift, and go to state 67
+    COR_C     shift, and go to state 105
+
+
+state 104
+
+   36 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A . bloque LL_C
+
+    ID          shift, and go to state 20
+    COMENTARIO  shift, and go to state 21
+    IF          shift, and go to state 22
+    WHILE       shift, and go to state 23
+    BETWEEN     shift, and go to state 24
+    LET         shift, and go to state 25
+
+    bloque         go to state 106
+    sentencia      go to state 27
+    asignacion     go to state 28
+    decision       go to state 29
+    repeticion     go to state 30
+    between        go to state 31
+    asignacionlet  go to state 32
+    comentarios    go to state 33
+
+
+state 105
+
+   43 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C . P_C
+
+    P_C  shift, and go to state 107
+
+
+state 106
 
    15 bloque: bloque . sentencia
-   37 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque . LL_C
+   36 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque . LL_C
 
-    ID          desplazar e ir al estado 20
-    COMENTARIO  desplazar e ir al estado 21
-    IF          desplazar e ir al estado 22
-    LL_C        desplazar e ir al estado 107
-    WHILE       desplazar e ir al estado 23
-    BETWEEN     desplazar e ir al estado 24
-    LET         desplazar e ir al estado 25
+    ID          shift, and go to state 20
+    COMENTARIO  shift, and go to state 21
+    IF          shift, and go to state 22
+    LL_C        shift, and go to state 108
+    WHILE       shift, and go to state 23
+    BETWEEN     shift, and go to state 24
+    LET         shift, and go to state 25
 
-    ID          [reduce usando la regla 25 (asignacion)]
-    COMENTARIO  [reduce usando la regla 25 (asignacion)]
-    IF          [reduce usando la regla 25 (asignacion)]
-    LL_C        [reduce usando la regla 25 (asignacion)]
-    WHILE       [reduce usando la regla 25 (asignacion)]
-    BETWEEN     [reduce usando la regla 25 (asignacion)]
-    LET         [reduce usando la regla 25 (asignacion)]
-
-    sentencia      ir al estado 44
-    asignacion     ir al estado 28
-    decision       ir al estado 29
-    repeticion     ir al estado 30
-    between        ir al estado 31
-    asignacionlet  ir al estado 32
+    sentencia      go to state 45
+    asignacion     go to state 28
+    decision       go to state 29
+    repeticion     go to state 30
+    between        go to state 31
+    asignacionlet  go to state 32
+    comentarios    go to state 33
 
 
-estado 106
+state 107
 
-   44 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C .
+   43 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C .
 
-    $default  reduce usando la regla 44 (between)
+    $default  reduce using rule 43 (between)
 
 
-estado 107
+state 108
 
-   37 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C .
+   36 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C .
 
-    $default  reduce usando la regla 37 (decision)
+    $default  reduce using rule 36 (decision)
