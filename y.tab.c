@@ -1612,28 +1612,49 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 58 "semantico.y"
-    {printf("Suma OK\n");}
+    {(yyval.val) = (yyvsp[(1) - (3)].val) + (yyvsp[(3) - (3)].val); printf("Suma OK resultado = %f \n",(yyval.val));}
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
 #line 59 "semantico.y"
-    {printf("Resta OK\n");}
+    {(yyval.val) = (yyvsp[(1) - (3)].val) + (yyvsp[(3) - (3)].val); printf("Resta OK resultado = %f \n",(yyval.val));}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
 #line 61 "semantico.y"
-    {printf("multiplicacion OK\n");}
+    {(yyval.val) = (yyvsp[(1) - (3)].val) * (yyvsp[(3) - (3)].val); printf("multiplicacion OK resultado = %f \n",(yyval.val));}
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
 #line 62 "semantico.y"
-    {printf("division OK\n");}
+    {(yyval.val) = (yyvsp[(1) - (3)].val) / (yyvsp[(3) - (3)].val); printf("division OK resultado = %f \n",(yyval.val));}
+    break;
+
+  case 35:
+
+/* Line 1455 of yacc.c  */
+#line 64 "semantico.y"
+    {(yyval.intval) = (yyvsp[(1) - (1)].intval); printf("El entero es: %d \n",(yyvsp[(1) - (1)].intval));}
+    break;
+
+  case 36:
+
+/* Line 1455 of yacc.c  */
+#line 65 "semantico.y"
+    {(yyval.val) = (yyvsp[(1) - (1)].val); printf("El float es: %f \n",(yyvsp[(1) - (1)].val));}
+    break;
+
+  case 37:
+
+/* Line 1455 of yacc.c  */
+#line 66 "semantico.y"
+    {(yyval.val) = (yyvsp[(2) - (3)].val);}
     break;
 
   case 38:
@@ -1696,7 +1717,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 87 "semantico.y"
-    {printf("Se muestra un comentario  \n");}
+    {printf("Se muestra un comentario: \n");}
     break;
 
   case 54:
@@ -1723,7 +1744,7 @@ yyreduce:
 
 
 /* Line 1455 of yacc.c  */
-#line 1727 "y.tab.c"
+#line 1748 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);

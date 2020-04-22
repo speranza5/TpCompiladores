@@ -16,8 +16,8 @@ char *str_val;
 }
 
 %token <str_val>ID
-%token <int>CONSTINT
-%token <double> CONSTREAL
+%token <intval>CONSTINT
+%token <val> CONSTREAL
 %token <str_val> CONSTSTRING
 
 %token ENTERO STRING REAL PUNTO_COMA COMA DOS_PUNTOS ENDEF DEFVAR PALABRA TEXTO COMENTARIO
@@ -61,8 +61,8 @@ operacion: operacion OP_SUMA termino {printf("Suma OK\n");}|
 termino: termino OP_MUL factor {printf("multiplicacion OK\n");}| 
          termino OP_DIV factor {printf("division OK\n");}| factor;
 
-factor: ID |CONSTINT
-           |CONSTREAL 
+factor: ID |CONSTINT {printf("El entero es: %d \n",$<intval>1);}
+           |CONSTREAL {printf("El entero es: %d \n",$<val>1);}
            |P_A operacion P_C;
 
 decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");}| 
@@ -84,7 +84,7 @@ lista_var: ID|ID COMA lista_var {printf("inventaron el var\n");};
 
 lista_valores: operacion|operacion PUNTO_COMA lista_valores {printf("lista de valores \n");};
 
-comentarios: COMENTARIO {printf("Se muestra un comentario  \n");};
+comentarios: COMENTARIO {printf("Se muestra un comentario: \n");};
 
 ingreso:GET ID {printf("Ingreso de datos\n");}
 
