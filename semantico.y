@@ -28,6 +28,7 @@ char *str_val;
 %token BETWEEN COR_A COR_C
 %token LET OP_IGUAL
 %token COM_CIERRE COM_APER
+%token GET DISPLAY
 
 %%
 programa: {printf("Inicio compilador\n");} declaracion algoritmo {printf("fin compilador\n");}
@@ -47,7 +48,7 @@ algoritmo: {printf("Inicio de programa\n");} INICIO bloque FIN {printf("fin del 
 
 bloque: sentencia|bloque sentencia;
 
-sentencia: asignacion| decision| repeticion|between|asignacionlet|comentarios;
+sentencia: asignacion| decision| repeticion|between|asignacionlet|comentarios|ingreso|egreso;
 
 asignacion: ID OP_ASIG ID {printf("asignacion a variable\n");}|
             ID OP_ASIG operacion{printf("asignacion a expresion\n");}|
@@ -84,6 +85,10 @@ lista_var: ID|ID COMA lista_var {printf("inventaron el var\n");};
 lista_valores: operacion|operacion PUNTO_COMA lista_valores {printf("lista de valores \n");};
 
 comentarios: COMENTARIO {printf("Se muestra un comentario  \n");};
+
+ingreso:GET ID {printf("Ingreso de datos\n");}
+
+egreso: DISPLAY CONSTSTRING {printf("Salida de string por pantalla\n");} | DISPLAY ID {printf("Salida de variable por pantalla\n");};
 %%
 
 

@@ -78,7 +78,9 @@
      LET = 294,
      OP_IGUAL = 295,
      COM_CIERRE = 296,
-     COM_APER = 297
+     COM_APER = 297,
+     GET = 298,
+     DISPLAY = 299
    };
 #endif
 /* Tokens.  */
@@ -122,6 +124,8 @@
 #define OP_IGUAL 295
 #define COM_CIERRE 296
 #define COM_APER 297
+#define GET 298
+#define DISPLAY 299
 
 
 
@@ -140,7 +144,7 @@ char *str_val;
 
 
 /* Line 1676 of yacc.c  */
-#line 144 "y.tab.h"
+#line 148 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

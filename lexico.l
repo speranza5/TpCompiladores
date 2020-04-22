@@ -47,6 +47,8 @@ COMETARIO			{COM_APER}{TEXTO}*{COM_CIERRE}
 "while"			{return WHILE;}
 "BETWEEN"		{return BETWEEN;}
 "LET"			{return LET;}
+"GET"			{return GET;}
+"DISPLAY"			{return DISPLAY;}
 "{"			{return LL_A;}
 "}"			{return LL_C;}
 "["			{return COR_A;}
