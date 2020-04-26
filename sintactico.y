@@ -93,7 +93,7 @@ declaracion_variable: ENTERO DOS_PUNTOS variables {tipoDatoADeclarar = Int;graba
 						          STRING DOS_PUNTOS variables {tipoDatoADeclarar = String;grabarLineaEnTablaAuxSimbolo();printf("Declaracion de variables string\n");};
            
 
-variables: ID{lineaEnTablaAuxSimbolo($1);}|ID PUNTO_COMA variables {lineaEnTablaAuxSimbolo($1);};
+variables: ID{lineaEnTablaAuxSimbolo($1);}| variables PUNTO_COMA ID {lineaEnTablaAuxSimbolo($3);};
 
 algoritmo: {printf("Inicio del programa\n");} INICIO bloque FIN {printf("fin del programa\n");};
 
@@ -131,12 +131,12 @@ asignacionlet: LET lista_var OP_IGUAL tupla {printf("lista let\n");};
 
 tupla: P_A lista_valores P_C {printf("se fue a matar la tupla\n");};
 
-lista_var: ID|ID COMA lista_var {printf("Inventaron el var %s\n",yylval.str_val);   
+lista_var: ID|lista_var COMA ID {printf("Inventaron el var %s\n",yylval.str_val);   
                                  agregarVarATabla(yylval.str_val);
                                  varADeclarar1 = finDeTabla; /* Guardo posicion de primer variable de esta lista de declaracion. */
                                  cantVarsADeclarar = 1;};
 
-lista_valores: operacion|operacion PUNTO_COMA lista_valores {printf("lista de valores \n"); 
+lista_valores: operacion|lista_valores PUNTO_COMA operacion {printf("lista de valores \n"); 
                                                              agregarVarATabla(yylval.str_val);
                                                              cantVarsADeclarar++;};
 
