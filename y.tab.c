@@ -68,20 +68,71 @@
 /* Copy the first part of user declarations.  */
 
 /* Line 189 of yacc.c  */
-#line 1 "semantico.y"
+#line 1 "Sintactico.y"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <string.h>
 #include "y.tab.h"
+
+  #define Int 1
+  #define Real 2
+  #define String 3
+  #define CteInt 4
+  #define CteFloat 5
+  #define CteString 6
+  #define TAM_TABLA 300
+  #define TAM_NOMBRE 33
+
+int yylex();
 int yystopparser=0;
 FILE  *yyin;
 
+  /* Funciones */
+  int yyerror(char* mensaje);
+  void agregarVarATabla(char* nombre);
+  void agregarTiposDatosATabla(void);
+  void agregarCteStringATabla(char* nombre);
+  void agregarCteIntATabla(int valor);
+  void agregarCteFloatATabla(float valor);
+  void chequearVarEnTabla(char* nombre);
+  int buscarEnTabla(char * name);
+  void escribirNombreEnTabla(char* nombre, int pos);
+  void guardarTabla(void);
+  void lineaEnTablaAuxSimbolo(char *cadena);
+  void grabarLineaEnTablaAuxSimbolo();
+  void agregarTipoVariableATabla(char *cadena);
+  void formatearCadena(char *s);
+  int esPalabra(char aux);
+  void eliminarSubCadena(char *cad,char *subcad);
+  void trim(char *v);
 
+/*Tabla de simbolos*/
+  typedef struct {
+    char nombre[TAM_NOMBRE];
+    int tipoDato;
+    char valorSimbolo[TAM_NOMBRE];
+    float valorFloat;
+    int limite;
+    int longitud;
+  } t_simbolo;
+
+  t_simbolo tablaSimbolo[TAM_TABLA];
+  t_simbolo tablaAux[TAM_TABLA];
+  int finDeTabla = -1;
+
+  /* Para la declaracion de variables y la tabla de simbolos*/
+  int varADeclarar1 = 0;
+  int cantVarsADeclarar = 0;
+  int tipoDatoADeclarar = 0;
+  int cantVariablesADeclarar = 0;
+  int cantDeVariablesDeclaradas = 0;
+ 
 
 
 /* Line 189 of yacc.c  */
-#line 85 "y.tab.c"
+#line 136 "y.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -204,16 +255,16 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 12 "semantico.y"
+#line 63 "Sintactico.y"
 
-int intval;
-double val;
-char *str_val;
+    int intval;
+    double val;
+    char *str_val;
 
 
 
 /* Line 214 of yacc.c  */
-#line 217 "y.tab.c"
+#line 268 "y.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -225,7 +276,7 @@ char *str_val;
 
 
 /* Line 264 of yacc.c  */
-#line 229 "y.tab.c"
+#line 280 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -534,12 +585,12 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    34,    34,    34,    36,    36,    38,    38,    40,    41,
-      42,    45,    45,    47,    47,    49,    49,    51,    51,    51,
-      51,    51,    51,    51,    51,    53,    54,    55,    58,    59,
-      59,    61,    62,    62,    64,    64,    65,    66,    68,    69,
-      71,    71,    71,    71,    73,    75,    77,    79,    81,    83,
-      83,    85,    85,    87,    89,    91,    91
+       0,    85,    85,    85,    87,    87,    89,    89,    91,    92,
+      93,    96,    96,    98,    98,   100,   100,   102,   102,   102,
+     102,   102,   102,   102,   102,   104,   105,   106,   109,   110,
+     110,   112,   113,   113,   115,   115,   116,   117,   119,   120,
+     122,   122,   122,   122,   124,   126,   128,   130,   132,   134,
+     134,   139,   139,   143,   145,   147,   147
 };
 #endif
 
@@ -1527,224 +1578,236 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 34 "semantico.y"
+#line 85 "Sintactico.y"
     {printf("Inicio compilador\n");}
     break;
 
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 34 "semantico.y"
-    {printf("fin compilador\n");}
+#line 85 "Sintactico.y"
+    {guardarTabla(); printf("fin compilador\n");}
     break;
 
   case 4:
 
 /* Line 1455 of yacc.c  */
-#line 36 "semantico.y"
-    {printf("Inicio de declaraciones\n");}
+#line 87 "Sintactico.y"
+    {printf("Inicio de declaraciones:\n");}
     break;
 
   case 5:
 
 /* Line 1455 of yacc.c  */
-#line 36 "semantico.y"
-    {printf("fin de declaraciones\n");}
+#line 87 "Sintactico.y"
+    {printf("fin de declaraciones\n"); agregarTiposDatosATabla();}
     break;
 
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 40 "semantico.y"
-    {printf("declaracion de variables enteras\n");}
+#line 91 "Sintactico.y"
+    {tipoDatoADeclarar = Int;grabarLineaEnTablaAuxSimbolo();printf("Declaracion de variables enteras\n");}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 41 "semantico.y"
-    {printf("declaracion de variables reales\n");}
+#line 92 "Sintactico.y"
+    {tipoDatoADeclarar = Real;grabarLineaEnTablaAuxSimbolo();printf("Declaracion de variables reales\n"); }
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 42 "semantico.y"
-    {printf("declaracion de variables string\n");}
+#line 93 "Sintactico.y"
+    {tipoDatoADeclarar = String;grabarLineaEnTablaAuxSimbolo();printf("Declaracion de variables string\n");}
+    break;
+
+  case 11:
+
+/* Line 1455 of yacc.c  */
+#line 96 "Sintactico.y"
+    {lineaEnTablaAuxSimbolo((yyvsp[(1) - (1)].str_val));}
+    break;
+
+  case 12:
+
+/* Line 1455 of yacc.c  */
+#line 96 "Sintactico.y"
+    {lineaEnTablaAuxSimbolo((yyvsp[(1) - (3)].str_val));}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 47 "semantico.y"
-    {printf("Inicio de programa\n");}
+#line 98 "Sintactico.y"
+    {printf("Inicio del programa\n");}
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 47 "semantico.y"
+#line 98 "Sintactico.y"
     {printf("fin del programa\n");}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 53 "semantico.y"
-    {printf("asignacion a variable\n");}
+#line 104 "Sintactico.y"
+    {/*printf("asignacion a variable\n"); printf("LA VARIABLE:%s\n",$1); */}
     break;
 
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 54 "semantico.y"
+#line 105 "Sintactico.y"
     {printf("asignacion a expresion\n");}
     break;
 
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 55 "semantico.y"
-    {(yyval.str_val) = (yyvsp[(1) - (3)].str_val); printf( "asignacion a STRING: %s\n", yylval.str_val);}
+#line 106 "Sintactico.y"
+    {(yyval.str_val) = (yyvsp[(1) - (3)].str_val); printf( "asignacion a STRING: %s\n", yylval.str_val); agregarCteStringATabla(yylval.str_val);}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 58 "semantico.y"
-    {(yyval.val) = (yyvsp[(1) - (3)].val) + (yyvsp[(3) - (3)].val); printf("Suma OK resultado = %f \n",(yyval.val));}
+#line 109 "Sintactico.y"
+    {printf("Suma OK\n");}
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 59 "semantico.y"
-    {(yyval.val) = (yyvsp[(1) - (3)].val) + (yyvsp[(3) - (3)].val); printf("Resta OK resultado = %f \n",(yyval.val));}
+#line 110 "Sintactico.y"
+    {printf("Resta OK\n");}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 61 "semantico.y"
-    {(yyval.val) = (yyvsp[(1) - (3)].val) * (yyvsp[(3) - (3)].val); printf("multiplicacion OK resultado = %f \n",(yyval.val));}
+#line 112 "Sintactico.y"
+    {printf("multiplicacion OK\n");}
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 62 "semantico.y"
-    {(yyval.val) = (yyvsp[(1) - (3)].val) / (yyvsp[(3) - (3)].val); printf("division OK resultado = %f \n",(yyval.val));}
+#line 113 "Sintactico.y"
+    {printf("division OK\n");}
     break;
 
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 64 "semantico.y"
-    {(yyval.intval) = (yyvsp[(1) - (1)].intval); printf("El entero es: %d \n",(yyvsp[(1) - (1)].intval));}
+#line 115 "Sintactico.y"
+    {printf("El entero es: %d \n",(yyvsp[(1) - (1)].intval));agregarCteIntATabla(yylval.intval); }
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 65 "semantico.y"
-    {(yyval.val) = (yyvsp[(1) - (1)].val); printf("El float es: %f \n",(yyvsp[(1) - (1)].val));}
-    break;
-
-  case 37:
-
-/* Line 1455 of yacc.c  */
-#line 66 "semantico.y"
-    {(yyval.val) = (yyvsp[(2) - (3)].val);}
+#line 116 "Sintactico.y"
+    {printf("El entero es: %d \n",(yyvsp[(1) - (1)].val)); agregarCteFloatATabla(yylval.val);}
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 68 "semantico.y"
+#line 119 "Sintactico.y"
     {printf("IF sin rama falsa\n");}
     break;
 
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 69 "semantico.y"
+#line 120 "Sintactico.y"
     {printf("IF con rama falsa\n");}
     break;
 
   case 45:
 
 /* Line 1455 of yacc.c  */
-#line 75 "semantico.y"
+#line 126 "Sintactico.y"
     {printf("bucle while\n");}
     break;
 
   case 46:
 
 /* Line 1455 of yacc.c  */
-#line 77 "semantico.y"
+#line 128 "Sintactico.y"
     {printf("secuencia bituin\n");}
     break;
 
   case 47:
 
 /* Line 1455 of yacc.c  */
-#line 79 "semantico.y"
+#line 130 "Sintactico.y"
     {printf("lista let\n");}
     break;
 
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 81 "semantico.y"
+#line 132 "Sintactico.y"
     {printf("se fue a matar la tupla\n");}
     break;
 
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 83 "semantico.y"
-    {printf("inventaron el var\n");}
+#line 134 "Sintactico.y"
+    {printf("Inventaron el var %s\n",yylval.str_val);   
+                                 agregarVarATabla(yylval.str_val);
+                                 varADeclarar1 = finDeTabla; /* Guardo posicion de primer variable de esta lista de declaracion. */
+                                 cantVarsADeclarar = 1;}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 85 "semantico.y"
-    {printf("lista de valores \n");}
+#line 139 "Sintactico.y"
+    {printf("lista de valores \n"); 
+                                                             agregarVarATabla(yylval.str_val);
+                                                             cantVarsADeclarar++;}
     break;
 
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 87 "semantico.y"
+#line 143 "Sintactico.y"
     {printf("Se muestra un comentario: \n");}
     break;
 
   case 54:
 
 /* Line 1455 of yacc.c  */
-#line 89 "semantico.y"
+#line 145 "Sintactico.y"
     {printf("Ingreso de datos\n");}
     break;
 
   case 55:
 
 /* Line 1455 of yacc.c  */
-#line 91 "semantico.y"
-    {printf("Salida de string por pantalla\n");}
+#line 147 "Sintactico.y"
+    {printf("Salida de string por pantalla\n");agregarCteStringATabla(yylval.str_val);}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 91 "semantico.y"
+#line 147 "Sintactico.y"
     {printf("Salida de variable por pantalla\n");}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1748 "y.tab.c"
+#line 1811 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1956,8 +2019,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 92 "semantico.y"
-
+#line 148 "Sintactico.y"
 
 
 
@@ -1974,9 +2036,257 @@ int main(int argc,char *argv[])
   fclose(yyin);
   return 0;
 }
-int yyerror(void)
-     {
-       printf("Error de sintaxis. Revisar.\n");
-	 system ("Pause");
-	 exit (1);
+
+int yyerror(char* mensaje)
+ {
+  printf("Syntax Error: %s\n", mensaje);
+  system ("Pause");
+  exit (1);
+ }
+
+  /* Tabla de simbolos */
+int buscarEnTabla(char * name){
+   int i=0;
+   while(i<=finDeTabla){
+     if(strcmp(tablaSimbolo[i].nombre,name) == 0){
+       return i;
      }
+     i++;
+   }
+   return -1;
+}
+
+void escribirNombreEnTabla(char* nombre, int pos){
+  strcpy(tablaSimbolo[pos].nombre, nombre);
+}
+
+ void agregarVarATabla(char* nombre){
+
+   if(finDeTabla >= TAM_TABLA - 1){
+     printf("Error: No hay mas espacio en la tabla de simbolos.\n");
+     system("Pause");
+     exit(2);
+   }
+   if(buscarEnTabla(nombre) == -1){
+     finDeTabla++;
+     escribirNombreEnTabla(nombre, finDeTabla);
+   }
+   else 
+   {
+/*
+   char msg[100] ;
+   sprintf(msg,"'%s' ya se encuentra declarada previamente.", nombre);
+   yyerror(msg);
+*/
+  }
+ }
+
+void agregarTiposDatosATabla(){
+  int i;
+  for(i = 0; i < cantVarsADeclarar; i++){
+    tablaSimbolo[varADeclarar1 + i].tipoDato = tipoDatoADeclarar;
+  }
+}
+
+void guardarTabla(){
+  if(finDeTabla == -1)
+    yyerror("No se encontro la tabla de simbolos");
+
+  FILE* arch = fopen("ts.txt", "w+");
+  if(!arch){
+    printf("No se pudo crear el archivo ts.txt\n");
+    return;
+  }
+  
+  int i;
+  //printf("ANTES DEL archivo\n");
+  fprintf(arch, "%-30s|%-30s|%-30s|%-30s\n","NOMBRE","TIPO","VALOR","LONGITUD");
+  fprintf(arch, ".........................................................................................................\n");
+  for(i = 0; i <= finDeTabla; i++){
+    fprintf(arch, "%-30s", &(tablaSimbolo[i].nombre) );
+
+    if(tablaSimbolo[i].tipoDato == Real)
+      fprintf(arch, "|%-30s|%-30s|%-30s","REAL"," -"," -");
+        else if(tablaSimbolo[i].tipoDato == Int)
+         fprintf(arch, "|%-30s|%-30s|%-30s","INT"," -"," -");
+          else if(tablaSimbolo[i].tipoDato == String)
+           fprintf(arch, "|%-30s|%-30s|%-30s","STRING"," -"," -");
+            else if(tablaSimbolo[i].tipoDato == CteFloat)
+             fprintf(arch, "|%-30s|%-30f|%-30s", "CTE_FLOAT",tablaSimbolo[i].valorFloat," -");
+               else if(tablaSimbolo[i].tipoDato == CteInt)
+                fprintf(arch, "|%-30s|%-30d|%-30s", "CTE_INT",tablaSimbolo[i].limite," -");
+                 else if(tablaSimbolo[i].tipoDato == CteString)
+                  fprintf(arch, "|%-30s|%-30s|%-30d", "CTE_STRING",&(tablaSimbolo[i].valorSimbolo), tablaSimbolo[i].longitud);
+
+    fprintf(arch, "\n");
+  }
+  fclose(arch);
+}
+
+void agregarCteStringATabla(char* nombre){
+  if(finDeTabla >= TAM_TABLA - 1){
+    printf("Error: No hay mas espacio en la tabla de simbolos.\n");
+    system("Pause");
+    exit(2);
+  }
+  if(buscarEnTabla(nombre) == -1){
+    finDeTabla++;
+    escribirNombreEnTabla(nombre, finDeTabla);
+    tablaSimbolo[finDeTabla].tipoDato = CteString;
+    int length = strlen(nombre);
+    char auxiliar[length];
+    strcpy(auxiliar,nombre);
+    auxiliar[strlen(auxiliar)-1] = '\0';
+    strcpy(tablaSimbolo[finDeTabla].valorSimbolo, auxiliar+1); 
+    tablaSimbolo[finDeTabla].longitud = strlen(nombre) - 2;
+  }
+}
+
+void agregarCteFloatATabla(float valor){
+  if(finDeTabla >= TAM_TABLA - 1){
+    printf("Error: No hay mas espacio en la tabla de simbolos.\n");
+    system("Pause");
+    exit(2);
+  }
+  char nombre[12];
+  sprintf(nombre, "_%f", valor);
+  if(buscarEnTabla(nombre) == -1){
+    finDeTabla++;
+    escribirNombreEnTabla(nombre, finDeTabla);
+    tablaSimbolo[finDeTabla].tipoDato = CteFloat;
+    tablaSimbolo[finDeTabla].valorFloat = valor;
+  }
+}
+
+void agregarCteIntATabla(int valor){
+  if(finDeTabla >= TAM_TABLA - 1){
+    printf("Error: No hay mas espacio en la tabla de simbolos.\n");
+    system("Pause");
+    exit(2);
+  }
+  char nombre[30];
+  sprintf(nombre, "_%d", valor);
+  if(buscarEnTabla(nombre) == -1){
+    finDeTabla++;
+    escribirNombreEnTabla(nombre, finDeTabla);
+    tablaSimbolo[finDeTabla].tipoDato = CteInt;
+    tablaSimbolo[finDeTabla].limite = valor;
+  }
+}
+
+void lineaEnTablaAuxSimbolo(char *cadena)
+{
+  strcpy(tablaAux[cantVariablesADeclarar].nombre,cadena); 
+  //printf("SE VA A GUARDAR LA CADENA:%s. y su tipo de dato es %d",tablaAux[cantVariablesADeclarar].nombre,tipoDatoADeclarar);
+  cantVariablesADeclarar++;
+}
+
+void grabarLineaEnTablaAuxSimbolo()
+{
+  printf("\n\n\nTIPO DE DATO A DECLARAR ES:%d.\n\n\n",tipoDatoADeclarar);
+  printf("A GUARDAR:%s:\n",tablaAux[cantVariablesADeclarar-1].nombre);
+  
+  char *token = strtok(tablaAux[cantVariablesADeclarar-1].nombre,";");
+
+  int j;
+  for(j = 0; token != NULL; j++){
+
+    strcpy(tablaAux[cantDeVariablesDeclaradas].nombre,token);
+    printf("Token: %s---%d\n", token,j);
+    token = strtok(NULL, ";");
+    //printf("-------------------------ENCONTRADAS:%s.\n",tablaAux[cantDeVariablesDeclaradas].nombre);
+
+    eliminarSubCadena(tablaAux[cantDeVariablesDeclaradas].nombre,"ENDEF");
+    eliminarSubCadena(tablaAux[cantDeVariablesDeclaradas].nombre,"STRING");
+    eliminarSubCadena(tablaAux[cantDeVariablesDeclaradas].nombre,"FLOAT");
+    eliminarSubCadena(tablaAux[cantDeVariablesDeclaradas].nombre,"INT");
+    agregarTipoVariableATabla(tablaAux[cantDeVariablesDeclaradas].nombre);
+/*
+    if(!strstr(tablaAux[cantDeVariablesDeclaradas].nombre,"ENDEF") && !strstr(tablaAux[cantDeVariablesDeclaradas].nombre,"STRING") && !strstr(tablaAux[cantDeVariablesDeclaradas].nombre,"INT"))   
+      {
+      agregarTipoVariableATabla(tablaAux[cantDeVariablesDeclaradas].nombre);
+      }
+    else formatearCadenaUltima  
+*/
+    cantDeVariablesDeclaradas++;
+    }
+  cantVariablesADeclarar=0;
+  //cantVariablesADeclarar=0; y el otro tmb 0 por ahí
+}
+
+void agregarTipoVariableATabla(char *cadena){
+ if(finDeTabla >= TAM_TABLA - 1){
+    printf("Error: No hay mas espacio en la tabla de simbolos.\n");
+    system("Pause");
+    exit(2);
+  }
+  trim(cadena);
+  formatearCadena(cadena);
+  if(buscarEnTabla(cadena) == -1){
+    finDeTabla++;
+    escribirNombreEnTabla(cadena, finDeTabla);
+    tablaSimbolo[finDeTabla].tipoDato = tipoDatoADeclarar;
+    int length = strlen(cadena);
+    char auxiliar[length];
+    strcpy(auxiliar,cadena);
+    auxiliar[strlen(auxiliar)-1] = '\0';
+    strcpy(tablaSimbolo[finDeTabla].valorSimbolo, auxiliar+1); 
+    tablaSimbolo[finDeTabla].longitud = strlen(cadena) - 2;
+  }
+}
+
+void formatearCadena(char *s) {
+  
+char *aux;
+char *aux2;
+aux = aux2 = s;
+
+    while(*aux=*aux2++)
+        if(esPalabra(*aux) || *aux == ' ')
+            aux++;
+}   
+
+int esPalabra(char aux)
+{
+    return ((aux >= 'A' && aux <= 'Z')||(aux >= 'a' && aux <= 'z')||(aux >= '0' && aux <= '9'))? 1 : 0 ;
+}
+
+void trim(char *v)
+{
+    char *aux;
+    aux = v;
+    int i=0;
+
+    while (*aux)
+    {
+    if((*aux ==' '))
+    {
+    *aux='.';
+
+    }
+    aux++;
+    }
+}
+
+void eliminarSubCadena(char *cad,char *subcad)
+{
+    char *pl1=cad;
+    char *pl2=subcad;
+    char *dest=cad;
+    char*ant;
+
+    while(*pl1)
+    {
+        ant=subcad;
+        while(*pl1==*pl2&&*pl2)
+        {
+            pl1++;
+            pl2++;
+        }
+        if(*pl2=='\0')
+            subcad=ant;
+        *dest=*pl1;
+        dest++;
+        pl1++;
+    }
+}

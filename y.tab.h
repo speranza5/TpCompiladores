@@ -135,11 +135,11 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 12 "semantico.y"
+#line 63 "Sintactico.y"
 
-int intval;
-double val;
-char *str_val;
+    int intval;
+    double val;
+    char *str_val;
 
 
 
