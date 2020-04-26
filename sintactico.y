@@ -88,14 +88,20 @@ declaracion: DEFVAR {printf("Inicio de declaraciones:\n");} declaraciones_variab
 
 declaraciones_variables: declaraciones_variables declaracion_variable| declaracion_variable;
 
-declaracion_variable: ENTERO DOS_PUNTOS variables {tipoDatoADeclarar = Int;grabarLineaEnTablaAuxSimbolo();printf("Declaracion de variables enteras\n");}| 
-                      REAL DOS_PUNTOS variables {tipoDatoADeclarar = Real;grabarLineaEnTablaAuxSimbolo();printf("Declaracion de variables reales\n"); }|
-						          STRING DOS_PUNTOS variables {tipoDatoADeclarar = String;grabarLineaEnTablaAuxSimbolo();printf("Declaracion de variables string\n");};
+declaracion_variable: ENTERO {tipoDatoADeclarar = Int;} DOS_PUNTOS variables     {printf("Declaracion de variables enteras\n");}| 
+                      REAL {tipoDatoADeclarar = Real;} DOS_PUNTOS variables      {printf("Declaracion de variables reales\n"); }|
+						          STRING {tipoDatoADeclarar = String;}DOS_PUNTOS variables   {printf("Declaracion de variables string\n");};
            
 
-variables: variables PUNTO_COMA ID {lineaEnTablaAuxSimbolo($3);};
+variables: variables PUNTO_COMA ID      {printf("Variable a declarar recursivamente: %s\n",yylval.str_val );
+                                        lineaEnTablaAuxSimbolo($3);
+                                        grabarLineaEnTablaAuxSimbolo();
+                                        }|
 
-variables: ID{printf("Variable a declarar: %s\n",yylval.str_val ); ;lineaEnTablaAuxSimbolo($1);};
+          ID                            {printf("Variable a declarar: %s\n",yylval.str_val );
+                                        lineaEnTablaAuxSimbolo($1);
+                                        grabarLineaEnTablaAuxSimbolo();
+                                        };
 
 algoritmo: {printf("Inicio del programa\n");} INICIO bloque FIN {printf("fin del programa\n");};
 

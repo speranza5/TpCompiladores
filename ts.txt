@@ -1,8 +1,14 @@
 NOMBRE                        |TIPO                          |VALOR                         |LONGITUD                      
 .........................................................................................................
+a1                            |REAL                          | -                            | -                            
 b1                            |REAL                          | -                            | -                            
 variable1                     |STRING                        | -                            | -                            
+p1                            |REAL                          | -                            | -                            
+p2                            |REAL                          | -                            | -                            
 p3                            |REAL                          | -                            | -                            
+a                             |INT                           | -                            | -                            
+b                             |INT                           | -                            | -                            
+uno                           |INT                           | -                            | -                            
 dos                           |INT                           | -                            | -                            
 _3                            |CTE_INT                       |3                             | -                            
 _12.500000                    |CTE_FLOAT                     |12.500000                     | -                            
@@ -15,6 +21,3 @@ _45                           |CTE_INT                       |45                
 _12                           |CTE_INT                       |12                            | -                            
 "BOKE"                        |CTE_STRING                    |BOKE                          |4                             
 "HOLA SALGO EN PANTALLA"      |CTE_STRING                    |HOLA SALGO EN PANTALLA        |22                            
-tres                          
-b;                            
-b)                            
