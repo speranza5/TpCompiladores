@@ -82,8 +82,8 @@ Grammar
 
    47 tupla: P_A lista_valores P_C
 
-   48 lista_var: ID
-   49          | lista_var COMA ID
+   48 lista_var: lista_var COMA ID
+   49          | ID
 
    50 lista_valores: operacion
    51              | lista_valores PUNTO_COMA operacion
@@ -108,7 +108,7 @@ ENTERO (262) 7
 STRING (263) 9
 REAL (264) 8
 PUNTO_COMA (265) 11 45 51
-COMA (266) 45 49
+COMA (266) 45 48
 DOS_PUNTOS (267) 7 8 9
 ENDEF (268) 4
 DEFVAR (269) 4
@@ -193,7 +193,7 @@ asignacionlet (66)
 tupla (67)
     on left: 47, on right: 46
 lista_var (68)
-    on left: 48 49, on right: 46 49
+    on left: 48 49, on right: 46 48
 lista_valores (69)
     on left: 50 51, on right: 47 51
 comentarios (70)
@@ -635,15 +635,15 @@ state 45
 
 state 46
 
-   48 lista_var: ID .
+   49 lista_var: ID .
 
-    $default  reduce using rule 48 (lista_var)
+    $default  reduce using rule 49 (lista_var)
 
 
 state 47
 
    46 asignacionlet: LET lista_var . OP_IGUAL tupla
-   49 lista_var: lista_var . COMA ID
+   48 lista_var: lista_var . COMA ID
 
     COMA      shift, and go to state 69
     OP_IGUAL  shift, and go to state 70
@@ -852,7 +852,7 @@ state 68
 
 state 69
 
-   49 lista_var: lista_var COMA . ID
+   48 lista_var: lista_var COMA . ID
 
     ID  shift, and go to state 84
 
@@ -1003,9 +1003,9 @@ state 83
 
 state 84
 
-   49 lista_var: lista_var COMA ID .
+   48 lista_var: lista_var COMA ID .
 
-    $default  reduce using rule 49 (lista_var)
+    $default  reduce using rule 48 (lista_var)
 
 
 state 85

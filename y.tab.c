@@ -554,7 +554,7 @@ static const yytype_uint8 yyprhs[] =
       54,    56,    58,    60,    62,    64,    68,    72,    76,    80,
       84,    86,    90,    94,    96,    98,   100,   102,   106,   114,
      126,   128,   132,   136,   139,   143,   151,   162,   167,   171,
-     173,   177,   179,   183,   185,   188,   191
+     175,   177,   179,   183,   185,   188,   191
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
@@ -577,7 +577,7 @@ static const yytype_int8 yyrhs[] =
       31,    60,    -1,    35,    21,    62,    22,    29,    55,    30,
       -1,    36,    21,     3,    11,    37,    58,    10,    58,    38,
       22,    -1,    39,    68,    40,    67,    -1,    21,    69,    22,
-      -1,     3,    -1,    68,    11,     3,    -1,    58,    -1,    69,
+      -1,    68,    11,     3,    -1,     3,    -1,    58,    -1,    69,
       10,    58,    -1,    17,    -1,    43,     3,    -1,    44,     6,
       -1,    44,     3,    -1
 };
@@ -590,7 +590,7 @@ static const yytype_uint8 yyrline[] =
      102,   102,   102,   102,   102,   104,   105,   106,   109,   110,
      110,   112,   113,   113,   115,   115,   116,   117,   119,   120,
      122,   122,   122,   122,   124,   126,   128,   130,   132,   134,
-     134,   139,   139,   143,   145,   147,   147
+     138,   140,   140,   144,   146,   148,   148
 };
 #endif
 
@@ -646,8 +646,8 @@ static const yytype_uint8 yyr2[] =
        3,     1,     3,     0,     4,     1,     2,     1,     1,     1,
        1,     1,     1,     1,     1,     3,     3,     3,     3,     3,
        1,     3,     3,     1,     1,     1,     1,     3,     7,    11,
-       1,     3,     3,     2,     3,     7,    10,     4,     3,     1,
-       3,     1,     3,     1,     2,     2,     2
+       1,     3,     3,     2,     3,     7,    10,     4,     3,     3,
+       1,     1,     3,     1,     2,     2,     2
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -659,11 +659,11 @@ static const yytype_uint8 yydefact[] =
        0,     0,     0,     7,     0,     0,     0,     0,     5,     6,
        0,    53,     0,     0,     0,     0,     0,     0,     0,    15,
       17,    18,    19,    20,    21,    22,    23,    24,    11,     8,
-      10,     9,     0,     0,     0,     0,    49,     0,    54,    56,
+      10,     9,     0,     0,     0,     0,    50,     0,    54,    56,
       55,    14,    16,     0,    25,    35,    36,    27,     0,    26,
       30,    33,    34,     0,     0,     0,    40,     0,     0,     0,
        0,    12,     0,     0,     0,     0,     0,    43,     0,     0,
-       0,     0,     0,     0,    50,     0,    47,    37,    28,    29,
+       0,     0,     0,     0,    49,     0,    47,    37,    28,    29,
       31,    32,    44,     0,    41,    42,     0,     0,    51,     0,
        0,     0,     0,     0,    48,    38,    45,     0,    52,     0,
        0,     0,     0,     0,    46,    39
@@ -1755,7 +1755,7 @@ yyreduce:
     {printf("se fue a matar la tupla\n");}
     break;
 
-  case 50:
+  case 49:
 
 /* Line 1455 of yacc.c  */
 #line 134 "sintactico.y"
@@ -1765,10 +1765,17 @@ yyreduce:
                                  cantVarsADeclarar = 1;}
     break;
 
+  case 50:
+
+/* Line 1455 of yacc.c  */
+#line 138 "sintactico.y"
+    {printf("DE la lista este es un ID\n");}
+    break;
+
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 139 "sintactico.y"
+#line 140 "sintactico.y"
     {printf("lista de valores \n"); 
                                                              agregarVarATabla(yylval.str_val);
                                                              cantVarsADeclarar++;}
@@ -1777,35 +1784,35 @@ yyreduce:
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 143 "sintactico.y"
+#line 144 "sintactico.y"
     {printf("Se muestra un comentario: \n");}
     break;
 
   case 54:
 
 /* Line 1455 of yacc.c  */
-#line 145 "sintactico.y"
+#line 146 "sintactico.y"
     {printf("Ingreso de datos\n");}
     break;
 
   case 55:
 
 /* Line 1455 of yacc.c  */
-#line 147 "sintactico.y"
+#line 148 "sintactico.y"
     {printf("Salida de string por pantalla\n");agregarCteStringATabla(yylval.str_val);}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 147 "sintactico.y"
+#line 148 "sintactico.y"
     {printf("Salida de variable por pantalla\n");}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1809 "y.tab.c"
+#line 1816 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2017,7 +2024,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 148 "sintactico.y"
+#line 149 "sintactico.y"
 
 
 
