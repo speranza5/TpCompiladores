@@ -48,12 +48,17 @@ COMETARIO			{COM_APER}{TEXTO}*{COM_CIERRE}
 "BETWEEN"		{return BETWEEN;}
 "LET"			{return LET;}
 "GET"			{return GET;}
-"DISPLAY"			{return DISPLAY;}
+"DISPLAY"		{return DISPLAY;}
 "{"			{return LL_A;}
 "}"			{return LL_C;}
 "["			{return COR_A;}
 "]"			{return COR_C;}
-"<"			{return OP_COMPARACION;}
+"<"			{return OP_MENOR;}
+"<="		{return OP_MENORIGUAL;}
+">"			{return OP_MAYOR;}
+">="		{return OP_MAYORIGUAL;}
+"!="		{return OP_DISTINTO;}
+"=="		{return OP_IGUALDAD;}
 "+"			{ return OP_SUMA;}
 "-"			{ return OP_RESTA;}
 "*"			{ return OP_MUL;}

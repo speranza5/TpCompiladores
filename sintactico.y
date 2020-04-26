@@ -75,7 +75,7 @@ FILE  *yyin;
 %token OP_ASIG
 %token INICIO FIN 
 %token P_A P_C OP_SUMA OP_RESTA OP_MUL OP_DIV
-%token IF ELSE LL_A LL_C OP_COMPARACION OP_AND OP_OR OP_NOT WHILE
+%token IF ELSE LL_A LL_C OP_AND OP_OR OP_NOT WHILE OP_MENOR OP_MENORIGUAL OP_MAYOR OP_MAYORIGUAL OP_DISTINTO OP_IGUALDAD
 %token BETWEEN COR_A COR_C
 %token LET OP_IGUAL
 %token COM_CIERRE COM_APER
@@ -121,7 +121,9 @@ decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");}
 
 condicion: comparacion | comparacion OP_AND comparacion| comparacion OP_OR comparacion| OP_NOT comparacion;
 
-comparacion: factor OP_COMPARACION factor;
+comparacion: factor op_comparacion factor;
+
+op_comparacion: OP_MENOR| OP_MENORIGUAL | OP_MAYOR | OP_MAYORIGUAL | OP_DISTINTO | OP_IGUALDAD;
 
 repeticion: WHILE P_A condicion P_C LL_A bloque LL_C {printf("bucle while\n");};
 

@@ -1,5 +1,5 @@
 flex lexico.l
-bison -dyv semantico.y
+bison -dyv sintactico.y
 gcc.exe lex.yy.c y.tab.c -o Primera.exe
 Primera.exe prueba.txt
 

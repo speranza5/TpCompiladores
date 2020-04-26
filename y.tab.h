@@ -67,20 +67,25 @@
      ELSE = 283,
      LL_A = 284,
      LL_C = 285,
-     OP_COMPARACION = 286,
-     OP_AND = 287,
-     OP_OR = 288,
-     OP_NOT = 289,
-     WHILE = 290,
-     BETWEEN = 291,
-     COR_A = 292,
-     COR_C = 293,
-     LET = 294,
-     OP_IGUAL = 295,
-     COM_CIERRE = 296,
-     COM_APER = 297,
-     GET = 298,
-     DISPLAY = 299
+     OP_AND = 286,
+     OP_OR = 287,
+     OP_NOT = 288,
+     WHILE = 289,
+     OP_MENOR = 290,
+     OP_MENORIGUAL = 291,
+     OP_MAYOR = 292,
+     OP_MAYORIGUAL = 293,
+     OP_DISTINTO = 294,
+     OP_IGUALDAD = 295,
+     BETWEEN = 296,
+     COR_A = 297,
+     COR_C = 298,
+     LET = 299,
+     OP_IGUAL = 300,
+     COM_CIERRE = 301,
+     COM_APER = 302,
+     GET = 303,
+     DISPLAY = 304
    };
 #endif
 /* Tokens.  */
@@ -112,20 +117,25 @@
 #define ELSE 283
 #define LL_A 284
 #define LL_C 285
-#define OP_COMPARACION 286
-#define OP_AND 287
-#define OP_OR 288
-#define OP_NOT 289
-#define WHILE 290
-#define BETWEEN 291
-#define COR_A 292
-#define COR_C 293
-#define LET 294
-#define OP_IGUAL 295
-#define COM_CIERRE 296
-#define COM_APER 297
-#define GET 298
-#define DISPLAY 299
+#define OP_AND 286
+#define OP_OR 287
+#define OP_NOT 288
+#define WHILE 289
+#define OP_MENOR 290
+#define OP_MENORIGUAL 291
+#define OP_MAYOR 292
+#define OP_MAYORIGUAL 293
+#define OP_DISTINTO 294
+#define OP_IGUALDAD 295
+#define BETWEEN 296
+#define COR_A 297
+#define COR_C 298
+#define LET 299
+#define OP_IGUAL 300
+#define COM_CIERRE 301
+#define COM_APER 302
+#define GET 303
+#define DISPLAY 304
 
 
 
@@ -144,7 +154,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 148 "y.tab.h"
+#line 158 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
