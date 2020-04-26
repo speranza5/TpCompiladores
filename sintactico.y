@@ -93,7 +93,9 @@ declaracion_variable: ENTERO DOS_PUNTOS variables {tipoDatoADeclarar = Int;graba
 						          STRING DOS_PUNTOS variables {tipoDatoADeclarar = String;grabarLineaEnTablaAuxSimbolo();printf("Declaracion de variables string\n");};
            
 
-variables: ID{lineaEnTablaAuxSimbolo($1);}| variables PUNTO_COMA ID {lineaEnTablaAuxSimbolo($3);};
+variables: variables PUNTO_COMA ID {lineaEnTablaAuxSimbolo($3);};
+
+variables: ID{printf("Variable a declarar: %s\n",yylval.str_val ); ;lineaEnTablaAuxSimbolo($1);};
 
 algoritmo: {printf("Inicio del programa\n");} INICIO bloque FIN {printf("fin del programa\n");};
 
@@ -129,19 +131,15 @@ repeticion: WHILE P_A condicion P_C LL_A bloque LL_C {printf("bucle while\n");};
 
 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C {printf("secuencia bituin\n");};
 
-asignacionlet: LET lista_var OP_IGUAL tupla {printf("lista let\n");};
+asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C {printf("lista let\n");};
 
-tupla: P_A lista_valores P_C {printf("se fue a matar la tupla\n");};
+lista_var: lista_var COMA ID {printf("Item de la lista del let %s\n",yylval.str_val);};
 
-lista_var: lista_var COMA ID {printf("Inventaron el var %s\n",yylval.str_val);   
-                                 agregarVarATabla(yylval.str_val);
-                                 varADeclarar1 = finDeTabla; /* Guardo posicion de primer variable de esta lista de declaracion. */
-                                 cantVarsADeclarar = 1;};
-lista_var: ID;
+lista_var: ID {printf("Item de la lista del let %s\n",yylval.str_val);};
 
-lista_valores: operacion|lista_valores PUNTO_COMA operacion {printf("lista de valores \n"); 
-                                                             agregarVarATabla(yylval.str_val);
-                                                             cantVarsADeclarar++;};
+lista_valores: operacion{printf("argumento del let es operacion \n");};
+
+lista_valores: lista_valores PUNTO_COMA operacion {printf("lista de valores \n");};
 
 comentarios: COMENTARIO {printf("Se muestra un comentario: \n");};
 
