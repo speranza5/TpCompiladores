@@ -48,6 +48,8 @@ FILE  *yyin;
   int varADeclarar1 = 0;
   int cantVarsADeclarar = 0;
   int tipoDatoADeclarar;
+  int canVariables = 0;
+  int cantValores = 0;
  /* typedef struct {
     char nombre[TAMANIO_TABLA];
     char tipo[33];

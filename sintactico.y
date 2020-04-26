@@ -57,6 +57,10 @@ FILE  *yyin;
   int tipoDatoADeclarar = 0;
   int cantVariablesADeclarar = 0;
   int cantDeVariablesDeclaradas = 0;
+
+  /*Para verificar el LET*/
+  int cantVariables = 0;
+  int cantValores = 0;
  
 %}
 
@@ -135,17 +139,17 @@ op_comparacion: OP_MENOR| OP_MENORIGUAL | OP_MAYOR | OP_MAYORIGUAL | OP_DISTINTO
 
 repeticion: WHILE P_A condicion P_C LL_A bloque LL_C {printf("bucle while\n");};
 
-between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C {printf("secuencia bituin\n");};
+between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C {printf("secuencia between\n");};
 
-asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C {printf("lista let\n");};
+asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C { if(cantValores != cantVariables){yyerror("Error, no coinciden los argumentos del let con las variables");} printf("lista let\n");};
 
-lista_var: lista_var COMA ID {printf("Item de la lista del let %s\n",yylval.str_val);};
+lista_var: lista_var COMA ID {cantVariables++;printf("Item de la lista del let %s\n",yylval.str_val);};
 
-lista_var: ID {printf("Item de la lista del let %s\n",yylval.str_val);};
+lista_var: ID {cantVariables++;printf("Item de la lista del let %s\n",yylval.str_val);};
 
-lista_valores: operacion{printf("argumento del let es operacion \n");};
+lista_valores: operacion{cantValores++;printf("argumento del let es operacion \n");};
 
-lista_valores: lista_valores PUNTO_COMA operacion {printf("lista de valores \n");};
+lista_valores: lista_valores PUNTO_COMA operacion {cantValores++;printf("argumento del let es operacion \n");};
 
 comentarios: COMENTARIO {printf("Se muestra un comentario: \n");};
 
