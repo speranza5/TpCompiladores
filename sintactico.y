@@ -5,14 +5,14 @@
 #include <string.h>
 #include "y.tab.h"
 
-  #define Int 1
-  #define Real 2
-  #define String 3
-  #define CteInt 4
-  #define CteFloat 5
-  #define CteString 6
-  #define TAM_TABLA 300
-  #define TAM_NOMBRE 33
+#define Int 1
+#define Real 2
+#define String 3
+#define CteInt 4
+#define CteFloat 5
+#define CteString 6
+#define TAM_TABLA 300
+#define TAM_NOMBRE 33
 
 int yylex();
 int yystopparser=0;
