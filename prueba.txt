@@ -1,6 +1,6 @@
 DEFVAR 
 	FLOAT : a1; b1             
-	STRING : variable1       
+	STRING : variable1; v2       
 	FLOAT : p1; p2; p3      
 	INT : a; b; uno; dos
 ENDEF 
@@ -10,14 +10,13 @@ DISPLAY a1
 a3 := 3+12.5 * 4
 a1 := (a1+b1)*((a1-b1)+b1)
 while(a<2){
-	a1:="WHILE DALE QUE VA"
 	if(a<45){
-		a1:="VERDADERA"
+		v2:="VERDADERA"
 	}
 	else{
-		a1:="FALSA"
+		v2:="FALSA"
 		if(b<12){
-		  a2:="BOKE"
+		  v2:="anidado"
 		}
 	}
 }
