@@ -20,6 +20,8 @@ FILE  *yyin;
 
   /* Funciones */
   int yyerror(char* mensaje);
+  void validarAsignacion(char *id,char *cadena);
+  void validarAsignacionInt(char *cadena);
   void agregarVarATabla(char* nombre);
   void agregarTiposDatosATabla(void);
   void agregarCteStringATabla(char* nombre);
@@ -52,7 +54,7 @@ FILE  *yyin;
   int finDeTabla = -1;
 
   /* Para la declaracion de variables y la tabla de simbolos*/
-  int varADeclarar1 = 0;
+  int varADeclarar = 0;
   int cantVarsADeclarar = 0;
   int tipoDatoADeclarar = 0;
   int cantVariablesADeclarar = 0;
@@ -125,7 +127,7 @@ termino: termino OP_MUL factor {printf("multiplicacion OK\n");}|
          termino OP_DIV factor {printf("division OK\n");}| factor;
 
 factor: ID |CONSTINT {printf("El entero es: %d \n",$<intval>1);agregarCteIntATabla(yylval.intval); }
-           |CONSTREAL {printf("El entero es: %d \n",$<val>1); agregarCteFloatATabla(yylval.val);}
+           |CONSTREAL {printf("El real es: %d \n",$<val>1); agregarCteFloatATabla(yylval.val);}
            |P_A operacion P_C;
 
 decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");}| 
@@ -192,6 +194,30 @@ int buscarEnTabla(char * name){
    return -1;
 }
 
+
+/*
+void validarAsignacionString(char *id,char *cadena){
+  
+printf("-----LA ID ES:%s y la cadena es %s\n",id,cadena);
+
+  if(*cadena != '"')
+    {
+      printf("Error en la asignacion. No es un string valido.");
+      yyerror("Error en la asignacion. No es un string valido.");
+    }
+ }
+*/
+/*
+void validarAsignacionInt(char *cadena){
+
+
+}
+
+void validarAsignacionFloat(char *){
+
+}
+*/
+
 void escribirNombreEnTabla(char* nombre, int pos){
   strcpy(tablaSimbolo[pos].nombre, nombre);
 }
@@ -207,20 +233,12 @@ void escribirNombreEnTabla(char* nombre, int pos){
      finDeTabla++;
      escribirNombreEnTabla(nombre, finDeTabla);
    }
-   else 
-   {
-/*
-   char msg[100] ;
-   sprintf(msg,"'%s' ya se encuentra declarada previamente.", nombre);
-   yyerror(msg);
-*/
-  }
  }
 
 void agregarTiposDatosATabla(){
   int i;
   for(i = 0; i < cantVarsADeclarar; i++){
-    tablaSimbolo[varADeclarar1 + i].tipoDato = tipoDatoADeclarar;
+    tablaSimbolo[varADeclarar + i].tipoDato = tipoDatoADeclarar;
   }
 }
 
@@ -319,19 +337,18 @@ void lineaEnTablaAuxSimbolo(char *cadena)
 
 void grabarLineaEnTablaAuxSimbolo()
 {
-  printf("\n\n\nTIPO DE DATO A DECLARAR ES:%d.\n\n\n",tipoDatoADeclarar);
-  printf("A GUARDAR:%s:\n",tablaAux[cantVariablesADeclarar-1].nombre);
-  
+  //printf("\n\n\nTIPO DE DATO A DECLARAR ES:%d.\n\n\n",tipoDatoADeclarar);
+  //printf("A GUARDAR:%s:\n",tablaAux[cantVariablesADeclarar-1].nombre);
+
   char *token = strtok(tablaAux[cantVariablesADeclarar-1].nombre,";");
 
   int j;
   for(j = 0; token != NULL; j++){
 
     strcpy(tablaAux[cantDeVariablesDeclaradas].nombre,token);
-    printf("Token: %s---%d\n", token,j);
+   //printf("Token: %s---%d\n", token,j);
     token = strtok(NULL, ";");
     //printf("-------------------------ENCONTRADAS:%s.\n",tablaAux[cantDeVariablesDeclaradas].nombre);
-
     eliminarSubCadena(tablaAux[cantDeVariablesDeclaradas].nombre,"ENDEF");
     eliminarSubCadena(tablaAux[cantDeVariablesDeclaradas].nombre,"STRING");
     eliminarSubCadena(tablaAux[cantDeVariablesDeclaradas].nombre,"FLOAT");
@@ -347,8 +364,8 @@ void grabarLineaEnTablaAuxSimbolo()
     cantDeVariablesDeclaradas++;
     }
   cantVariablesADeclarar=0;
-  //cantVariablesADeclarar=0; y el otro tmb 0 por ahí
 }
+
 
 void agregarTipoVariableATabla(char *cadena){
  if(finDeTabla >= TAM_TABLA - 1){
