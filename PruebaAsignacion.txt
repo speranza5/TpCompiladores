@@ -1,9 +1,0 @@
-DEFVAR
-	FLOAT: a1;b1
-ENDEF
-BEGIN
-	a1:=b1
-	a1:= "Hola"
-	b1:=12
-	a1:=12.43
-END
