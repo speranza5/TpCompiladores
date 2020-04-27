@@ -9,6 +9,8 @@ GET a1
 DISPLAY a1
 a3 := 3+12.5 * 4
 a1 := (a1+b1)*((a1-b1)+b1)
+p1:=43.2
+p2:=12.57
 while(a<2){
 	if(a<45){
 		v2:="VERDADERA"
@@ -21,7 +23,7 @@ while(a<2){
 	}
 }
 
-***/HOLAS/***
+***/Comentario/***
 GET b1
 DISPLAY "HOLA SALGO EN PANTALLA"
 BETWEEN (a, [b ; 12])

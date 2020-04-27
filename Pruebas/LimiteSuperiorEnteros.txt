@@ -1,0 +1,6 @@
+DEFVAR
+	INT: a
+ENDEF
+BEGIN
+	a:=327645
+END

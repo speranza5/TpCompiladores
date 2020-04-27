@@ -1858,7 +1858,7 @@ int main()
 
 void InformarError(char* mensaje){
 
-		printf("%s",mensaje);
+		printf("%s \n",mensaje);
 		system ("Pause");
 		exit(1);  
 }

@@ -106,7 +106,7 @@ COMETARIO			{COM_APER}{TEXTO}*{COM_CIERRE}
 
 void InformarError(char* mensaje){
 
-		printf("%s",mensaje);
+		printf("%s \n",mensaje);
 		system ("Pause");
 		exit(1);  
 }

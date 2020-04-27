@@ -1,0 +1,6 @@
+DEFVAR
+	INT: a;b
+ENDEF
+BEGIN
+	LET a,b = (1;2;3)
+END

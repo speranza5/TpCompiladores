@@ -2125,30 +2125,6 @@ int buscarEnTabla(char * name){
    return -1;
 }
 
-
-/*
-void validarAsignacionString(char *id,char *cadena){
-  
-printf("-----LA ID ES:%s y la cadena es %s\n",id,cadena);
-
-  if(*cadena != '"')
-    {
-      printf("Error en la asignacion. No es un string valido.");
-      yyerror("Error en la asignacion. No es un string valido.");
-    }
- }
-*/
-/*
-void validarAsignacionInt(char *cadena){
-
-
-}
-
-void validarAsignacionFloat(char *){
-
-}
-*/
-
 void escribirNombreEnTabla(char* nombre, int pos){
   strcpy(tablaSimbolo[pos].nombre, nombre);
 }
@@ -2197,7 +2173,7 @@ void guardarTabla(){
           else if(tablaSimbolo[i].tipoDato == String)
            fprintf(arch, "|%-30s|%-30s|%-30s","STRING"," -"," -");
             else if(tablaSimbolo[i].tipoDato == CteFloat)
-             fprintf(arch, "|%-30s|%-30f|%-30s", "CTE_FLOAT",tablaSimbolo[i].valorFloat," -");
+             fprintf(arch, "|%-30s|%-30f|%-30s", "CTE_REAL",tablaSimbolo[i].valorFloat," -");
                else if(tablaSimbolo[i].tipoDato == CteInt)
                 fprintf(arch, "|%-30s|%-30d|%-30s", "CTE_INT",tablaSimbolo[i].limite," -");
                  else if(tablaSimbolo[i].tipoDato == CteString)
@@ -2279,24 +2255,16 @@ void grabarLineaEnTablaAuxSimbolo()
     strcpy(tablaAux[cantDeVariablesDeclaradas].nombre,token);
    //printf("Token: %s---%d\n", token,j);
     token = strtok(NULL, ";");
-    //printf("-------------------------ENCONTRADAS:%s.\n",tablaAux[cantDeVariablesDeclaradas].nombre);
     eliminarSubCadena(tablaAux[cantDeVariablesDeclaradas].nombre,"ENDEF");
     eliminarSubCadena(tablaAux[cantDeVariablesDeclaradas].nombre,"STRING");
     eliminarSubCadena(tablaAux[cantDeVariablesDeclaradas].nombre,"FLOAT");
     eliminarSubCadena(tablaAux[cantDeVariablesDeclaradas].nombre,"INT");
     agregarTipoVariableATabla(tablaAux[cantDeVariablesDeclaradas].nombre);
-/*
-    if(!strstr(tablaAux[cantDeVariablesDeclaradas].nombre,"ENDEF") && !strstr(tablaAux[cantDeVariablesDeclaradas].nombre,"STRING") && !strstr(tablaAux[cantDeVariablesDeclaradas].nombre,"INT"))   
-      {
-      agregarTipoVariableATabla(tablaAux[cantDeVariablesDeclaradas].nombre);
-      }
-    else formatearCadenaUltima  
-*/
+
     cantDeVariablesDeclaradas++;
     }
   cantVariablesADeclarar=0;
 }
-
 
 void agregarTipoVariableATabla(char *cadena){
  if(finDeTabla >= TAM_TABLA - 1){
