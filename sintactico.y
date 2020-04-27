@@ -103,7 +103,6 @@ variables: variables PUNTO_COMA ID      {printf("Variable a declarar recursivame
                                         lineaEnTablaAuxSimbolo($3);
                                         grabarLineaEnTablaAuxSimbolo();
                                         }|
-
           ID                            {printf("Variable a declarar: %s\n",yylval.str_val );
                                         lineaEnTablaAuxSimbolo($1);
                                         grabarLineaEnTablaAuxSimbolo();
@@ -115,8 +114,8 @@ bloque: sentencia|bloque sentencia;
 
 sentencia: asignacion| decision| repeticion|between|asignacionlet|comentarios|ingreso|egreso;
 
-asignacion: ID OP_ASIG operacion{printf("asignacion a expresion\n");}|
-            ID OP_ASIG CONSTSTRING {$<str_val>$ = $<str_val>1; printf( "asignacion a STRING: %s\n", yylval.str_val); agregarCteStringATabla(yylval.str_val);};
+asignacion: ID OP_ASIG operacion{printf("asignacion a operacion\n");}|
+            ID OP_ASIG CONSTSTRING {printf( "asignacion a STRING: %s\n", yylval.str_val); agregarCteStringATabla(yylval.str_val);};
 
 
 operacion: operacion OP_SUMA termino {printf("Suma OK\n");}|
@@ -126,7 +125,7 @@ termino: termino OP_MUL factor {printf("multiplicacion OK\n");}|
          termino OP_DIV factor {printf("division OK\n");}| factor {printf("termino es factor\n");};
 
 factor: ID {printf("factor es ID: %s\n",$1 );}|CONSTINT {printf("factor es entero: %d \n",$<intval>1);agregarCteIntATabla(yylval.intval); }
-           |CONSTREAL {printf("Factor es real: %d \n",$<val>1); agregarCteFloatATabla(yylval.val);}
+           |CONSTREAL {printf("Factor es real: %f \n",$<val>1); agregarCteFloatATabla(yylval.val);}
            |P_A operacion P_C;
 
 decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");}| 

@@ -3,3 +3,5 @@ NOMBRE                        |TIPO                          |VALOR             
 a1                            |REAL                          | -                            | -                            
 b1                            |REAL                          | -                            | -                            
 "Hola"                        |CTE_STRING                    |Hola                          |4                             
+_12                           |CTE_INT                       |12                            | -                            
+_12.430000                    |CTE_FLOAT                     |12.430000                     | -                            

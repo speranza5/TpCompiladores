@@ -605,12 +605,12 @@ static const yytype_int8 yyrhs[] =
 static const yytype_uint8 yyrline[] =
 {
        0,    91,    91,    91,    93,    93,    95,    95,    97,    97,
-      98,    98,    99,    99,   102,   107,   112,   112,   114,   114,
-     116,   116,   116,   116,   116,   116,   116,   116,   118,   119,
-     122,   123,   123,   125,   126,   126,   128,   128,   129,   130,
-     132,   133,   135,   135,   135,   135,   137,   139,   139,   139,
-     139,   139,   139,   141,   143,   145,   147,   149,   151,   153,
-     155,   157,   159,   159
+      98,    98,    99,    99,   102,   106,   111,   111,   113,   113,
+     115,   115,   115,   115,   115,   115,   115,   115,   117,   118,
+     121,   122,   122,   124,   125,   125,   127,   127,   128,   129,
+     131,   132,   134,   134,   134,   134,   136,   138,   138,   138,
+     138,   138,   138,   140,   142,   144,   146,   148,   150,   152,
+     154,   156,   158,   158
 };
 #endif
 
@@ -1684,7 +1684,7 @@ yyreduce:
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 107 "sintactico.y"
+#line 106 "sintactico.y"
     {printf("Variable a declarar: %s\n",yylval.str_val );
                                         lineaEnTablaAuxSimbolo((yyvsp[(1) - (1)].str_val));
                                         grabarLineaEnTablaAuxSimbolo();
@@ -1694,182 +1694,182 @@ yyreduce:
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 112 "sintactico.y"
+#line 111 "sintactico.y"
     {printf("Inicio del programa\n");}
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 112 "sintactico.y"
+#line 111 "sintactico.y"
     {printf("fin del programa\n");}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 118 "sintactico.y"
-    {printf("asignacion a expresion\n");}
+#line 117 "sintactico.y"
+    {printf("asignacion a operacion\n");}
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 119 "sintactico.y"
-    {(yyval.str_val) = (yyvsp[(1) - (3)].str_val); printf( "asignacion a STRING: %s\n", yylval.str_val); agregarCteStringATabla(yylval.str_val);}
+#line 118 "sintactico.y"
+    {printf( "asignacion a STRING: %s\n", yylval.str_val); agregarCteStringATabla(yylval.str_val);}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 122 "sintactico.y"
+#line 121 "sintactico.y"
     {printf("Suma OK\n");}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 123 "sintactico.y"
+#line 122 "sintactico.y"
     {printf("Resta OK\n");}
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 123 "sintactico.y"
+#line 122 "sintactico.y"
     {printf("Operacion es termino\n");}
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 125 "sintactico.y"
+#line 124 "sintactico.y"
     {printf("multiplicacion OK\n");}
     break;
 
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 126 "sintactico.y"
+#line 125 "sintactico.y"
     {printf("division OK\n");}
     break;
 
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 126 "sintactico.y"
+#line 125 "sintactico.y"
     {printf("termino es factor\n");}
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 128 "sintactico.y"
-    {printf("El ID es %s\n",(yyvsp[(1) - (1)].str_val) );}
+#line 127 "sintactico.y"
+    {printf("factor es ID: %s\n",(yyvsp[(1) - (1)].str_val) );}
     break;
 
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 128 "sintactico.y"
-    {printf("El entero es: %d \n",(yyvsp[(1) - (1)].intval));agregarCteIntATabla(yylval.intval); }
+#line 127 "sintactico.y"
+    {printf("factor es entero: %d \n",(yyvsp[(1) - (1)].intval));agregarCteIntATabla(yylval.intval); }
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 129 "sintactico.y"
-    {printf("El real es: %d \n",(yyvsp[(1) - (1)].val)); agregarCteFloatATabla(yylval.val);}
+#line 128 "sintactico.y"
+    {printf("Factor es real: %f \n",(yyvsp[(1) - (1)].val)); agregarCteFloatATabla(yylval.val);}
     break;
 
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 132 "sintactico.y"
+#line 131 "sintactico.y"
     {printf("IF sin rama falsa\n");}
     break;
 
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 133 "sintactico.y"
+#line 132 "sintactico.y"
     {printf("IF con rama falsa\n");}
     break;
 
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 141 "sintactico.y"
+#line 140 "sintactico.y"
     {printf("bucle while\n");}
     break;
 
   case 54:
 
 /* Line 1455 of yacc.c  */
-#line 143 "sintactico.y"
+#line 142 "sintactico.y"
     {printf("secuencia between\n");}
     break;
 
   case 55:
 
 /* Line 1455 of yacc.c  */
-#line 145 "sintactico.y"
+#line 144 "sintactico.y"
     { if(cantValores != cantVariables){yyerror("Error, no coinciden los argumentos del let con las variables");} printf("lista let\n");}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 147 "sintactico.y"
+#line 146 "sintactico.y"
     {cantVariables++;printf("Item de la lista del let %s\n",yylval.str_val);}
     break;
 
   case 57:
 
 /* Line 1455 of yacc.c  */
-#line 149 "sintactico.y"
+#line 148 "sintactico.y"
     {cantVariables++;printf("Item de la lista del let %s\n",yylval.str_val);}
     break;
 
   case 58:
 
 /* Line 1455 of yacc.c  */
-#line 151 "sintactico.y"
+#line 150 "sintactico.y"
     {cantValores++;printf("argumento del let es operacion \n");}
     break;
 
   case 59:
 
 /* Line 1455 of yacc.c  */
-#line 153 "sintactico.y"
+#line 152 "sintactico.y"
     {cantValores++;printf("argumento del let es operacion \n");}
     break;
 
   case 60:
 
 /* Line 1455 of yacc.c  */
-#line 155 "sintactico.y"
+#line 154 "sintactico.y"
     {printf("Se muestra un comentario: \n");}
     break;
 
   case 61:
 
 /* Line 1455 of yacc.c  */
-#line 157 "sintactico.y"
+#line 156 "sintactico.y"
     {printf("Ingreso de datos\n");}
     break;
 
   case 62:
 
 /* Line 1455 of yacc.c  */
-#line 159 "sintactico.y"
+#line 158 "sintactico.y"
     {printf("Salida de string por pantalla\n");agregarCteStringATabla(yylval.str_val);}
     break;
 
   case 63:
 
 /* Line 1455 of yacc.c  */
-#line 159 "sintactico.y"
+#line 158 "sintactico.y"
     {printf("Salida de variable por pantalla\n");}
     break;
 
@@ -2088,7 +2088,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 160 "sintactico.y"
+#line 159 "sintactico.y"
 
 
 
