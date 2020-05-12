@@ -131,15 +131,13 @@ factor: ID {printf("factor es ID: %s\n",$1 );}|CONSTINT {printf("factor es enter
 decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");}| 
           IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C {printf("IF con rama falsa\n");};
 
-condicion: comparacion | comparacion OP_AND comparacion| comparacion OP_OR comparacion| OP_NOT comparacion;
+condicion: comparacion | condicion OP_AND comparacion| condicion OP_OR comparacion| OP_NOT comparacion |condicion OP_AND OP_NOT comparacion |condicion OP_OR OP_NOT comparacion;
 
-comparacion: factor op_comparacion factor;
-
-op_comparacion: OP_MENOR| OP_MENORIGUAL | OP_MAYOR | OP_MAYORIGUAL | OP_DISTINTO | OP_IGUALDAD;
+comparacion: operacion OP_MENOR {printf("Comparacion por menor\n");} operacion | operacion OP_MENORIGUAL{printf("comparacion por menor o igual\n");} operacion| operacion OP_MAYOR {printf("comparacion por mayor\n");} operacion | operacion OP_MAYORIGUAL{printf("comparacion por mayor o igual\n");} operacion| operacion OP_DISTINTO{printf("comparacion por distinto\n");} operacion| operacion OP_IGUALDAD{printf("comparacion por igual\n");} operacion | between ;
 
 repeticion: WHILE P_A condicion P_C LL_A bloque LL_C {printf("bucle while\n");};
 
-between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C {printf("secuencia between\n");};
+between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C {printf("comparacion con between\n");};
 
 asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C { if(cantValores != cantVariables){yyerror("Error, no coinciden los argumentos del let con las variables");} printf("lista let\n");};
 

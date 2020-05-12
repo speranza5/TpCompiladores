@@ -66,6 +66,8 @@ COMETARIO			{COM_APER}{TEXTO}*{COM_CIERRE}
 "("			{ return P_A;}
 ")"			{ return P_C;}
 "NOT"		{return	OP_NOT;}
+"AND"		{return OP_AND;}
+"OR"		{return OP_OR;}
 
 {ID}		{if(strlen(yytext) <= 30){
 						yylval.str_val = yytext;

@@ -11,7 +11,7 @@ a3 := 3+12.5 * 4
 a1 := (a1+b1)*((a1-b1)+b1)
 p1:=43.2
 p2:=12.57
-while(a<2){
+while(a<2 AND BETWEEN (a, [b ; 12]) OR (3+2)>=a*3 AND NOT b>1){
 	if(a<45){
 		v2:="VERDADERA"
 	}
@@ -26,6 +26,6 @@ while(a<2){
 ***/Comentario/***
 GET b1
 DISPLAY "HOLA SALGO EN PANTALLA"
-BETWEEN (a, [b ; 12])
+
 LET uno, dos, tres = (a*b; a*b; a*b)
 END
