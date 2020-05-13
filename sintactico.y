@@ -13,10 +13,16 @@
 #define CteString 6
 #define TAM_TABLA 300
 #define TAM_NOMBRE 33
+#define CANT_TERCETOS 2000
+#define TAM_PILA 120
 
 int yylex();
 int yystopparser=0;
 FILE  *yyin;
+
+  /*Para verificar el LET*/
+  int cantVariables = 0;
+  int cantValores = 0;
 
   /* Funciones */
   int yyerror(char* mensaje);
@@ -59,10 +65,38 @@ FILE  *yyin;
   int tipoDatoADeclarar = 0;
   int cantVariablesADeclarar = 0;
   int cantDeVariablesDeclaradas = 0;
+  /* Struct para tercetos y un par de funciones para que funcionen bien*/
+  	typedef struct 
+  	{	
 
-  /*Para verificar el LET*/
-  int cantVariables = 0;
-  int cantValores = 0;
+  		char * primerElemento; //primer elemento del terceto, duh
+  		char * elementoIzquierda; //segundo elemento del terceto
+  		char * elementoDerecha; //tercer elemento del terceto
+  	}terceto;
+  terceto[CANT_TERCETOS] vectorTercetos;
+  int contadorTercetos = 0; //cada vez que metemos un tercetos aumentamos en uno este contadorcito
+ void crearIndice(int ,char *,);//recibe un numero entero y lo convierte en un indice, por ejemplo le mando 12 y guarda en el char * "[12]"
+ int crearTerceto (char *, char *,char *); //le mandamos los tres strings para crear el terceto. No reciben numeros ni nada, solo strings
+ char * convertirIntAString(int ); //recibe un numero y lo convierte a string cosa de que podamos hacer crearTerceto("=","id",convertirIntAstring(cte));
+ char * convertirFloatAString(float )//lo mismo que arriba perri
+ void guardarTercetosEnArchivo(char *) //guarda los tercetos en un archivo con el nombre que nosotros le pasemos (creo que en un binaro queda mejor)
+
+  /*Struct para usar la dichosa pila y las primitivas de pila*/
+  typedef struct 
+  {
+  	int pila [TAM_PILA];
+  	int tope;
+  }t_pila;
+
+  void crearPila(t_pila *);
+  int pilaLLena(t_pila *);
+  int pilaVacia(t_pila *);
+  int apilar (t_pila *, int dato);
+  int desapilar(t_pila*);
+
+  /*Indices y variables auxiliares de aca a abajo. Indiquen de que estructura es cada index o cada auxiliar o les pego un tiro en la rodilla. Atte carlos :D*/
+
+
  
 %}
 
