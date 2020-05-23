@@ -75,7 +75,7 @@ FILE  *yyin;
   	}terceto;
   terceto vectorTercetos[CANT_TERCETOS];
   int contadorTercetos = 0; //cada vez que metemos un tercetos aumentamos en uno este contadorcito
- void crearIndice(int ,char *);//recibe un numero entero y lo convierte en un indice, por ejemplo le mando 12 y guarda en el char * "[12]"
+ char* crearIndice(int);//recibe un numero entero y lo convierte en un indice, por ejemplo le mando 12 y guarda en el char * "[12]"
  int crearTerceto (char *, char *,char *); //le mandamos los tres strings para crear el terceto. No reciben numeros ni nada, solo strings. 
  										   //la funcion tambien tiene que guardar el terceto creado en el vectorTercetos.
  										   //La posicion en el vector se lo da contadorTercetos. Variable que debe aumentar en 1.
@@ -85,8 +85,7 @@ FILE  *yyin;
  char * convertirIntAString(int ); //recibe un numero y lo convierte a string cosa de que podamos hacer crearTerceto("=","id",convertirIntAstring(cte));
  char * convertirFloatAString(float );//lo mismo que arriba perri
  void guardarTercetosEnArchivo(char *); //guarda los tercetos en un archivo con el nombre que nosotros le pasemos (creo que en un binaro queda mejor)
-
-  /*Struct para usar la dichosa pila y las primitivas de pila*/
+ /*Struct para usar la dichosa pila y las primitivas de pila*/
   typedef struct 
   {
   	int pila [TAM_PILA];
@@ -99,7 +98,7 @@ FILE  *yyin;
   int apilar (t_pila *, int dato);
   int desapilar(t_pila*);
 
-  /*Indices y variables auxiliares de aca a abajo. Indiquen de que estructura es cada index o cada auxiliar o les pego un tiro en la rodilla. Atte carlos :D*/
+/*Indices y variables auxiliares de aca a abajo. Indiquen de que estructura es cada index o cada auxiliar o les pego un tiro en la rodilla. Atte carlos :D*/
 
 
  

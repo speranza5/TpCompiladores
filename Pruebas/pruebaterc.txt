@@ -4,5 +4,5 @@ ENDEF
 BEGIN
 	a1:=3
 	b1:=5
-	a1:=3*(b1-a1)
+	a1:=3(*b1-a1)
 END
