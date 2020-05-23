@@ -84,10 +84,16 @@
 #define CteString 6
 #define TAM_TABLA 300
 #define TAM_NOMBRE 33
+#define CANT_TERCETOS 2000
+#define TAM_PILA 120
 
 int yylex();
 int yystopparser=0;
 FILE  *yyin;
+
+  /*Para verificar el LET*/
+  int cantVariables = 0;
+  int cantValores = 0;
 
   /* Funciones */
   int yyerror(char* mensaje);
@@ -130,15 +136,48 @@ FILE  *yyin;
   int tipoDatoADeclarar = 0;
   int cantVariablesADeclarar = 0;
   int cantDeVariablesDeclaradas = 0;
+  /* Struct para tercetos y un par de funciones para que funcionen bien*/
+  	typedef struct 
+  	{	
+  		int numeroTerceto;
+  		char * primerElemento; //primer elemento del terceto, duh
+  		char * elementoIzquierda; //segundo elemento del terceto
+  		char * elementoDerecha; //tercer elemento del terceto
+  	}terceto;
+  terceto vectorTercetos[CANT_TERCETOS];
+  int contadorTercetos = 0; //cada vez que metemos un tercetos aumentamos en uno este contadorcito
+ void crearIndice(int ,char *);//recibe un numero entero y lo convierte en un indice, por ejemplo le mando 12 y guarda en el char * "[12]"
+ int crearTerceto (char *, char *,char *); //le mandamos los tres strings para crear el terceto. No reciben numeros ni nada, solo strings. 
+ 										   //la funcion tambien tiene que guardar el terceto creado en el vectorTercetos.
+ 										   //La posicion en el vector se lo da contadorTercetos. Variable que debe aumentar en 1.
+ int crearTercetoNumero(char*, char *, char *, int);//Parecida a la anterior pero crea un terceto con un numero en especifico.
+ 											       //No aumenta en 1 contadorTercetos.
+ 												   //La funcion guarda el terceto en el vector en la posicion que recibe por argumento.
+ char * convertirIntAString(int ); //recibe un numero y lo convierte a string cosa de que podamos hacer crearTerceto("=","id",convertirIntAstring(cte));
+ char * convertirFloatAString(float );//lo mismo que arriba perri
+ void guardarTercetosEnArchivo(char *); //guarda los tercetos en un archivo con el nombre que nosotros le pasemos (creo que en un binaro queda mejor)
 
-  /*Para verificar el LET*/
-  int cantVariables = 0;
-  int cantValores = 0;
+  /*Struct para usar la dichosa pila y las primitivas de pila*/
+  typedef struct 
+  {
+  	int pila [TAM_PILA];
+  	int tope;
+  }t_pila;
+
+  void crearPila(t_pila *);
+  int pilaLLena(t_pila *);
+  int pilaVacia(t_pila *);
+  int apilar (t_pila *, int dato);
+  int desapilar(t_pila*);
+
+  /*Indices y variables auxiliares de aca a abajo. Indiquen de que estructura es cada index o cada auxiliar o les pego un tiro en la rodilla. Atte carlos :D*/
+
+
  
 
 
 /* Line 189 of yacc.c  */
-#line 142 "y.tab.c"
+#line 181 "y.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -271,7 +310,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 69 "sintactico.y"
+#line 108 "sintactico.y"
 
     int intval;
     double val;
@@ -280,7 +319,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 284 "y.tab.c"
+#line 323 "y.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -292,7 +331,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 296 "y.tab.c"
+#line 335 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -608,14 +647,14 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    91,    91,    91,    93,    93,    95,    95,    97,    97,
-      98,    98,    99,    99,   102,   106,   111,   111,   113,   113,
-     115,   115,   115,   115,   115,   115,   115,   115,   117,   118,
-     121,   122,   122,   124,   125,   125,   127,   127,   128,   129,
-     131,   132,   134,   134,   134,   134,   134,   134,   136,   136,
-     136,   136,   136,   136,   136,   136,   136,   136,   136,   136,
-     136,   138,   140,   142,   144,   146,   148,   150,   152,   154,
-     156,   156
+       0,   130,   130,   130,   132,   132,   134,   134,   136,   136,
+     137,   137,   138,   138,   141,   145,   150,   150,   152,   152,
+     154,   154,   154,   154,   154,   154,   154,   154,   156,   157,
+     160,   161,   161,   163,   164,   164,   166,   166,   167,   168,
+     170,   171,   173,   173,   173,   173,   173,   173,   175,   175,
+     175,   175,   175,   175,   175,   175,   175,   175,   175,   175,
+     175,   177,   179,   181,   183,   185,   187,   189,   191,   193,
+     195,   195
 };
 #endif
 
@@ -1621,77 +1660,77 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 91 "sintactico.y"
+#line 130 "sintactico.y"
     {printf("Inicio compilador\n");}
     break;
 
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 91 "sintactico.y"
+#line 130 "sintactico.y"
     {guardarTabla(); printf("fin compilador\n");}
     break;
 
   case 4:
 
 /* Line 1455 of yacc.c  */
-#line 93 "sintactico.y"
+#line 132 "sintactico.y"
     {printf("Inicio de declaraciones:\n");}
     break;
 
   case 5:
 
 /* Line 1455 of yacc.c  */
-#line 93 "sintactico.y"
+#line 132 "sintactico.y"
     {printf("fin de declaraciones\n"); agregarTiposDatosATabla();}
     break;
 
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 97 "sintactico.y"
+#line 136 "sintactico.y"
     {tipoDatoADeclarar = Int;}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 97 "sintactico.y"
+#line 136 "sintactico.y"
     {printf("Declaracion de variables enteras\n");}
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 98 "sintactico.y"
+#line 137 "sintactico.y"
     {tipoDatoADeclarar = Real;}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 98 "sintactico.y"
+#line 137 "sintactico.y"
     {printf("Declaracion de variables reales\n"); }
     break;
 
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 99 "sintactico.y"
+#line 138 "sintactico.y"
     {tipoDatoADeclarar = String;}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 99 "sintactico.y"
+#line 138 "sintactico.y"
     {printf("Declaracion de variables string\n");}
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 102 "sintactico.y"
+#line 141 "sintactico.y"
     {printf("Variable a declarar recursivamente: %s\n",yylval.str_val );
                                         lineaEnTablaAuxSimbolo((yyvsp[(3) - (3)].str_val));
                                         grabarLineaEnTablaAuxSimbolo();
@@ -1701,7 +1740,7 @@ yyreduce:
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 106 "sintactico.y"
+#line 145 "sintactico.y"
     {printf("Variable a declarar: %s\n",yylval.str_val );
                                         lineaEnTablaAuxSimbolo((yyvsp[(1) - (1)].str_val));
                                         grabarLineaEnTablaAuxSimbolo();
@@ -1711,231 +1750,238 @@ yyreduce:
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 111 "sintactico.y"
+#line 150 "sintactico.y"
     {printf("Inicio del programa\n");}
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 111 "sintactico.y"
+#line 150 "sintactico.y"
     {printf("fin del programa\n");}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 117 "sintactico.y"
+#line 156 "sintactico.y"
     {printf("asignacion a operacion\n");}
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 118 "sintactico.y"
+#line 157 "sintactico.y"
     {printf( "asignacion a STRING: %s\n", yylval.str_val); agregarCteStringATabla(yylval.str_val);}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 121 "sintactico.y"
+#line 160 "sintactico.y"
     {printf("Suma OK\n");}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 122 "sintactico.y"
+#line 161 "sintactico.y"
     {printf("Resta OK\n");}
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 122 "sintactico.y"
+#line 161 "sintactico.y"
     {printf("Operacion es termino\n");}
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 124 "sintactico.y"
+#line 163 "sintactico.y"
     {printf("multiplicacion OK\n");}
     break;
 
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 125 "sintactico.y"
+#line 164 "sintactico.y"
     {printf("division OK\n");}
     break;
 
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 125 "sintactico.y"
+#line 164 "sintactico.y"
     {printf("termino es factor\n");}
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 127 "sintactico.y"
+#line 166 "sintactico.y"
     {printf("factor es ID: %s\n",(yyvsp[(1) - (1)].str_val) );}
     break;
 
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 127 "sintactico.y"
+#line 166 "sintactico.y"
     {printf("factor es entero: %d \n",(yyvsp[(1) - (1)].intval));agregarCteIntATabla(yylval.intval); }
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 128 "sintactico.y"
+#line 167 "sintactico.y"
     {printf("Factor es real: %f \n",(yyvsp[(1) - (1)].val)); agregarCteFloatATabla(yylval.val);}
+    break;
+
+  case 39:
+
+/* Line 1455 of yacc.c  */
+#line 168 "sintactico.y"
+    {printf("factor es operacion entre parentesis\n");}
     break;
 
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 131 "sintactico.y"
+#line 170 "sintactico.y"
     {printf("IF sin rama falsa\n");}
     break;
 
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 132 "sintactico.y"
+#line 171 "sintactico.y"
     {printf("IF con rama falsa\n");}
     break;
 
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 136 "sintactico.y"
+#line 175 "sintactico.y"
     {printf("Comparacion por menor\n");}
     break;
 
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 136 "sintactico.y"
+#line 175 "sintactico.y"
     {printf("comparacion por menor o igual\n");}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 136 "sintactico.y"
+#line 175 "sintactico.y"
     {printf("comparacion por mayor\n");}
     break;
 
   case 54:
 
 /* Line 1455 of yacc.c  */
-#line 136 "sintactico.y"
+#line 175 "sintactico.y"
     {printf("comparacion por mayor o igual\n");}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 136 "sintactico.y"
+#line 175 "sintactico.y"
     {printf("comparacion por distinto\n");}
     break;
 
   case 58:
 
 /* Line 1455 of yacc.c  */
-#line 136 "sintactico.y"
+#line 175 "sintactico.y"
     {printf("comparacion por igual\n");}
     break;
 
   case 61:
 
 /* Line 1455 of yacc.c  */
-#line 138 "sintactico.y"
+#line 177 "sintactico.y"
     {printf("bucle while\n");}
     break;
 
   case 62:
 
 /* Line 1455 of yacc.c  */
-#line 140 "sintactico.y"
+#line 179 "sintactico.y"
     {printf("comparacion con between\n");}
     break;
 
   case 63:
 
 /* Line 1455 of yacc.c  */
-#line 142 "sintactico.y"
+#line 181 "sintactico.y"
     { if(cantValores != cantVariables){yyerror("Error, no coinciden los argumentos del let con las variables");} printf("lista let\n");}
     break;
 
   case 64:
 
 /* Line 1455 of yacc.c  */
-#line 144 "sintactico.y"
+#line 183 "sintactico.y"
     {cantVariables++;printf("Item de la lista del let %s\n",yylval.str_val);}
     break;
 
   case 65:
 
 /* Line 1455 of yacc.c  */
-#line 146 "sintactico.y"
+#line 185 "sintactico.y"
     {cantVariables++;printf("Item de la lista del let %s\n",yylval.str_val);}
     break;
 
   case 66:
 
 /* Line 1455 of yacc.c  */
-#line 148 "sintactico.y"
+#line 187 "sintactico.y"
     {cantValores++;printf("argumento del let es operacion \n");}
     break;
 
   case 67:
 
 /* Line 1455 of yacc.c  */
-#line 150 "sintactico.y"
+#line 189 "sintactico.y"
     {cantValores++;printf("argumento del let es operacion \n");}
     break;
 
   case 68:
 
 /* Line 1455 of yacc.c  */
-#line 152 "sintactico.y"
+#line 191 "sintactico.y"
     {printf("Se muestra un comentario: \n");}
     break;
 
   case 69:
 
 /* Line 1455 of yacc.c  */
-#line 154 "sintactico.y"
+#line 193 "sintactico.y"
     {printf("Ingreso de datos\n");}
     break;
 
   case 70:
 
 /* Line 1455 of yacc.c  */
-#line 156 "sintactico.y"
+#line 195 "sintactico.y"
     {printf("Salida de string por pantalla\n");agregarCteStringATabla(yylval.str_val);}
     break;
 
   case 71:
 
 /* Line 1455 of yacc.c  */
-#line 156 "sintactico.y"
+#line 195 "sintactico.y"
     {printf("Salida de variable por pantalla\n");}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1939 "y.tab.c"
+#line 1985 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2147,7 +2193,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 157 "sintactico.y"
+#line 196 "sintactico.y"
 
 
 

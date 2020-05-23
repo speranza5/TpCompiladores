@@ -73,9 +73,9 @@ FILE  *yyin;
   		char * elementoIzquierda; //segundo elemento del terceto
   		char * elementoDerecha; //tercer elemento del terceto
   	}terceto;
-  terceto[CANT_TERCETOS] vectorTercetos;
+  terceto vectorTercetos[CANT_TERCETOS];
   int contadorTercetos = 0; //cada vez que metemos un tercetos aumentamos en uno este contadorcito
- void crearIndice(int ,char *,);//recibe un numero entero y lo convierte en un indice, por ejemplo le mando 12 y guarda en el char * "[12]"
+ void crearIndice(int ,char *);//recibe un numero entero y lo convierte en un indice, por ejemplo le mando 12 y guarda en el char * "[12]"
  int crearTerceto (char *, char *,char *); //le mandamos los tres strings para crear el terceto. No reciben numeros ni nada, solo strings. 
  										   //la funcion tambien tiene que guardar el terceto creado en el vectorTercetos.
  										   //La posicion en el vector se lo da contadorTercetos. Variable que debe aumentar en 1.
@@ -165,7 +165,7 @@ termino: termino OP_MUL factor {printf("multiplicacion OK\n");}|
 
 factor: ID {printf("factor es ID: %s\n",$1 );}|CONSTINT {printf("factor es entero: %d \n",$<intval>1);agregarCteIntATabla(yylval.intval); }
            |CONSTREAL {printf("Factor es real: %f \n",$<val>1); agregarCteFloatATabla(yylval.val);}
-           |P_A operacion P_C;
+           |P_A operacion P_C {printf("factor es operacion entre parentesis\n");};
 
 decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");}| 
           IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C {printf("IF con rama falsa\n");};
