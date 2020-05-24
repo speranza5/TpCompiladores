@@ -1,0 +1,18 @@
+DEFVAR 
+	FLOAT : a1; b1             
+	STRING : variable1; v2       
+	FLOAT : p1; p2; p3      
+	INT : a; b; uno; dos
+ENDEF 
+BEGIN
+GET a1
+DISPLAY a1
+if(a<3 AND a>5 AND b>=3)
+{
+	v1:="RAMA VERDADERA"
+}
+else
+{
+	v2:="RAMA FALSA"
+}
+END
