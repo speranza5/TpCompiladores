@@ -170,9 +170,21 @@ factor: ID {printf("factor es ID: %s\n",$1 );}|CONSTINT {printf("factor es enter
 decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");}| 
           IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C {printf("IF con rama falsa\n");};
 
-condicion: comparacion | condicion OP_AND comparacion| condicion OP_OR comparacion| OP_NOT comparacion |condicion OP_AND OP_NOT comparacion |condicion OP_OR OP_NOT comparacion;
+condicion: comparacion | condicion OP_AND comparacion| condicion OP_OR comparacion;
 
-comparacion: operacion OP_MENOR {printf("Comparacion por menor\n");} operacion | operacion OP_MENORIGUAL{printf("comparacion por menor o igual\n");} operacion| operacion OP_MAYOR {printf("comparacion por mayor\n");} operacion | operacion OP_MAYORIGUAL{printf("comparacion por mayor o igual\n");} operacion| operacion OP_DISTINTO{printf("comparacion por distinto\n");} operacion| operacion OP_IGUALDAD{printf("comparacion por igual\n");} operacion | between ;
+comparacion: operacion OP_MENOR {printf("Comparacion por menor\n");} operacion | 
+             operacion OP_MENORIGUAL{printf("comparacion por menor o igual\n");} operacion| 
+             operacion OP_MAYOR {printf("comparacion por mayor\n");} operacion | 
+             operacion OP_MAYORIGUAL{printf("comparacion por mayor o igual\n");} operacion| 
+             operacion OP_DISTINTO{printf("comparacion por distinto\n");} operacion| 
+             operacion OP_IGUALDAD{printf("comparacion por igual\n");} operacion |
+             OP_NOT operacion OP_MENOR {printf("Comparacion por menor negada\n");} operacion |
+             OP_NOT operacion OP_MENORIGUAL{printf("comparacion por menor o igual negada\n");} operacion|
+             OP_NOT operacion OP_MAYOR {printf("comparacion por mayor negada\n");} operacion |
+             OP_NOT operacion OP_MAYORIGUAL{printf("comparacion por mayor o igual negada \n");} operacion|
+             OP_NOT operacion OP_DISTINTO{printf("comparacion por distinto negada\n");} operacion|
+             OP_NOT operacion OP_IGUALDAD{printf("comparacion por igual negada\n");} operacion |
+             between ;
 
 repeticion: WHILE P_A condicion P_C LL_A bloque LL_C {printf("bucle while\n");};
 
