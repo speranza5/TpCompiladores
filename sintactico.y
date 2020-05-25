@@ -170,7 +170,7 @@ factor: ID {printf("factor es ID: %s\n",$1 );}|CONSTINT {printf("factor es enter
 decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");}| 
           IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C {printf("IF con rama falsa\n");};
 
-condicion: comparacion {printf("Pase una vez\n");} | condicion OP_AND comparacion {printf("Pase otra vez\n");}| condicion OP_OR comparacion;
+condicion: comparacion | condicion OP_AND comparacion| condicion OP_OR comparacion;
 
 comparacion: operacion OP_MENOR {printf("Comparacion por menor\n");} operacion | 
              operacion OP_MENORIGUAL{printf("comparacion por menor o igual\n");} operacion| 
@@ -457,4 +457,85 @@ void eliminarSubCadena(char *cad,char *subcad)
         dest++;
         pl1++;
     }
+}
+
+//FUNCIONES DE PILA
+
+//Las funciones de pila:
+
+void crearPila( t_pila *p){
+    p->tope = 0;
+}
+
+int pilaLLena( t_pila *p ){
+    return p->tope == TAM_PILA;
+}
+
+int pilaVacia( t_pila *p){
+    return p->tope == 0; //Verificar
+}
+
+int ponerEnPila(t_pila *p, int dato){
+    if( p->tope == TAM_PILA){
+        return 0;
+    }
+    p->pila[p->tope] = dato;
+    p->tope++;
+    return 1;
+}
+
+int sacarDePila(t_pila *p){
+    if( p->tope == 0){
+        return 0;
+    }
+    p->tope--;
+    return p->pila[p->tope];
+}
+
+
+//Las funciones de pila:
+
+void crearPila( t_pila *p){
+    p->tope = 0;
+}
+
+int pilaLLena( t_pila *p ){
+    return p->tope == TAM_PILA;
+}
+
+int pilaVacia( t_pila *p){
+    return p->tope == 0; //Verificar
+}
+
+int ponerEnPila(t_pila *p, int dato){
+    if( p->tope == TAM_PILA){
+        return 0;
+    }
+    p->pila[p->tope] = dato;
+    p->tope++;
+    return 1;
+}
+
+int sacarDePila(t_pila *p){
+    if( p->tope == 0){
+        return 0;
+    }
+    p->tope--;
+    return p->pila[p->tope];
+}
+
+//TERCETOS
+
+char* crearIndice(int num, char* valor){
+
+char resultado [5];
+char numeroTexto [2];
+
+	strcpy(resultado,"[");
+	itoa(num,numeroTexto,10);
+    strcat(resultado,numeroTexto);
+	strcat(resultado,"]");
+    //printf("%s",resultado);
+    strcpy(valor,resultado);
+    return resultado;
 }
