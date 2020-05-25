@@ -7,7 +7,7 @@ ENDEF
 BEGIN
 GET a1
 DISPLAY a1
-if(a<3 AND a>5 AND b>=3)
+if(a<3 AND b>5)
 {
 	v1:="RAMA VERDADERA"
 }

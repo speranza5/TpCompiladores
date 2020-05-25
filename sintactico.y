@@ -77,14 +77,14 @@ FILE  *yyin;
  terceto vectorTercetos[CANT_TERCETOS];
 void reverse(char* str, int len);
  int contadorTercetos = 0; //cada vez que metemos un tercetos aumentamos en uno este contadorcito
- char* crearIndice(int);//recibe un numero entero y lo convierte en un indice, por ejemplo le mando 12 y guarda en el char * "[12]"
+ char* crearIndice(int, char*);//recibe un numero entero y lo convierte en un indice, por ejemplo le mando 12 y guarda en el char * "[12]"
  int crearTerceto (char *, char *,char *); //le mandamos los tres strings para crear el terceto. No reciben numeros ni nada, solo strings. 
  										   //la funcion tambien tiene que guardar el terceto creado en el vectorTercetos.
  										   //La posicion en el vector se lo da contadorTercetos. Variable que debe aumentar en 1.
  int crearTercetoNumero(char*, char *, char *, int);//Parecida a la anterior pero crea un terceto con un numero en especifico.
  											       //No aumenta en 1 contadorTercetos.
  												   //La funcion guarda el terceto en el vector en la posicion que recibe por argumento.
-  int itoa(int x, char str[], int d); //recibe un numero y lo convierte a string cosa de que podamos hacer crearTerceto("=","id",itoa(cte));
+int itoaBienPiola(int x, char str[], int d); //recibe un numero y lo convierte a string cosa de que podamos hacer crearTerceto("=","id",itoa(cte));
 void ftoa(float n, char* res, int afterpoint); //lo mismo que arriba perri
  void guardarTercetosEnArchivo(char *); //guarda los tercetos en un archivo con el nombre que nosotros le pasemos (creo que en un binaro queda mejor)
  
@@ -461,40 +461,6 @@ void eliminarSubCadena(char *cad,char *subcad)
     }
 }
 
-//FUNCIONES DE PILA
-
-//Las funciones de pila:
-
-void crearPila( t_pila *p){
-    p->tope = 0;
-}
-
-int pilaLLena( t_pila *p ){
-    return p->tope == TAM_PILA;
-}
-
-int pilaVacia( t_pila *p){
-    return p->tope == 0; //Verificar
-}
-
-int ponerEnPila(t_pila *p, int dato){
-    if( p->tope == TAM_PILA){
-        return 0;
-    }
-    p->pila[p->tope] = dato;
-    p->tope++;
-    return 1;
-}
-
-int sacarDePila(t_pila *p){
-    if( p->tope == 0){
-        return 0;
-    }
-    p->tope--;
-    return p->pila[p->tope];
-}
-
-
 //Las funciones de pila:
 
 void crearPila( t_pila *p){
@@ -539,14 +505,15 @@ char numeroTexto [2];
 	strcat(resultado,"]");
     //printf("%s",resultado);
     strcpy(valor,resultado);
-    return resultado;
+    return valor;
 }
-int crearTerceto (char *, char *,char *){//le mandamos los tres strings para crear el terceto. No reciben numeros ni nada, solo strings. 
+
+int crearTerceto (char * a, char *b,char *c){//le mandamos los tres strings para crear el terceto. No reciben numeros ni nada, solo strings. 
                                          //la funcion tambien tiene que guardar el terceto creado en el vectorTercetos.
                        //La posicion en el vector se lo da contadorTercetos. Variable que debe aumentar en 1.
   
 } 
-int crearTercetoNumero(char*, char *, char *, int){
+int crearTercetoNumero(char* a, char * b, char *c, int d){
   
 }//Parecida a la anterior pero crea un terceto con un numero en especifico.
                              //No aumenta en 1 contadorTercetos.
@@ -567,7 +534,7 @@ void reverse(char* str, int len)
 // Convierte el entero dado a un string str[].  
 // d es el numero de digitos requridos en la salida.  
 // Si d es mas que el numero de digitos en x entonces ceros son agregados al principio. 
-int itoa(int x, char str[], int d) 
+int itoaBienPiola(int x, char str[], int d) 
 { 
     int i = 0; 
     while (x) { 
@@ -594,21 +561,22 @@ void ftoa(float n, char* res, int afterpoint)
     float fpart = n - (float)ipart; 
   
     // Convierte la parte entera en string
-    int i = itoa(ipart, res, 0); 
+    int i = itoaBienPiola(ipart, res, 0); 
   
     if (afterpoint != 0) { 
         res[i] = '.'; // add dot 
         fpart = fpart * pow(10, afterpoint); 
   
-        itoa((int)fpart, res + i + 1, afterpoint); 
+        itoaBienPiola((int)fpart, res + i + 1, afterpoint); 
     } 
 } 
-void guardarTercetosEnArchivo(char *){//guarda los tercetos en un archivo con el nombre que nosotros le pasemos (creo que en un binaro queda mejor)
+void guardarTercetosEnArchivo(char *t){//guarda los tercetos en un archivo con el nombre que nosotros le pasemos (creo que en un binaro queda mejor)
   
 } 
 
 char * devolverSalto(int numero){
 	switch (numero){
+  
 		case 1:
 			return "JNAE";
 			break;
@@ -628,3 +596,4 @@ char * devolverSalto(int numero){
 			return "JE";
 			break;
 	}
+}
