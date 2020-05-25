@@ -606,3 +606,25 @@ void ftoa(float n, char* res, int afterpoint)
 void guardarTercetosEnArchivo(char *){//guarda los tercetos en un archivo con el nombre que nosotros le pasemos (creo que en un binaro queda mejor)
   
 } 
+
+char * devolverSalto(int numero){
+	switch (numero){
+		case 1:
+			return "JNAE";
+			break;
+		case 2:
+			return "JNBE";
+			break;
+		case 3:
+			return "JNE";
+			break;
+		case 4:
+			return "JNB";
+			break;
+		case 5:
+			return "JNA";
+			break;
+		case 6:
+			return "JE";
+			break;
+	}
