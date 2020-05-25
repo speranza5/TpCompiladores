@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <conio.h>
 #include <string.h>
 #include "y.tab.h"
@@ -74,6 +75,7 @@ FILE  *yyin;
   		char * elementoDerecha; //tercer elemento del terceto
   	}terceto;
  terceto vectorTercetos[CANT_TERCETOS];
+void reverse(char* str, int len);
  int contadorTercetos = 0; //cada vez que metemos un tercetos aumentamos en uno este contadorcito
  char* crearIndice(int);//recibe un numero entero y lo convierte en un indice, por ejemplo le mando 12 y guarda en el char * "[12]"
  int crearTerceto (char *, char *,char *); //le mandamos los tres strings para crear el terceto. No reciben numeros ni nada, solo strings. 
@@ -82,8 +84,8 @@ FILE  *yyin;
  int crearTercetoNumero(char*, char *, char *, int);//Parecida a la anterior pero crea un terceto con un numero en especifico.
  											       //No aumenta en 1 contadorTercetos.
  												   //La funcion guarda el terceto en el vector en la posicion que recibe por argumento.
- char * convertirIntAString(int ); //recibe un numero y lo convierte a string cosa de que podamos hacer crearTerceto("=","id",convertirIntAstring(cte));
- char * convertirFloatAString(float );//lo mismo que arriba perri
+  int itoa(int x, char str[], int d); //recibe un numero y lo convierte a string cosa de que podamos hacer crearTerceto("=","id",itoa(cte));
+void ftoa(float n, char* res, int afterpoint); //lo mismo que arriba perri
  void guardarTercetosEnArchivo(char *); //guarda los tercetos en un archivo con el nombre que nosotros le pasemos (creo que en un binaro queda mejor)
  
  /*Struct para usar la dichosa pila y las primitivas de pila*/
@@ -544,18 +546,63 @@ int crearTerceto (char *, char *,char *){//le mandamos los tres strings para cre
                        //La posicion en el vector se lo da contadorTercetos. Variable que debe aumentar en 1.
   
 } 
-                      
 int crearTercetoNumero(char*, char *, char *, int){
   
 }//Parecida a la anterior pero crea un terceto con un numero en especifico.
                              //No aumenta en 1 contadorTercetos.
                            //La funcion guarda el terceto en el vector en la posicion que recibe por argumento.
-char * convertirIntAString(int ){ //recibe un numero y lo convierte a string cosa de que podamos hacer crearTerceto("=","id",convertirIntAstring(cte));
-  
+
+void reverse(char* str, int len) 
+{ 
+    int i = 0, j = len - 1, temp; 
+    while (i < j) { 
+        temp = str[i]; 
+        str[i] = str[j]; 
+        str[j] = temp; 
+        i++; 
+        j--; 
+    } 
 } 
-char * convertirFloatAString(float ){//lo mismo que arriba perri
   
-}
+// Convierte el entero dado a un string str[].  
+// d es el numero de digitos requridos en la salida.  
+// Si d es mas que el numero de digitos en x entonces ceros son agregados al principio. 
+int itoa(int x, char str[], int d) 
+{ 
+    int i = 0; 
+    while (x) { 
+        str[i++] = (x % 10) + '0'; 
+        x = x / 10; 
+    } 
+  
+    // Si un numero de digitos es mayor entonces agrega ceros al principio 
+    while (i < d) 
+        str[i++] = '0'; 
+  
+    reverse(str, i); 
+    str[i] = '\0'; 
+    return i; 
+} 
+  
+// Convierte un float/double a un string 
+void ftoa(float n, char* res, int afterpoint) 
+{ 
+    // Saca la parte entera 
+    int ipart = (int)n; 
+  
+    // Extrae la parte flotante
+    float fpart = n - (float)ipart; 
+  
+    // Convierte la parte entera en string
+    int i = itoa(ipart, res, 0); 
+  
+    if (afterpoint != 0) { 
+        res[i] = '.'; // add dot 
+        fpart = fpart * pow(10, afterpoint); 
+  
+        itoa((int)fpart, res + i + 1, afterpoint); 
+    } 
+} 
 void guardarTercetosEnArchivo(char *){//guarda los tercetos en un archivo con el nombre que nosotros le pasemos (creo que en un binaro queda mejor)
   
 } 
