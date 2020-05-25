@@ -172,7 +172,7 @@ factor: ID {printf("factor es ID: %s\n",$1 );}|CONSTINT {printf("factor es enter
 decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");}| 
           IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C {printf("IF con rama falsa\n");};
 
-condicion: comparacion | condicion OP_AND comparacion| condicion OP_OR comparacion;
+condicion: comparacion | comparacion OP_AND comparacion| comparacion OP_OR comparacion;
 
 comparacion: operacion OP_MENOR {printf("Comparacion por menor\n");} operacion | 
              operacion OP_MENORIGUAL{printf("comparacion por menor o igual\n");} operacion| 
