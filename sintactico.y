@@ -539,3 +539,23 @@ char numeroTexto [2];
     strcpy(valor,resultado);
     return resultado;
 }
+int crearTerceto (char *, char *,char *){//le mandamos los tres strings para crear el terceto. No reciben numeros ni nada, solo strings. 
+                                         //la funcion tambien tiene que guardar el terceto creado en el vectorTercetos.
+                       //La posicion en el vector se lo da contadorTercetos. Variable que debe aumentar en 1.
+  
+} 
+                      
+int crearTercetoNumero(char*, char *, char *, int){
+  
+}//Parecida a la anterior pero crea un terceto con un numero en especifico.
+                             //No aumenta en 1 contadorTercetos.
+                           //La funcion guarda el terceto en el vector en la posicion que recibe por argumento.
+char * convertirIntAString(int ){ //recibe un numero y lo convierte a string cosa de que podamos hacer crearTerceto("=","id",convertirIntAstring(cte));
+  
+} 
+char * convertirFloatAString(float ){//lo mismo que arriba perri
+  
+}
+void guardarTercetosEnArchivo(char *){//guarda los tercetos en un archivo con el nombre que nosotros le pasemos (creo que en un binaro queda mejor)
+  
+} 
