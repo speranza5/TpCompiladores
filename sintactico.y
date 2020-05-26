@@ -153,7 +153,7 @@ algoritmo: {printf("Inicio del programa\n");} INICIO bloque FIN {printf("fin del
 
 bloque: sentencia|bloque sentencia;
 
-sentencia: asignacion| decision| repeticion|between|asignacionlet|comentarios|ingreso|egreso;
+sentencia: asignacion| decision| repeticion|asignacionlet|comentarios|ingreso|egreso;
 
 asignacion: ID OP_ASIG operacion{printf("asignacion a operacion\n");}|
             ID OP_ASIG CONSTSTRING {printf( "asignacion a STRING: %s\n", yylval.str_val); agregarCteStringATabla(yylval.str_val);};
@@ -172,7 +172,7 @@ factor: ID {printf("factor es ID: %s\n",$1 );}|CONSTINT {printf("factor es enter
 decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");}| 
           IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C {printf("IF con rama falsa\n");};
 
-condicion: comparacion | comparacion OP_AND comparacion| comparacion OP_OR comparacion;
+condicion: comparacion {printf("Comparacion unica");} | comparacion OP_AND comparacion {printf("Comparacion con and");}| comparacion OP_OR comparacion {printf("comparacion por or");};
 
 comparacion: operacion OP_MENOR {printf("Comparacion por menor\n");} operacion | 
              operacion OP_MENORIGUAL{printf("comparacion por menor o igual\n");} operacion| 
