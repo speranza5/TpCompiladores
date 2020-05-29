@@ -45,6 +45,8 @@ FILE  *yyin;
   int esPalabra(char aux);
   void eliminarSubCadena(char *cad,char *subcad);
   void trim(char *v);
+  int* getTipoPorID(char* name);
+  char* getValorPorID(char* name);
 
 /*Tabla de simbolos*/
   typedef struct {
@@ -57,7 +59,7 @@ FILE  *yyin;
   } t_simbolo;
 
   t_simbolo tablaSimbolo[TAM_TABLA];
-  t_simbolo tablaAux[TAM_TABLA];
+  t_simbolo tablaParaStrings[TAM_TABLA];
   int finDeTabla = -1;
 
   /* Para la declaracion de variables y la tabla de simbolos*/
@@ -355,29 +357,29 @@ void agregarCteIntATabla(int valor){
 
 void lineaEnTablaAuxSimbolo(char *cadena)
 {
-  strcpy(tablaAux[cantVariablesADeclarar].nombre,cadena); 
-  //printf("SE VA A GUARDAR LA CADENA:%s. y su tipo de dato es %d",tablaAux[cantVariablesADeclarar].nombre,tipoDatoADeclarar);
+  strcpy(tablaParaStrings[cantVariablesADeclarar].nombre,cadena); 
+  //printf("SE VA A GUARDAR LA CADENA:%s. y su tipo de dato es %d",tablaParaStrings[cantVariablesADeclarar].nombre,tipoDatoADeclarar);
   cantVariablesADeclarar++;
 }
 
 void grabarLineaEnTablaAuxSimbolo()
 {
   //printf("\n\n\nTIPO DE DATO A DECLARAR ES:%d.\n\n\n",tipoDatoADeclarar);
-  //printf("A GUARDAR:%s:\n",tablaAux[cantVariablesADeclarar-1].nombre);
+  //printf("A GUARDAR:%s:\n",tablaParaStrings[cantVariablesADeclarar-1].nombre);
 
-  char *token = strtok(tablaAux[cantVariablesADeclarar-1].nombre,";");
+  char *token = strtok(tablaParaStrings[cantVariablesADeclarar-1].nombre,";");
 
   int j;
   for(j = 0; token != NULL; j++){
 
-    strcpy(tablaAux[cantDeVariablesDeclaradas].nombre,token);
+    strcpy(tablaParaStrings[cantDeVariablesDeclaradas].nombre,token);
    //printf("Token: %s---%d\n", token,j);
     token = strtok(NULL, ";");
-    eliminarSubCadena(tablaAux[cantDeVariablesDeclaradas].nombre,"ENDEF");
-    eliminarSubCadena(tablaAux[cantDeVariablesDeclaradas].nombre,"STRING");
-    eliminarSubCadena(tablaAux[cantDeVariablesDeclaradas].nombre,"FLOAT");
-    eliminarSubCadena(tablaAux[cantDeVariablesDeclaradas].nombre,"INT");
-    agregarTipoVariableATabla(tablaAux[cantDeVariablesDeclaradas].nombre);
+    eliminarSubCadena(tablaParaStrings[cantDeVariablesDeclaradas].nombre,"ENDEF");
+    eliminarSubCadena(tablaParaStrings[cantDeVariablesDeclaradas].nombre,"STRING");
+    eliminarSubCadena(tablaParaStrings[cantDeVariablesDeclaradas].nombre,"FLOAT");
+    eliminarSubCadena(tablaParaStrings[cantDeVariablesDeclaradas].nombre,"INT");
+    agregarTipoVariableATabla(tablaParaStrings[cantDeVariablesDeclaradas].nombre);
 
     cantDeVariablesDeclaradas++;
     }
@@ -596,4 +598,41 @@ char * devolverSalto(int numero){
 			return "JE";
 			break;
 	}
+}
+
+ 
+
+//Función para buscar por el nombre de la variable, devuelve un int correspondiente al tipo de dato si lo encuentra
+/*
+#define Int 1
+#define Real 2
+#define String 3
+#define CteInt 4
+#define CteFloat 5
+#define CteString 6
+*/
+//devuelve -1 si no
+int getTipoPorID(char* name)
+{
+   int i=0;
+   while(i<=finDeTabla){
+     if(strcmp(tablaSimbolo[i].nombre,name) == 0){
+       return tablaSimbolo[i].tipoDato;
+     }
+     i++;
+   }
+   return -1;
+}
+
+//Función para buscar por el nombre de la variable, devuelve el valor si lo encuentra, devuelve -1 si no. 
+char* getValorPorID(char* name)
+{
+ int i=0;
+   while(i<=finDeTabla){
+     if(strcmp(tablaSimbolo[i].nombre,name) == 0){
+       return tablaSimbolo[i].valorSimbolo; // No devuelve el float, ojo
+     }
+     i++;
+   }
+   return -1;
 }
