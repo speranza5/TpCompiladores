@@ -1,0 +1,289 @@
+aclaraciones importantes: Si es menor pone un 1 JNAE
+						  Si es mayor pone un 2 JNBE
+						  Si es igual pone un 3 JNE
+						  Si es mayor o igual pone un 4 JNB
+						  Si es menor o igual pone un 5 JNA
+						  Si es distinto pone un 6 JE
+
+
+
+
+start -> programa 
+programa  -> programa sent 
+programa  -> sent 
+sent -> sel 
+sent-> asig 
+asig -> ID := exp {apointer = crearTerceto("=", ID, opPointer);} 
+sel -> IF cond THEN programa ENDIF {salto = pilaSaltos.desapilar; numeroCondicion = condPila.desapilar(); crearTercetoNumero (salto, tercetoActual,null, numeroCondicion);} 
+sel -> IF cond THEN programa {salto = pilaSaltos.desapilar; numeroCondicion = condPila.desapilar(); crearTercetoNumero(salto, tercetoActual,null, numeroCondicion) condPila.apilar(tercetoActual); tercetoActual++;}ELSE programa ENDIF{numeroSalto = condPila.desapilar(); crearTercetoNumero("JMP",tercetoActual,null, numeroSalto);}  
+cond -> exp {izqpointer=opPointer} <{pilaSaltos.apilar("JNAE")} exp{derpointer = opPointer; condPointer = crearTerceto("CMP",izqpointer,derpointer); condPila.apilar(tercetoActual); tercetoActual ++;}
+exp  -> exp + term {opPointer = crearTerceto("+",opPointer,tpointer);} 
+exp  -> term  {opPointer = tpointer;}
+term -> term * factor {tpointer = crearTerceto("*",tpointer,fpointer);}
+term -> factor {tpointer = fpointer; }
+factor -> ({expPila.apilar(opPointer);tpila.apilar(tpointer); } exp ) {fpointer = crearTerceto(opPointer, null,null); 
+																	  opPointer = expPila.desapilar();
+										     						  tpointer = tpila.desapilar();
+				 													 }
+
+factor -> CTE {fpointer= crearTerceto(Cte,null,null);}
+
+factor -> ID{fpointer = crearTerceto(ID,null,null);}
+
+
+
+
+contadorTercetos = 0;
+esAnd = 0;
+contadorOr = 0;
+int anteriorAnd;
+int tipoSaltoAnd;
+int tercetoID;
+int tercetoOperacion;
+int numeroGET;
+int vectorComparaciones [999];
+int contadorComparaciones = 0;
+int tipoSaltoPalOr;
+int posicionACompletarOr;
+int idBetween;
+int esBetween =0;
+
+asignacion: ID OP_ASIG operacion{printf("asignacion a operacion\n"); asigPointer = crearTerceto("=", $1, crearIndice(opPointer));}|
+            ID OP_ASIG CONSTSTRING {printf( "asignacion a STRING: %s\n", yylval.str_val); agregarCteStringATabla(yylval.str_val); asigPointer = crearTerceto("=", $1, yylval.str_val);}};
+
+
+operacion: operacion OP_SUMA termino {printf("Suma OK\n"); opPointer = crearTerceto("+",crearIndice(opPointer), crearIndice(termPointer));}|
+           operacion OP_RESTA termino {printf("Resta OK\n");opPointer = crearTerceto("-",crearIndice(opPointer),crearIndice(termPointer));}|
+           termino {printf("Operacion es termino\n"); opPointer = termPointer};
+
+termino: termino OP_MUL factor {printf("multiplicacion OK\n"); termPointer = crearTerceto("*",crearIndice(termPointer),crearIndice(factorPointer));}| 
+         termino OP_DIV factor {printf("division OK\n"); termPointer = crearTerceto("/",crearIndice(termPointer),crearIndice(factorPointer));}| 
+         factor {printf("termino es factor\n"); termPointer = factorPointer;};
+
+factor: ID {printf("factor es ID: %s\n",$1 ); factorPointer = crearTerceto($1,null,null);}|
+		CONSTINT {printf("factor es entero: %d \n",$<intval>1);agregarCteIntATabla(yylval.intval);factorPointer =crearTerceto(convertirIntAString($<intval>1)); }
+           |CONSTREAL {printf("Factor es real: %f \n",$<val>1); agregarCteFloatATabla(yylval.val); factorPointer =crearTerceto(convertirIntAString($<val>1));}
+           |P_A {apilar(pilaOperacion,opPointer);apilar(pilaTermino,termPointer)} operacion P_C {printf("factor es operacion entre parentesis\n"); 
+           																						 factorPointer = crearTerceto(crearIndice(opPointer),null,null);
+           																						 opPointer = desapilar(pilaOperacion);
+           																						 termPointer = desapilar(pilaTermino);
+           																						};
+decision: IF P_A condicion P_C LL_A bloque {
+												salto = desapilar(pilaSaltos); 
+												numeroCondicion = desapilar(condPila); 
+												crearTercetoNumero (devolverSalto(salto), crearIndice(contadorTercetos),null, numeroCondicion);
+												completarTercetosAnd(contadorTercetos);
+												
+											} 
+		LL_C {printf("IF sin rama falsa\n");}| 
+
+
+        IF P_A condicion P_C LL_A bloque {
+											salto = desapilar(pilaSaltos); 
+											numeroCondicion = desapilar(condPila); 
+											crearTercetoNumero(devolverSalto(salto), crearIndice(contadorTercetos),null, numeroCondicion);
+											completarTercetosAnd(contadorTercetos);
+											apilar(condPila,contadorTercetos); 
+										    contadorTercetos++;} 
+		LL_C 
+        ELSE LL_A bloque {numeroSalto = desapilar(condPila); crearTercetoNumero("JMP",contadorTercetos,null, numeroSalto);} LL_C {printf("IF con rama falsa\n");};
+
+condicion: comparacion {
+						if(esBetween==0){
+						cmpPointer = crearTerceto("CMP",crearIndice(izqpointer),crearIndice(derpointer)); 
+						vectorComparaciones[contadorComparaciones]= -1;
+						contadorComparaciones++;
+						apilar(condPila, contadorTercetos);
+						contadorTercetos ++; 
+						condicionPointer = cmpPointer;
+						} 
+					  }
+			 | comparacion{
+				 		if(esBetween==0){
+						cmpPointer = crearTerceto("CMP",crearIndice(izqpointer),crearIndice(derpointer)); 
+						vectorComparaciones[contadorComparaciones]= contadorTercetos;
+						contadorComparaciones++;
+						apilar(condPila, contadorTercetos);
+						contadorTercetos ++; 
+						condicionPointer = cmpPointer;
+						 }
+						} 
+				OP_AND comparacion {
+				 if(esBetween==0){
+				 cmpPointer = crearTerceto("CMP",crearIndice(izqpointer),crearIndice(derpointer)); 
+				 apilar(condPila, contadorTercetos);
+				 contadorTercetos ++; 
+				 condicionPointer = cmpPointer;
+				 }
+			 }
+			| comparacion{
+				if(esBetween==0){
+				cmpPointer = crearTerceto("CMP",crearIndice(izqpointer),crearIndice(derpointer)); 
+				/*vectorComparaciones[contadorComparaciones]= -1;
+				contadorComparaciones++;*/
+				tipoSaltoPalOr = desapilar(pilaSaltos);
+				posicionACompletarOrFalso = contadorTercetos;
+				contadorTercetos++;
+				posicionAcompletarOrVerdadero = contadorTercetos;
+				contadorTercetos++;
+				}
+			}   
+				OP_OR comparacion{
+				if(esBetween==0){
+				cmpPointer = crearTerceto("CMP",crearIndice(izqpointer),crearIndice(derpointer));
+				vectorComparaciones[contadorComparaciones]= -1;
+				contadorComparaciones++
+				apilar(condPila, contadorTercetos); 
+				contadorTercetos ++; 
+				crearTercetoNumero(devolverSalto(tipoSaltoPalOr),crearIndice(cmpPointer),null,posicionACompletarOrFalso);
+				crearTercetoNumero("JMP",crearIndice(contadorTercetos),null,posicionAcompletarOrVerdadero);
+				}
+			};
+
+comparacion: operacion {izqpointer = opPointer; esBetween = 0; } OP_MENOR {printf("Comparacion por menor\n"); apilar(pilaSaltos, 1); } operacion 
+			{derpointer = opPointer; }| 
+			 
+			 operacion {izqpointer = opPointer; esBetween = 0;} OP_MENORIGUAL{printf("comparacion por menor o igual\n"); apilar(pilaSaltos, 5);} 
+			 operacion {derpointer = opPointer; }| 
+			 
+			 operacion {izqpointer = opPointer; esBetween = 0;} OP_MAYOR {printf("comparacion por mayor\n"); apilar(pilaSaltos, 2);} 
+			 operacion {derpointer = opPointer;}|
+
+			 operacion {izqpointer = opPointer; esBetween = 0;} OP_MAYORIGUAL{printf("comparacion por mayor o igual\n"); apilar(pilaSaltos, 4);} 
+			 operacion {derpointer = opPointer; }| 
+
+			 operacion {izqpointer = opPointer; esBetween = 0;} OP_DISTINTO{printf("comparacion por distinto\n"); apilar(pilaSaltos, 6);}
+			 operacion {derpointer = opPointer;}| 
+
+
+			 operacion {izqpointer = opPointer; esBetween = 0;} OP_IGUALDAD{printf("comparacion por igual\n"); apilar(pilaSaltos, 3);} 
+			 operacion {derpointer = opPointer; }| 
+			 
+			 OP_NOT operacion {izqpointer= opPointer; esBetween = 0;} OP_MENOR {printf("Comparacion por menor negada\n"); apilar(pilaSaltos,4);} 
+			 operacion {derpointer = opPointer;} |
+             
+             OP_NOT operacion {izqpointer= opPointer ;esBetween = 0;} OP_MENORIGUAL{printf("comparacion por menor o igual negada\n");  apilar(pilaSaltos, 2);} 
+             operacion {derpointer = opPointer; }|
+             
+             OP_NOT operacion {izqpointer= opPointer; esBetween = 0;} OP_MAYOR {printf("comparacion por mayor negada\n");  apilar(pilaSaltos, 5);} 
+             operacion {derpointer = opPointer; }|
+             
+             OP_NOT operacion {izqpointer= opPointer;esBetween = 0;} OP_MAYORIGUAL{printf("comparacion por mayor o igual negada \n");  apilar(pilaSaltos, 1);} 
+             operacion {derpointer = opPointer;} |
+             
+             OP_NOT operacion {izqpointer= opPointer;esBetween = 0;} OP_DISTINTO{printf("comparacion por distinto negada\n"); apilar(pilaSaltos, 3);} 
+             operacion {derpointer = opPointer; } |
+             
+             OP_NOT operacion {izqpointer= opPointer; esBetween = 0;} OP_IGUALDAD{printf("comparacion por igual negada\n"); apilar(pilaSaltos, 6);} 
+             operacion {derpointer = opPointer;} |
+			 
+			 between ;
+
+between: BETWEEN {esBetween = 1;}P_A ID {idBetween =crearTerceto($3,null,null);} COMA COR_A operacion {apilar(pilaSaltos, 4);
+																					   crearTerceto("CMP",crearIndice(idBetween),crearIndice(opPointer));
+																					   vectorComparaciones[contadorComparaciones]= contadorTercetos;
+																					   contadorComparaciones++;
+																					   apilar(condPila, contadorTercetos);
+																					   contadorTercetos ++; 
+																					 } 
+		 PUNTO_COMA operacion { 
+	     apilar(pilaSaltos, 5);
+		 cmpPointer = crearTerceto("CMP",crearIndice(idBetween),crearIndice(opPointer));
+		 apilar(condPila, contadorTercetos);
+		 contadorTercetos ++; 
+		 condicionPointer = cmpPointer;
+		 }
+		 
+		 COR_C P_C {printf("comparacion con between\n");};
+
+asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C { if(cantValores != cantVariables){yyerror("Error, no coinciden los argumentos del let con las variables");} 
+															   printf("lista let\n");
+															   crearTercetosLet();
+															   };
+
+lista_var: lista_var COMA ID {cantVariables++;
+							  printf("Item de la lista del let %s\n",yylval.str_val);
+							  tercetoID = crearTerceto(yylval.str_val,null,null);
+							  apilar(pilaIdsLet,tercetoID);
+							 };
+
+lista_var: ID {cantVariables++;
+			   printf("Item de la lista del let %s\n",yylval.str_val);
+			   tercetoID = crearTerceto(yylval.str_val,null,null); 
+			   apilar(pilaIdsLet,tercetoID);
+			  };
+
+lista_valores: operacion{cantValores++;
+						 printf("argumento del let es operacion \n");
+						 tercetoOperacion = opPointer;
+						 apilar(pilaOperacionesLet,tercetoOperacion);
+						 };
+
+lista_valores: lista_valores PUNTO_COMA operacion {cantValores++;
+												   printf("argumento del let es operacion \n");
+												   tercetoOperacion = opPointer;
+						                           apilar(pilaOperacionesLet,tercetoOperacion);
+												   };
+
+ingreso:GET ID {printf("Ingreso de datos\n");
+				numeroGET = crearTerceto($2,null,null);
+				crearTerceto("GET",crearIndice(numeroGET),null);
+				}
+
+egreso: DISPLAY CONSTSTRING {printf("Salida de string por pantalla\n");
+							 agregarCteStringATabla(yylval.str_val);
+							 crearTerceto("DISPLAY",yylval.str_val,null);
+							 } | 
+		DISPLAY ID {printf("Salida de variable por pantalla\n");
+					crearTerceto ("DISPLAY",$2);
+					};
+
+
+
+void crearTercetosLet(){
+	int numeroID, numeroOperacion;
+	while(!pilaVacia(pilaIdsLet)){
+		numeroID = desapilar(pilaIdsLet);
+		numeroOperacion = desapilar(pilaOperacionesLet);
+		crearTerceto("=",crearIndice(numeroID),crearIndice(numeroOperacion));
+	}
+}
+
+completarTercetosAnd(int posicion){
+	int tipoSalto, numeroTerceto;
+	if (vectorComparaciones[contadorComparaciones]==-1){
+		contadorComparaciones--;
+	}
+	else{
+		tipoSalto=desapilar(pilaSaltos);
+		numeroTerceto = desapilar(condPila);
+		crearTercetoNumero(devolverSalto(tipoSalto),crearIndice(posicion),null,numeroTerceto);
+		contadorComparaciones--;
+	}
+	
+}
+
+char * devolverSalto(int numero){
+	switch (numero){
+		case 1:
+			return "JNAE";
+			break;
+		case 2:
+			return "JNBE";
+			break;
+		case 3:
+			return "JNE";
+			break;
+		case 4:
+			return "JNB";
+			break;
+		case 5:
+			return "JNA";
+			break;
+		case 6:
+			return "JE";
+			break;
+	}
+
+
+}
