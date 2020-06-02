@@ -45,7 +45,7 @@ FILE  *yyin;
   int esPalabra(char aux);
   void eliminarSubCadena(char *cad,char *subcad);
   void trim(char *v);
-  int* getTipoPorID(char* name);
+  int getTipoPorID(char* name);
   char* getValorPorID(char* name);
 
 /*Tabla de simbolos*/
@@ -104,7 +104,8 @@ void ftoa(float n, char* res, int afterpoint); //lo mismo que arriba perri
   int desapilar(t_pila*);
 
 /*Indices y variables auxiliares de aca a abajo. Indiquen de que estructura es cada index o cada auxiliar o les pego un tiro en la rodilla. Atte carlos :D*/
-
+/*punteros y esas mierdas para operaciones*/
+int factorPointer;
 
  
 %}
@@ -131,7 +132,7 @@ void ftoa(float n, char* res, int afterpoint); //lo mismo que arriba perri
 %token GET DISPLAY
 
 %%
-programa: {printf("Inicio compilador\n");} declaracion algoritmo {guardarTabla(); printf("fin compilador\n");}
+programa: {printf("Inicio compilador\n");} declaracion algoritmo {guardarTabla(); guardarTercetosEnArchivo("tercetos.txt"); printf("fin compilador\n");}
 
 declaracion: DEFVAR {printf("Inicio de declaraciones:\n");} declaraciones_variables ENDEF {printf("fin de declaraciones\n"); agregarTiposDatosATabla();}
 
@@ -165,10 +166,19 @@ operacion: operacion OP_SUMA termino {printf("Suma OK\n");}|
            operacion OP_RESTA termino {printf("Resta OK\n");}|termino {printf("Operacion es termino\n");};
 
 termino: termino OP_MUL factor {printf("multiplicacion OK\n");}| 
-         termino OP_DIV factor {printf("division OK\n");}| factor {printf("termino es factor\n");};
+         termino OP_DIV factor {printf("division OK\n");}| 
+         factor {printf("termino es factor\n");};
 
-factor: ID {printf("factor es ID: %s\n",$1 );}|CONSTINT {printf("factor es entero: %d \n",$<intval>1);agregarCteIntATabla(yylval.intval); }
-           |CONSTREAL {printf("Factor es real: %f \n",$<val>1); agregarCteFloatATabla(yylval.val);}
+factor: ID {printf("factor es ID: %s\n",$1 ); factorPointer=crearTerceto($1," "," ");}
+           |CONSTINT {printf("factor es entero: %d \n",$<intval>1);agregarCteIntATabla(yylval.intval); 
+                      char *cadena = (char *)malloc (sizeof (int));
+                      itoa($<intval>1,cadena,10);
+                      factorPointer=crearTerceto(cadena,"","");}
+           |CONSTREAL {printf("Factor es real: %f \n",$<val>1); agregarCteFloatATabla(yylval.val);
+                       char*cadena = (char *)malloc(sizeof(float));
+                       ftoa($<val>1,cadena,4);
+                       factorPointer=crearTerceto(cadena,"","");
+                      }
            |P_A operacion P_C {printf("factor es operacion entre parentesis\n");};
 
 decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");}| 
@@ -510,13 +520,33 @@ char numeroTexto [2];
     return valor;
 }
 
-int crearTerceto (char * a, char *b,char *c){//le mandamos los tres strings para crear el terceto. No reciben numeros ni nada, solo strings. 
-                                         //la funcion tambien tiene que guardar el terceto creado en el vectorTercetos.
-                       //La posicion en el vector se lo da contadorTercetos. Variable que debe aumentar en 1.
-  
+int crearTerceto (char * primero, char *izquierda,char *derecha){//le mandamos los tres strings para crear el terceto. No reciben numeros ni nada, solo strings. 
+                                            //la funcion tambien tiene que guardar el terceto creado en el vectorTercetos.
+                                           //La posicion en el vector se lo da contadorTercetos. Variable que debe aumentar en 1.
+  terceto nuevo;
+  nuevo.primerElemento = malloc(sizeof(char)*strlen(primero)+1);
+  strcpy(nuevo.primerElemento,primero);
+  nuevo.elementoIzquierda = malloc(sizeof(char)*strlen(izquierda)+1);
+  strcpy(nuevo.elementoIzquierda,izquierda);
+  nuevo.elementoDerecha = malloc(sizeof(char)*strlen(derecha)+1);
+  strcpy(nuevo.elementoDerecha,derecha);
+  nuevo.numeroTerceto = contadorTercetos;
+  //printf("%d %s %s %s\n",nuevo.numeroTerceto,nuevo.primerElemento,nuevo.elementoIzquierda,nuevo.elementoDerecha);
+  vectorTercetos[contadorTercetos] = nuevo;
+  contadorTercetos++;
+  return nuevo.numeroTerceto;
 } 
-int crearTercetoNumero(char* a, char * b, char *c, int d){
-  
+int crearTercetoNumero(char* primero, char * izquierda, char *derecha, int numero){
+  terceto nuevo;
+  nuevo.primerElemento = malloc(sizeof(char)*strlen(primero)+1);
+  strcpy(nuevo.primerElemento,primero);
+  nuevo.elementoIzquierda = malloc(sizeof(char)*strlen(izquierda)+1);
+  strcpy(nuevo.elementoIzquierda,izquierda);
+  nuevo.elementoDerecha = malloc(sizeof(char)*strlen(derecha)+1);
+  strcpy(nuevo.elementoDerecha,derecha);
+  nuevo.numeroTerceto = numero;
+  vectorTercetos[numero] = nuevo;
+  return nuevo.numeroTerceto;
 }//Parecida a la anterior pero crea un terceto con un numero en especifico.
                              //No aumenta en 1 contadorTercetos.
                            //La funcion guarda el terceto en el vector en la posicion que recibe por argumento.
@@ -572,8 +602,16 @@ void ftoa(float n, char* res, int afterpoint)
         itoaBienPiola((int)fpart, res + i + 1, afterpoint); 
     } 
 } 
-void guardarTercetosEnArchivo(char *t){//guarda los tercetos en un archivo con el nombre que nosotros le pasemos (creo que en un binaro queda mejor)
-  
+void guardarTercetosEnArchivo(char *nombreArchivo){//guarda los tercetos en un archivo con el nombre que nosotros le pasemos (creo que en un binaro queda mejor)
+  int i;
+  FILE * fp;
+  fp = fopen(nombreArchivo,"w+t");
+  terceto aux;
+  for (i=0;i<contadorTercetos;i++){
+    aux = vectorTercetos[i];
+    fprintf(fp,"%d (%s,%s,%s) \n",aux.numeroTerceto,aux.primerElemento,aux.elementoIzquierda,aux.elementoDerecha);
+  }
+  fclose(fp);
 } 
 
 char * devolverSalto(int numero){
@@ -634,5 +672,5 @@ char* getValorPorID(char* name)
      }
      i++;
    }
-   return -1;
+   return NULL;
 }
