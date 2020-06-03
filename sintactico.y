@@ -104,7 +104,7 @@ void ftoa(float n, char* res, int afterpoint); //lo mismo que arriba perri
   int desapilar(t_pila*);
 
 /*Indices y variables auxiliares de aca a abajo. Indiquen de que estructura es cada index o cada auxiliar o les pego un tiro en la rodilla. Atte carlos :D*/
-/*punteros y esas mierdas para operaciones*/
+/*punteros y esas cosas para operaciones*/
 int factorPointer;
 int terminoPointer;
 int operacionPointer;
@@ -112,6 +112,17 @@ int asigPointer;
 char * cadenaAsigString;
 t_pila pilaOperaciones;
 t_pila pilaTerminos;
+
+
+/*punteros y esas cosas para el LET*/
+int tercetoID;
+int tercetoOperacion;
+t_pila pilaIdsLet;
+t_pila pilaOperacionesLet;
+void crearTercetosLet();
+
+/*punteros y esas cosas para GET*/
+int numeroGET;
 
 %}
 
@@ -242,21 +253,47 @@ repeticion: WHILE P_A condicion P_C LL_A bloque LL_C {printf("bucle while\n");};
 
 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C {printf("comparacion con between\n");};
 
-asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C { if(cantValores != cantVariables){yyerror("Error, no coinciden los argumentos del let con las variables");} printf("lista let\n");};
+asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C { if(cantValores != cantVariables){yyerror("Error, no coinciden los argumentos del let con las variables");} 
+                                                              printf("lista let\n");
+                                                              crearTercetosLet();
+                                                              };
 
-lista_var: lista_var COMA ID {cantVariables++;printf("Item de la lista del let %s\n",yylval.str_val);};
+lista_var: lista_var COMA ID {cantVariables++;printf("Item de la lista del let %s\n",yylval.str_val);
+							                tercetoID = crearTerceto(yylval.str_val,"","");
+							                apilar(&pilaIdsLet,tercetoID);
+                            };
 
-lista_var: ID {cantVariables++;printf("Item de la lista del let %s\n",yylval.str_val);};
+lista_var: ID {cantVariables++;
+               printf("Item de la lista del let %s\n",yylval.str_val);
+               tercetoID = crearTerceto(yylval.str_val,"",""); 
+			         apilar(&pilaIdsLet,tercetoID);
+              };
 
-lista_valores: operacion{cantValores++;printf("argumento del let es operacion \n");};
+lista_valores: operacion{cantValores++;
+                         printf("argumento del let es operacion \n");
+                         tercetoOperacion = operacionPointer;
+						             apilar(&pilaOperacionesLet,tercetoOperacion);
+                        };
 
-lista_valores: lista_valores PUNTO_COMA operacion {cantValores++;printf("argumento del let es operacion \n");};
+lista_valores: lista_valores PUNTO_COMA operacion {cantValores++;
+                                                   printf("argumento del let es operacion \n");
+                                                   tercetoOperacion = operacionPointer;
+						                                       apilar(&pilaOperacionesLet,tercetoOperacion);
+                                                  };
 
 comentarios: COMENTARIO {printf("Se muestra un comentario: \n");};
 
-ingreso:GET ID {printf("Ingreso de datos\n");}
+ingreso:GET ID {printf("Ingreso de datos\n");
+                numeroGET = crearTerceto($2,"","");
+				        crearTerceto("GET",crearIndice(numeroGET),"");
+               }
 
-egreso: DISPLAY CONSTSTRING {printf("Salida de string por pantalla\n");agregarCteStringATabla(yylval.str_val);} | DISPLAY ID {printf("Salida de variable por pantalla\n");};
+egreso: DISPLAY CONSTSTRING {printf("Salida de string por pantalla\n");agregarCteStringATabla(yylval.str_val);
+                            crearTerceto("DISPLAY",yylval.str_val,"");
+                            } | 
+        DISPLAY ID {printf("Salida de variable por pantalla\n");
+                    crearTerceto("DISPLAY",$2,"");
+                   };
 %%
 
 
@@ -270,6 +307,8 @@ int main(int argc,char *argv[])
   {
     crearPila(&pilaOperaciones);
     crearPila(&pilaTerminos);
+    crearPila(&pilaIdsLet);
+    crearPila(&pilaOperacionesLet);
 	yyparse();
   }
   fclose(yyin);
@@ -720,4 +759,13 @@ void parsearCadena (char * origen, char * destino){
     i++;
   }
   destino[i]='\0';
+}
+
+void crearTercetosLet(){
+	int numeroID, numeroOperacion;
+	while(!pilaVacia(&pilaIdsLet)){
+		numeroID = desapilar(&pilaIdsLet);
+		numeroOperacion = desapilar(&pilaOperacionesLet);
+		crearTerceto("=",crearIndice(numeroID),crearIndice(numeroOperacion));
+	}
 }

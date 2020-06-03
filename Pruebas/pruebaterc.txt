@@ -1,10 +1,15 @@
 DEFVAR
 	FLOAT : a1; b1
 	STRING: boke
+	INT : a; b; uno; dos; tres
 ENDEF
 BEGIN
+	DISPLAY a1
+	DISPLAY "ESTO ES BOCA"
+	GET a1
 	boke := "BOKEEEEEE"
 	a1 :=3.25 * (4+355+a1)
 	b1 :=a1/3 -5
 	c1 :=1
+	LET uno, dos, tres = (a*1; a*2; a*3)
 END
