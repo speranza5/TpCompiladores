@@ -1,0 +1,13 @@
+DEFVAR
+	FLOAT : a1; b1
+	STRING: boke
+	INT : a; b; uno; dos; tres
+ENDEF
+BEGIN
+    if(a<45 OR b1>3){
+		DISPLAY "VERDADERO"
+	}
+	else{
+       DISPLAY "FALSO"     
+	}
+END

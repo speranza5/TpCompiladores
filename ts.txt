@@ -8,12 +8,7 @@ b                             |INT                           | -                
 uno                           |INT                           | -                            | -                            
 dos                           |INT                           | -                            | -                            
 tres                          |INT                           | -                            | -                            
-"ESTO ES BOCA"                |CTE_STRING                    |ESTO ES BOCA                  |12                            
-"BOKEEEEEE"                   |CTE_STRING                    |BOKEEEEEE                     |9                             
-_3.250000                     |CTE_REAL                      |3.250000                      | -                            
-_4                            |CTE_INT                       |4                             | -                            
-_355                          |CTE_INT                       |355                           | -                            
+_45                           |CTE_INT                       |45                            | -                            
 _3                            |CTE_INT                       |3                             | -                            
-_5                            |CTE_INT                       |5                             | -                            
-_1                            |CTE_INT                       |1                             | -                            
-_2                            |CTE_INT                       |2                             | -                            
+"VERDADERO"                   |CTE_STRING                    |VERDADERO                     |9                             
+"FALSO"                       |CTE_STRING                    |FALSO                         |5                             

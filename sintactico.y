@@ -124,6 +124,25 @@ void crearTercetosLet();
 /*punteros y esas cosas para GET*/
 int numeroGET;
 
+/*punteros y esas cosas para comparaciones y ANDS y todas esas cosas*/
+int esBetween=0;
+int vectorComparaciones [999];
+int contadorComparaciones = 0;
+int tipoSaltoPalOr;
+int posicionACompletarOr;
+int idBetween;
+int cmpPointer;
+t_pila condPila; //pila para los numeros de tercetos donde tendriamos que completar con las condiciones
+t_pila pilaSaltos;
+int condicionPointer;
+int tipoSaltoPalOr;
+int posicionACompletarOrFalso;
+int posicionAcompletarOrVerdadero;
+int izqPointer;
+int derPointer;
+void completarTercetosAnd(int);
+char * devolverSalto(int );
+
 %}
 
 %union {
@@ -131,6 +150,8 @@ int numeroGET;
     double val;
     char *str_val;
 }
+
+
 
 %token <str_val>ID
 %token <intval>CONSTINT
@@ -233,20 +254,74 @@ factor: ID {printf("factor es ID: %s\n",$1 ); factorPointer=crearTerceto($1,"","
 decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");}| 
           IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C {printf("IF con rama falsa\n");};
 
-condicion: comparacion {printf("Comparacion unica");} | comparacion OP_AND comparacion {printf("Comparacion con and");}| comparacion OP_OR comparacion {printf("comparacion por or");};
+condicion: comparacion {printf("Comparacion unica");
+                        if(esBetween==0){
+			                    cmpPointer = crearTerceto("CMP",crearIndice(izqPointer),crearIndice(derPointer)); 
+						              vectorComparaciones[contadorComparaciones]= -1;
+						              contadorComparaciones++;
+						              apilar(&condPila, contadorTercetos);
+						              contadorTercetos ++; 
+						              condicionPointer = cmpPointer;
+						}
 
-comparacion: operacion OP_MENOR {printf("Comparacion por menor\n");} operacion | 
-             operacion OP_MENORIGUAL{printf("comparacion por menor o igual\n");} operacion| 
-             operacion OP_MAYOR {printf("comparacion por mayor\n");} operacion | 
-             operacion OP_MAYORIGUAL{printf("comparacion por mayor o igual\n");} operacion| 
-             operacion OP_DISTINTO{printf("comparacion por distinto\n");} operacion| 
-             operacion OP_IGUALDAD{printf("comparacion por igual\n");} operacion |
-             OP_NOT operacion OP_MENOR {printf("Comparacion por menor negada\n");} operacion |
-             OP_NOT operacion OP_MENORIGUAL{printf("comparacion por menor o igual negada\n");} operacion|
-             OP_NOT operacion OP_MAYOR {printf("comparacion por mayor negada\n");} operacion |
-             OP_NOT operacion OP_MAYORIGUAL{printf("comparacion por mayor o igual negada \n");} operacion|
-             OP_NOT operacion OP_DISTINTO{printf("comparacion por distinto negada\n");} operacion|
-             OP_NOT operacion OP_IGUALDAD{printf("comparacion por igual negada\n");} operacion |
+          } | 
+           comparacion {
+            if(esBetween==0){
+						  cmpPointer = crearTerceto("CMP",crearIndice(izqPointer),crearIndice(derPointer)); 
+						  vectorComparaciones[contadorComparaciones]= contadorTercetos;
+						  contadorComparaciones++;
+						  apilar(&condPila, contadorTercetos);
+						  contadorTercetos ++; 
+						  condicionPointer = cmpPointer;
+						 }
+           } 
+           
+           OP_AND comparacion {printf("Comparacion con and");
+           				             if(esBetween==0){
+				                       cmpPointer = crearTerceto("CMP",crearIndice(izqPointer),crearIndice(derPointer)); 
+				                       apilar(&condPila, contadorTercetos);
+				                       contadorTercetos ++; 
+				                       condicionPointer = cmpPointer;
+				 } 
+           }| 
+           comparacion {
+             				if(esBetween==0){
+				              cmpPointer = crearTerceto("CMP",crearIndice(izqPointer),crearIndice(derPointer)); 
+				              /*vectorComparaciones[contadorComparaciones]= -1;
+				              contadorComparaciones++;*/
+				              tipoSaltoPalOr = desapilar(&pilaSaltos);
+				              posicionACompletarOrFalso = contadorTercetos;
+				              contadorTercetos++;
+				              posicionAcompletarOrVerdadero = contadorTercetos;
+				              contadorTercetos++;
+				}
+           }
+            OP_OR comparacion {printf("comparacion por or");
+            				           if(esBetween==0){
+				                          cmpPointer = crearTerceto("CMP",crearIndice(izqPointer),crearIndice(derPointer));
+				                          vectorComparaciones[contadorComparaciones]= -1;
+				                          contadorComparaciones++;
+				                          apilar(&condPila, contadorTercetos); 
+				                          contadorTercetos ++; 
+				                          crearTercetoNumero(devolverSalto(tipoSaltoPalOr),crearIndice(cmpPointer),"",posicionACompletarOrFalso);
+				                          crearTercetoNumero("JMP",crearIndice(contadorTercetos),"",posicionAcompletarOrVerdadero);
+			                      	}
+                            };
+
+comparacion: operacion {izqPointer = operacionPointer; esBetween =0;} OP_MENOR {printf("Comparacion por menor\n"); apilar(&pilaSaltos, 1);}
+             operacion{derPointer = operacionPointer;} 
+             | 
+             operacion {izqPointer = operacionPointer; esBetween =0;} OP_MENORIGUAL{printf("comparacion por menor o igual\n"); apilar(&pilaSaltos, 5);} operacion {derPointer = operacionPointer;} | 
+             operacion {izqPointer = operacionPointer; esBetween =0;} OP_MAYOR {printf("comparacion por mayor\n");  apilar(&pilaSaltos,2) ;} operacion {derPointer = operacionPointer;} | 
+             operacion {izqPointer = operacionPointer; esBetween =0;} OP_MAYORIGUAL{printf("comparacion por mayor o igual\n"); apilar(&pilaSaltos,4);} operacion  {derPointer = operacionPointer;}| 
+             operacion {izqPointer = operacionPointer; esBetween =0;} OP_DISTINTO{printf("comparacion por distinto\n"); apilar(&pilaSaltos,6);} operacion  {derPointer = operacionPointer;}| 
+             operacion {izqPointer = operacionPointer; esBetween =0;} OP_IGUALDAD{printf("comparacion por igual\n"); apilar(&pilaSaltos,3); } operacion  {derPointer = operacionPointer;} |
+             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;}  OP_MENOR {printf("Comparacion por menor negada\n"); apilar(&pilaSaltos,4); } operacion  {derPointer = operacionPointer;} |
+             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;} OP_MENORIGUAL{printf("comparacion por menor o igual negada\n"); apilar(&pilaSaltos,2); } operacion  {derPointer = operacionPointer;} |
+             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;} OP_MAYOR {printf("comparacion por mayor negada\n"); apilar(&pilaSaltos,5); } operacion  {derPointer = operacionPointer;} |
+             OP_NOT  operacion {izqPointer = operacionPointer; esBetween =0;} OP_MAYORIGUAL{printf("comparacion por mayor o igual negada \n"); apilar(&pilaSaltos,1); } operacion  {derPointer = operacionPointer;} |
+             OP_NOT  operacion {izqPointer = operacionPointer; esBetween =0;} OP_DISTINTO{printf("comparacion por distinto negada\n"); apilar(&pilaSaltos,3); } operacion  {derPointer = operacionPointer;} |
+             OP_NOT  operacion {izqPointer = operacionPointer; esBetween =0;} OP_IGUALDAD{printf("comparacion por igual negada\n"); apilar(&pilaSaltos,6); } operacion  {derPointer = operacionPointer;} |
              between ;
 
 repeticion: WHILE P_A condicion P_C LL_A bloque LL_C {printf("bucle while\n");};
@@ -309,6 +384,8 @@ int main(int argc,char *argv[])
     crearPila(&pilaTerminos);
     crearPila(&pilaIdsLet);
     crearPila(&pilaOperacionesLet);
+    crearPila(&condPila);
+    crearPila(&pilaSaltos);
 	yyparse();
   }
   fclose(yyin);
@@ -693,7 +770,6 @@ void guardarTercetosEnArchivo(char *nombreArchivo){//guarda los tercetos en un a
 
 char * devolverSalto(int numero){
 	switch (numero){
-  
 		case 1:
 			return "JNAE";
 			break;
@@ -712,6 +788,9 @@ char * devolverSalto(int numero){
 		case 6:
 			return "JE";
 			break;
+    default:
+      return "NASNOASNOASDO";
+      break;
 	}
 }
 
@@ -768,4 +847,18 @@ void crearTercetosLet(){
 		numeroOperacion = desapilar(&pilaOperacionesLet);
 		crearTerceto("=",crearIndice(numeroID),crearIndice(numeroOperacion));
 	}
+}
+
+void completarTercetosAnd(int posicion){
+	int tipoSalto, numeroTerceto;
+	if (vectorComparaciones[contadorComparaciones]==-1){
+		contadorComparaciones--;
+	}
+	else{
+		tipoSalto=desapilar(&pilaSaltos);
+		numeroTerceto = desapilar(&condPila);
+		crearTercetoNumero(devolverSalto(tipoSalto),crearIndice(posicion),"",numeroTerceto);
+		contadorComparaciones--;
+	}
+	
 }
