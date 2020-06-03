@@ -179,6 +179,22 @@ comparacion: operacion {izqpointer = opPointer; esBetween = 0; } OP_MENOR {print
 			 
 			 between ;
 
+
+repeticion: WHILE {apilar(condPila,contadorTercetos);} //Lo pongo aca arriba antes de que se aumente el contador de tercetos
+						
+			P_A condicion /El codigo de aca ya lo hago en regla condicion/P_C LL_A bloque
+			
+			LL_C {printf("bucle while\n");
+						salto = desapilar(pilaSalto); //numero de salto
+						numeroTerceto = desapilar(condPila); //numero de terceto (aca estaría el numero donde deberia ir el terceto del salto si ya no cumple la condicion del while)
+						crearTercetoNumero (devolverSalto(salto), crearIndice(contadorTercetos+2),null, numeroTerceto); //Hago un +2 porque tengo: 1-Terceto de JMP primero
+						
+						numeroTerceto = desapilar(condPila); //Desapilo la posicion del inicio del While
+						crearTerceto ("JMP", crearIndice(numeroTerceto),null);
+			};
+
+
+
 between: BETWEEN {esBetween = 1;}P_A ID {idBetween =crearTerceto($3,null,null);} COMA COR_A operacion {apilar(pilaSaltos, 4);
 																					   crearTerceto("CMP",crearIndice(idBetween),crearIndice(opPointer));
 																					   vectorComparaciones[contadorComparaciones]= contadorTercetos;
