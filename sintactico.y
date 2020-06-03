@@ -79,7 +79,7 @@ FILE  *yyin;
  terceto vectorTercetos[CANT_TERCETOS];
 void reverse(char* str, int len);
  int contadorTercetos = 0; //cada vez que metemos un tercetos aumentamos en uno este contadorcito
- char* crearIndice(int, char*);//recibe un numero entero y lo convierte en un indice, por ejemplo le mando 12 y guarda en el char * "[12]"
+ char* crearIndice(int);//recibe un numero entero y lo convierte en un indice, por ejemplo le mando 12 y guarda en el char * "[12]"
  int crearTerceto (char *, char *,char *); //le mandamos los tres strings para crear el terceto. No reciben numeros ni nada, solo strings. 
  										   //la funcion tambien tiene que guardar el terceto creado en el vectorTercetos.
  										   //La posicion en el vector se lo da contadorTercetos. Variable que debe aumentar en 1.
@@ -89,7 +89,7 @@ void reverse(char* str, int len);
 int itoaBienPiola(int x, char str[], int d); //recibe un numero y lo convierte a string cosa de que podamos hacer crearTerceto("=","id",itoa(cte));
 void ftoa(float n, char* res, int afterpoint); //lo mismo que arriba perri
  void guardarTercetosEnArchivo(char *); //guarda los tercetos en un archivo con el nombre que nosotros le pasemos (creo que en un binaro queda mejor)
- 
+ void parsearCadena (char * origen, char * destino);//porque no me voy a poner a ver como anda bison
  /*Struct para usar la dichosa pila y las primitivas de pila*/
   typedef struct 
   {
@@ -106,8 +106,13 @@ void ftoa(float n, char* res, int afterpoint); //lo mismo que arriba perri
 /*Indices y variables auxiliares de aca a abajo. Indiquen de que estructura es cada index o cada auxiliar o les pego un tiro en la rodilla. Atte carlos :D*/
 /*punteros y esas mierdas para operaciones*/
 int factorPointer;
+int terminoPointer;
+int operacionPointer;
+int asigPointer;
+char * cadenaAsigString;
+t_pila pilaOperaciones;
+t_pila pilaTerminos;
 
- 
 %}
 
 %union {
@@ -158,18 +163,44 @@ bloque: sentencia|bloque sentencia;
 
 sentencia: asignacion| decision| repeticion|asignacionlet|comentarios|ingreso|egreso;
 
-asignacion: ID OP_ASIG operacion{printf("asignacion a operacion\n");}|
-            ID OP_ASIG CONSTSTRING {printf( "asignacion a STRING: %s\n", yylval.str_val); agregarCteStringATabla(yylval.str_val);};
+asignacion: ID  OP_ASIG {
+ 
+              cadenaAsigString = malloc(sizeof(char) * strlen($<str_val>1));
+              parsearCadena($<str_val>1,cadenaAsigString);
+            }
+            operacion{printf("asignacion a operacion\n");
+            asigPointer = crearTerceto("=",cadenaAsigString,crearIndice(operacionPointer));
+            }|
+            ID  OP_ASIG{
+ 
+              cadenaAsigString = malloc(sizeof(char) * strlen($<str_val>1));
+              parsearCadena($<str_val>1,cadenaAsigString);
+            } CONSTSTRING {
+            
+              printf( "asignacion a STRING: %s\n", yylval.str_val); agregarCteStringATabla(yylval.str_val);
+                                    asigPointer=crearTerceto("=",cadenaAsigString,yylval.str_val);
+                                   };
 
 
-operacion: operacion OP_SUMA termino {printf("Suma OK\n");}|
-           operacion OP_RESTA termino {printf("Resta OK\n");}|termino {printf("Operacion es termino\n");};
+operacion: operacion OP_SUMA termino {printf("Suma OK\n");
+                                      operacionPointer = crearTerceto("+",crearIndice(operacionPointer),crearIndice(terminoPointer));
+                                     }|
+           operacion OP_RESTA termino {printf("Resta OK\n");
+                                       operacionPointer = crearTerceto("-",crearIndice(operacionPointer),crearIndice(terminoPointer));
+                                      }|
+           termino {printf("Operacion es termino\n");
+                    operacionPointer = terminoPointer;
+           };
 
-termino: termino OP_MUL factor {printf("multiplicacion OK\n");}| 
-         termino OP_DIV factor {printf("division OK\n");}| 
-         factor {printf("termino es factor\n");};
+termino: termino OP_MUL factor {printf("Termino es multiplicacion OK\n");
+                                terminoPointer = crearTerceto("*",crearIndice(terminoPointer),crearIndice(factorPointer));
+         }| 
+         termino OP_DIV factor {printf("Termino es division\n");
+         terminoPointer= crearTerceto("/",crearIndice(terminoPointer),crearIndice(factorPointer));
+         }| 
+         factor {printf("termino es factor\n"); terminoPointer = factorPointer;};
 
-factor: ID {printf("factor es ID: %s\n",$1 ); factorPointer=crearTerceto($1," "," ");}
+factor: ID {printf("factor es ID: %s\n",$1 ); factorPointer=crearTerceto($1,"","");}
            |CONSTINT {printf("factor es entero: %d \n",$<intval>1);agregarCteIntATabla(yylval.intval); 
                       char *cadena = (char *)malloc (sizeof (int));
                       itoa($<intval>1,cadena,10);
@@ -179,7 +210,14 @@ factor: ID {printf("factor es ID: %s\n",$1 ); factorPointer=crearTerceto($1," ",
                        ftoa($<val>1,cadena,4);
                        factorPointer=crearTerceto(cadena,"","");
                       }
-           |P_A operacion P_C {printf("factor es operacion entre parentesis\n");};
+           |P_A{
+             apilar(&pilaOperaciones,operacionPointer);
+             apilar(&pilaTerminos,terminoPointer);
+           } operacion P_C {printf("factor es operacion entre parentesis\n");
+                            factorPointer = crearTerceto(crearIndice(operacionPointer),"","");
+                            operacionPointer = desapilar(&pilaOperaciones);
+                            terminoPointer = desapilar(&pilaTerminos);
+           };
 
 decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");}| 
           IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C {printf("IF con rama falsa\n");};
@@ -230,6 +268,8 @@ int main(int argc,char *argv[])
   }
   else
   {
+    crearPila(&pilaOperaciones);
+    crearPila(&pilaTerminos);
 	yyparse();
   }
   fclose(yyin);
@@ -487,7 +527,7 @@ int pilaVacia( t_pila *p){
     return p->tope == 0; //Verificar
 }
 
-int ponerEnPila(t_pila *p, int dato){
+int apilar(t_pila *p, int dato){
     if( p->tope == TAM_PILA){
         return 0;
     }
@@ -496,7 +536,7 @@ int ponerEnPila(t_pila *p, int dato){
     return 1;
 }
 
-int sacarDePila(t_pila *p){
+int desapilar(t_pila *p){
     if( p->tope == 0){
         return 0;
     }
@@ -506,18 +546,16 @@ int sacarDePila(t_pila *p){
 
 //TERCETOS
 
-char* crearIndice(int num, char* valor){
+char* crearIndice(int num){
 
-char resultado [5];
-char numeroTexto [2];
+char * resultado = (char*)malloc(sizeof(char)*7);
+char numeroTexto [4];
 
 	strcpy(resultado,"[");
 	itoa(num,numeroTexto,10);
     strcat(resultado,numeroTexto);
 	strcat(resultado,"]");
-    //printf("%s",resultado);
-    strcpy(valor,resultado);
-    return valor;
+    return resultado;
 }
 
 int crearTerceto (char * primero, char *izquierda,char *derecha){//le mandamos los tres strings para crear el terceto. No reciben numeros ni nada, solo strings. 
@@ -673,4 +711,13 @@ char* getValorPorID(char* name)
      i++;
    }
    return NULL;
+}
+
+void parsearCadena (char * origen, char * destino){
+  int i=0,contDestino=0;
+  while(origen[i]!=' ' && origen[i]!=':'){
+    destino[i]=origen[i];
+    i++;
+  }
+  destino[i]='\0';
 }
