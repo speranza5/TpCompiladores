@@ -163,48 +163,54 @@ Grammar
 
    85 repeticion: WHILE P_A condicion P_C LL_A bloque LL_C
 
-   86 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C
+   86 $@36: /* empty */
 
-   87 asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C
+   87 $@37: /* empty */
 
-   88 lista_var: lista_var COMA ID
-   89          | ID
+   88 $@38: /* empty */
 
-   90 lista_valores: operacion
-   91              | lista_valores PUNTO_COMA operacion
+   89 between: BETWEEN P_A ID $@36 COMA COR_A operacion $@37 PUNTO_COMA operacion $@38 COR_C P_C
 
-   92 comentarios: COMENTARIO
+   90 asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C
 
-   93 ingreso: GET ID
+   91 lista_var: lista_var COMA ID
+   92          | ID
 
-   94 egreso: DISPLAY CONSTSTRING
-   95       | DISPLAY ID
+   93 lista_valores: operacion
+   94              | lista_valores PUNTO_COMA operacion
+
+   95 comentarios: COMENTARIO
+
+   96 ingreso: GET ID
+
+   97 egreso: DISPLAY CONSTSTRING
+   98       | DISPLAY ID
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
 error (256)
-ID (258) 13 14 27 29 36 86 88 89 93 95
+ID (258) 13 14 27 29 36 89 91 92 96 98
 CONSTINT (259) 37
 CONSTREAL (260) 38
-CONSTSTRING (261) 29 94
+CONSTSTRING (261) 29 97
 ENTERO (262) 8
 STRING (263) 12
 REAL (264) 10
-PUNTO_COMA (265) 13 86 91
-COMA (266) 86 88
+PUNTO_COMA (265) 13 89 94
+COMA (266) 89 91
 DOS_PUNTOS (267) 8 10 12
 ENDEF (268) 4
 DEFVAR (269) 4
 PALABRA (270)
 TEXTO (271)
-COMENTARIO (272) 92
+COMENTARIO (272) 95
 OP_ASIG (273) 27 29
 INICIO (274) 16
 FIN (275) 16
-P_A (276) 40 41 42 85 86 87
-P_C (277) 40 41 42 85 86 87
+P_A (276) 40 41 42 85 89 90
+P_C (277) 40 41 42 85 89 90
 OP_SUMA (278) 30
 OP_RESTA (279) 31
 OP_MUL (280) 33
@@ -223,15 +229,15 @@ OP_MAYOR (292) 56 74
 OP_MAYORIGUAL (293) 59 77
 OP_DISTINTO (294) 62 80
 OP_IGUALDAD (295) 65 83
-BETWEEN (296) 86
-COR_A (297) 86
-COR_C (298) 86
-LET (299) 87
-OP_IGUAL (300) 87
+BETWEEN (296) 89
+COR_A (297) 89
+COR_C (298) 89
+LET (299) 90
+OP_IGUAL (300) 90
 COM_CIERRE (301)
 COM_APER (302)
-GET (303) 93
-DISPLAY (304) 94 95
+GET (303) 96
+DISPLAY (304) 97 98
 
 
 Nonterminals, with rules where they appear
@@ -274,7 +280,7 @@ $@8 (67)
     on left: 28, on right: 29
 operacion (68)
     on left: 30 31 32, on right: 27 30 31 40 50 53 56 59 62 65 68 71
-    74 77 80 83 86 90 91
+    74 77 80 83 89 93 94
 termino (69)
     on left: 33 34 35, on right: 30 31 32 33 34
 factor (70)
@@ -343,19 +349,25 @@ $@35 (100)
 repeticion (101)
     on left: 85, on right: 21
 between (102)
-    on left: 86, on right: 84
-asignacionlet (103)
-    on left: 87, on right: 22
-lista_var (104)
-    on left: 88 89, on right: 87 88
-lista_valores (105)
-    on left: 90 91, on right: 87 91
-comentarios (106)
-    on left: 92, on right: 23
-ingreso (107)
-    on left: 93, on right: 24
-egreso (108)
-    on left: 94 95, on right: 25
+    on left: 89, on right: 84
+$@36 (103)
+    on left: 86, on right: 89
+$@37 (104)
+    on left: 87, on right: 89
+$@38 (105)
+    on left: 88, on right: 89
+asignacionlet (106)
+    on left: 90, on right: 22
+lista_var (107)
+    on left: 91 92, on right: 90 91
+lista_valores (108)
+    on left: 93 94, on right: 90 94
+comentarios (109)
+    on left: 95, on right: 23
+ingreso (110)
+    on left: 96, on right: 24
+egreso (111)
+    on left: 97 98, on right: 25
 
 
 state 0
@@ -551,9 +563,9 @@ state 20
 
 state 21
 
-   92 comentarios: COMENTARIO .
+   95 comentarios: COMENTARIO .
 
-    $default  reduce using rule 92 (comentarios)
+    $default  reduce using rule 95 (comentarios)
 
 
 state 22
@@ -573,7 +585,7 @@ state 23
 
 state 24
 
-   87 asignacionlet: LET . lista_var OP_IGUAL P_A lista_valores P_C
+   90 asignacionlet: LET . lista_var OP_IGUAL P_A lista_valores P_C
 
     ID  shift, and go to state 42
 
@@ -582,15 +594,15 @@ state 24
 
 state 25
 
-   93 ingreso: GET . ID
+   96 ingreso: GET . ID
 
     ID  shift, and go to state 44
 
 
 state 26
 
-   94 egreso: DISPLAY . CONSTSTRING
-   95       | DISPLAY . ID
+   97 egreso: DISPLAY . CONSTSTRING
+   98       | DISPLAY . ID
 
     ID           shift, and go to state 45
     CONSTSTRING  shift, and go to state 46
@@ -756,15 +768,15 @@ state 41
 
 state 42
 
-   89 lista_var: ID .
+   92 lista_var: ID .
 
-    $default  reduce using rule 89 (lista_var)
+    $default  reduce using rule 92 (lista_var)
 
 
 state 43
 
-   87 asignacionlet: LET lista_var . OP_IGUAL P_A lista_valores P_C
-   88 lista_var: lista_var . COMA ID
+   90 asignacionlet: LET lista_var . OP_IGUAL P_A lista_valores P_C
+   91 lista_var: lista_var . COMA ID
 
     COMA      shift, and go to state 68
     OP_IGUAL  shift, and go to state 69
@@ -772,23 +784,23 @@ state 43
 
 state 44
 
-   93 ingreso: GET ID .
+   96 ingreso: GET ID .
 
-    $default  reduce using rule 93 (ingreso)
+    $default  reduce using rule 96 (ingreso)
 
 
 state 45
 
-   95 egreso: DISPLAY ID .
+   98 egreso: DISPLAY ID .
 
-    $default  reduce using rule 95 (egreso)
+    $default  reduce using rule 98 (egreso)
 
 
 state 46
 
-   94 egreso: DISPLAY CONSTSTRING .
+   97 egreso: DISPLAY CONSTSTRING .
 
-    $default  reduce using rule 94 (egreso)
+    $default  reduce using rule 97 (egreso)
 
 
 state 47
@@ -914,7 +926,7 @@ state 59
 
 state 60
 
-   86 between: BETWEEN . P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C
+   89 between: BETWEEN . P_A ID $@36 COMA COR_A operacion $@37 PUNTO_COMA operacion $@38 COR_C P_C
 
     P_A  shift, and go to state 75
 
@@ -1005,14 +1017,14 @@ state 67
 
 state 68
 
-   88 lista_var: lista_var COMA . ID
+   91 lista_var: lista_var COMA . ID
 
     ID  shift, and go to state 90
 
 
 state 69
 
-   87 asignacionlet: LET lista_var OP_IGUAL . P_A lista_valores P_C
+   90 asignacionlet: LET lista_var OP_IGUAL . P_A lista_valores P_C
 
     P_A  shift, and go to state 91
 
@@ -1088,7 +1100,7 @@ state 74
 
 state 75
 
-   86 between: BETWEEN P_A . ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C
+   89 between: BETWEEN P_A . ID $@36 COMA COR_A operacion $@37 PUNTO_COMA operacion $@38 COR_C P_C
 
     ID  shift, and go to state 100
 
@@ -1216,14 +1228,14 @@ state 89
 
 state 90
 
-   88 lista_var: lista_var COMA ID .
+   91 lista_var: lista_var COMA ID .
 
-    $default  reduce using rule 88 (lista_var)
+    $default  reduce using rule 91 (lista_var)
 
 
 state 91
 
-   87 asignacionlet: LET lista_var OP_IGUAL P_A . lista_valores P_C
+   90 asignacionlet: LET lista_var OP_IGUAL P_A . lista_valores P_C
 
     ID         shift, and go to state 55
     CONSTINT   shift, and go to state 56
@@ -1298,9 +1310,11 @@ state 99
 
 state 100
 
-   86 between: BETWEEN P_A ID . COMA COR_A operacion PUNTO_COMA operacion COR_C P_C
+   89 between: BETWEEN P_A ID . $@36 COMA COR_A operacion $@37 PUNTO_COMA operacion $@38 COR_C P_C
 
-    COMA  shift, and go to state 124
+    $default  reduce using rule 86 ($@36)
+
+    $@36  go to state 124
 
 
 state 101
@@ -1482,18 +1496,18 @@ state 115
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
-   90 lista_valores: operacion .
+   93 lista_valores: operacion .
 
     OP_SUMA   shift, and go to state 76
     OP_RESTA  shift, and go to state 77
 
-    $default  reduce using rule 90 (lista_valores)
+    $default  reduce using rule 93 (lista_valores)
 
 
 state 116
 
-   87 asignacionlet: LET lista_var OP_IGUAL P_A lista_valores . P_C
-   91 lista_valores: lista_valores . PUNTO_COMA operacion
+   90 asignacionlet: LET lista_var OP_IGUAL P_A lista_valores . P_C
+   94 lista_valores: lista_valores . PUNTO_COMA operacion
 
     PUNTO_COMA  shift, and go to state 135
     P_C         shift, and go to state 136
@@ -1562,9 +1576,9 @@ state 123
 
 state 124
 
-   86 between: BETWEEN P_A ID COMA . COR_A operacion PUNTO_COMA operacion COR_C P_C
+   89 between: BETWEEN P_A ID $@36 . COMA COR_A operacion $@37 PUNTO_COMA operacion $@38 COR_C P_C
 
-    COR_A  shift, and go to state 143
+    COMA  shift, and go to state 143
 
 
 state 125
@@ -1716,7 +1730,7 @@ state 134
 
 state 135
 
-   91 lista_valores: lista_valores PUNTO_COMA . operacion
+   94 lista_valores: lista_valores PUNTO_COMA . operacion
 
     ID         shift, and go to state 55
     CONSTINT   shift, and go to state 56
@@ -1730,9 +1744,9 @@ state 135
 
 state 136
 
-   87 asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C .
+   90 asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C .
 
-    $default  reduce using rule 87 (asignacionlet)
+    $default  reduce using rule 90 (asignacionlet)
 
 
 state 137
@@ -1821,16 +1835,9 @@ state 142
 
 state 143
 
-   86 between: BETWEEN P_A ID COMA COR_A . operacion PUNTO_COMA operacion COR_C P_C
+   89 between: BETWEEN P_A ID $@36 COMA . COR_A operacion $@37 PUNTO_COMA operacion $@38 COR_C P_C
 
-    ID         shift, and go to state 55
-    CONSTINT   shift, and go to state 56
-    CONSTREAL  shift, and go to state 57
-    P_A        shift, and go to state 58
-
-    operacion  go to state 159
-    termino    go to state 62
-    factor     go to state 63
+    COR_A  shift, and go to state 159
 
 
 state 144
@@ -1926,12 +1933,12 @@ state 152
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
-   91 lista_valores: lista_valores PUNTO_COMA operacion .
+   94 lista_valores: lista_valores PUNTO_COMA operacion .
 
     OP_SUMA   shift, and go to state 76
     OP_RESTA  shift, and go to state 77
 
-    $default  reduce using rule 91 (lista_valores)
+    $default  reduce using rule 94 (lista_valores)
 
 
 state 153
@@ -2008,13 +2015,16 @@ state 158
 
 state 159
 
-   30 operacion: operacion . OP_SUMA termino
-   31          | operacion . OP_RESTA termino
-   86 between: BETWEEN P_A ID COMA COR_A operacion . PUNTO_COMA operacion COR_C P_C
+   89 between: BETWEEN P_A ID $@36 COMA COR_A . operacion $@37 PUNTO_COMA operacion $@38 COR_C P_C
 
-    PUNTO_COMA  shift, and go to state 161
-    OP_SUMA     shift, and go to state 76
-    OP_RESTA    shift, and go to state 77
+    ID         shift, and go to state 55
+    CONSTINT   shift, and go to state 56
+    CONSTREAL  shift, and go to state 57
+    P_A        shift, and go to state 58
+
+    operacion  go to state 161
+    termino    go to state 62
+    factor     go to state 63
 
 
 state 160
@@ -2026,16 +2036,16 @@ state 160
 
 state 161
 
-   86 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA . operacion COR_C P_C
+   30 operacion: operacion . OP_SUMA termino
+   31          | operacion . OP_RESTA termino
+   89 between: BETWEEN P_A ID $@36 COMA COR_A operacion . $@37 PUNTO_COMA operacion $@38 COR_C P_C
 
-    ID         shift, and go to state 55
-    CONSTINT   shift, and go to state 56
-    CONSTREAL  shift, and go to state 57
-    P_A        shift, and go to state 58
+    OP_SUMA   shift, and go to state 76
+    OP_RESTA  shift, and go to state 77
 
-    operacion  go to state 163
-    termino    go to state 62
-    factor     go to state 63
+    $default  reduce using rule 87 ($@37)
+
+    $@37  go to state 163
 
 
 state 162
@@ -2063,13 +2073,9 @@ state 162
 
 state 163
 
-   30 operacion: operacion . OP_SUMA termino
-   31          | operacion . OP_RESTA termino
-   86 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion . COR_C P_C
+   89 between: BETWEEN P_A ID $@36 COMA COR_A operacion $@37 . PUNTO_COMA operacion $@38 COR_C P_C
 
-    OP_SUMA   shift, and go to state 76
-    OP_RESTA  shift, and go to state 77
-    COR_C     shift, and go to state 165
+    PUNTO_COMA  shift, and go to state 165
 
 
 state 164
@@ -2098,9 +2104,16 @@ state 164
 
 state 165
 
-   86 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C . P_C
+   89 between: BETWEEN P_A ID $@36 COMA COR_A operacion $@37 PUNTO_COMA . operacion $@38 COR_C P_C
 
-    P_C  shift, and go to state 167
+    ID         shift, and go to state 55
+    CONSTINT   shift, and go to state 56
+    CONSTREAL  shift, and go to state 57
+    P_A        shift, and go to state 58
+
+    operacion  go to state 167
+    termino    go to state 62
+    factor     go to state 63
 
 
 state 166
@@ -2112,6 +2125,34 @@ state 166
 
 state 167
 
-   86 between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C .
+   30 operacion: operacion . OP_SUMA termino
+   31          | operacion . OP_RESTA termino
+   89 between: BETWEEN P_A ID $@36 COMA COR_A operacion $@37 PUNTO_COMA operacion . $@38 COR_C P_C
 
-    $default  reduce using rule 86 (between)
+    OP_SUMA   shift, and go to state 76
+    OP_RESTA  shift, and go to state 77
+
+    $default  reduce using rule 88 ($@38)
+
+    $@38  go to state 168
+
+
+state 168
+
+   89 between: BETWEEN P_A ID $@36 COMA COR_A operacion $@37 PUNTO_COMA operacion $@38 . COR_C P_C
+
+    COR_C  shift, and go to state 169
+
+
+state 169
+
+   89 between: BETWEEN P_A ID $@36 COMA COR_A operacion $@37 PUNTO_COMA operacion $@38 COR_C . P_C
+
+    P_C  shift, and go to state 170
+
+
+state 170
+
+   89 between: BETWEEN P_A ID $@36 COMA COR_A operacion $@37 PUNTO_COMA operacion $@38 COR_C P_C .
+
+    $default  reduce using rule 89 (between)

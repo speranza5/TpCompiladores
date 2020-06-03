@@ -130,7 +130,7 @@ int vectorComparaciones [999];
 int contadorComparaciones = 0;
 int tipoSaltoPalOr;
 int posicionACompletarOr;
-int idBetween;
+char * cadenaIDBetween;
 int cmpPointer;
 t_pila condPila; //pila para los numeros de tercetos donde tendriamos que completar con las condiciones
 t_pila pilaSaltos;
@@ -326,7 +326,25 @@ comparacion: operacion {izqPointer = operacionPointer; esBetween =0;} OP_MENOR {
 
 repeticion: WHILE P_A condicion P_C LL_A bloque LL_C {printf("bucle while\n");};
 
-between: BETWEEN P_A ID COMA COR_A operacion PUNTO_COMA operacion COR_C P_C {printf("comparacion con between\n");};
+between: BETWEEN P_A ID {esBetween = 1; 
+                         cadenaIDBetween = malloc(sizeof(char)*strlen($3));
+                         strcpy(cadenaIDBetween,$3);
+                        } COMA COR_A operacion{
+                                                apilar(&pilaSaltos, 4);
+																					      crearTerceto("CMP",cadenaIDBetween,crearIndice(operacionPointer));
+																					      vectorComparaciones[contadorComparaciones]= contadorTercetos;
+																					      contadorComparaciones++;
+																					      apilar(&condPila, contadorTercetos);
+																					      contadorTercetos ++; 
+                                                                            } 
+         PUNTO_COMA operacion{
+                    	     apilar(&pilaSaltos, 5);
+		                       cmpPointer = crearTerceto("CMP",cadenaIDBetween,crearIndice(operacionPointer));
+		                       apilar(&condPila, contadorTercetos);
+		                       contadorTercetos ++; 
+		                       condicionPointer = cmpPointer;
+         } 
+         COR_C P_C {printf("comparacion con between\n");};
 
 asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C { if(cantValores != cantVariables){yyerror("Error, no coinciden los argumentos del let con las variables");} 
                                                               printf("lista let\n");
