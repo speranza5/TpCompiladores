@@ -140,6 +140,9 @@ condicion: comparacion {
 				}
 			};
 
+
+		
+
 comparacion: operacion {izqpointer = opPointer; esBetween = 0; } OP_MENOR {printf("Comparacion por menor\n"); apilar(pilaSaltos, 1); } operacion 
 			{derpointer = opPointer; }| 
 			 

@@ -2,13 +2,15 @@ NOMBRE                        |TIPO                          |VALOR             
 .........................................................................................................
 a1                            |REAL                          | -                            | -                            
 b1                            |REAL                          | -                            | -                            
-boke                          |STRING                        | -                            | -                            
+variable1                     |STRING                        | -                            | -                            
+v2                            |STRING                        | -                            | -                            
+p1                            |REAL                          | -                            | -                            
+p2                            |REAL                          | -                            | -                            
+p3                            |REAL                          | -                            | -                            
 a                             |INT                           | -                            | -                            
 b                             |INT                           | -                            | -                            
 uno                           |INT                           | -                            | -                            
 dos                           |INT                           | -                            | -                            
-tres                          |INT                           | -                            | -                            
-_12                           |CTE_INT                       |12                            | -                            
-"VERDADERO"                   |CTE_STRING                    |VERDADERO                     |9                             
-"FALSO"                       |CTE_STRING                    |FALSO                         |5                             
-"BOKEEEEEE"                   |CTE_STRING                    |BOKEEEEEE                     |9                             
+_2                            |CTE_INT                       |2                             | -                            
+_3                            |CTE_INT                       |3                             | -                            
+_4                            |CTE_INT                       |4                             | -                            

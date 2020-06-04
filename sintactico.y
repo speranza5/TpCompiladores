@@ -149,8 +149,12 @@ int numeroSalto;
 t_pila pilaCompletarAnds;
 /*punteros y esas cosas para el while*/
 int etiqueta;
+int etiquetaWhile;
 int numeroTercetoWhile;
 int saltoWhile;
+char * cadenaEtiq;
+char numeroTextoWhile[5];
+
 %}
 
 %union {
@@ -201,7 +205,7 @@ algoritmo: {printf("Inicio del programa\n");} INICIO bloque FIN {printf("fin del
 
 bloque: sentencia|bloque sentencia;
 
-sentencia: asignacion| decision| repeticion|asignacionlet|comentarios|ingreso|egreso;
+sentencia: asignacion| decision| repeticion |asignacionlet|comentarios|ingreso|egreso;
 
 asignacion: ID  OP_ASIG {
  
@@ -286,6 +290,7 @@ condicion: comparacion {printf("Comparacion unica\n");
 						              apilar(&condPila, contadorTercetos);
 						              contadorTercetos ++; 
 						              condicionPointer = cmpPointer;
+                          printf("SALGO DE Comparacion unica\n");
 						}
 
           } | 
@@ -345,7 +350,27 @@ comparacion: operacion {izqPointer = operacionPointer; esBetween =0;} OP_MENOR {
              OP_NOT  operacion {izqPointer = operacionPointer; esBetween =0;} OP_IGUALDAD{printf("comparacion por igual negada\n"); apilar(&pilaSaltos,6); } operacion  {derPointer = operacionPointer;} |
              between ;
 
-repeticion: WHILE P_A condicion P_C LL_A bloque LL_C {printf("bucle while\n");};
+repeticion: WHILE { 
+                     cadenaEtiq = malloc(sizeof (char)* 156);
+		                  strcpy(cadenaEtiq,"ETIQ");
+                      itoa(etiquetaWhile,numeroTextoWhile,10);
+		                  strcat(cadenaEtiq,numeroTextoWhile);
+		                  etiquetaWhile++;
+		                  etiqueta = crearTerceto(cadenaEtiq,"","");
+	                    apilar(&condPila,etiqueta); //Lo pongo aca arriba antes de que se aumente el contador de tercetos */
+                  }
+
+            P_A condicion P_C LL_A bloque LL_C {
+              
+                                                printf("bucle while\n");
+                                               saltoWhile = desapilar(&pilaSaltos); //numero de salto
+					                                      numeroTercetoWhile = desapilar(&condPila); //numero de terceto (aca estaría el numero donde deberia ir el terceto del salto si ya no cumple la condicion del while)
+					                                      crearTercetoNumero (devolverSalto(saltoWhile), crearIndice(contadorTercetos+1),"", numeroTercetoWhile); //Hago un +2 porque tengo: 1-Terceto de JMP primero
+					                                      completarTercetosAnd(contadorTercetos);
+					                                      numeroTercetoWhile = desapilar(&condPila); //Desapilo la posicion del inicio del While
+					                                      crearTerceto ("JMP", crearIndice(numeroTercetoWhile),"");
+            
+                                                };
 
 between: BETWEEN P_A ID {esBetween = 1; 
                          cadenaIDBetween = malloc(sizeof(char)*strlen($3));
