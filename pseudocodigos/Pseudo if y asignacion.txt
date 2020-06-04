@@ -91,7 +91,11 @@ decision: IF P_A condicion P_C LL_A bloque {
         ELSE LL_A bloque {numeroSalto = desapilar(condPila); crearTercetoNumero("JMP",contadorTercetos,null, numeroSalto);} LL_C {printf("IF con rama falsa\n");};
 
 repeticion: WHILE {
-			etiqueta = crearTerceto("ETIQ1","","");
+			char * cadenaEtiq = malloc(sizeof (char)* 156);
+			strcpy(cadenaEtiq,"ETIQ");
+			strcat(cadenaEtiq,itoa(etiquetaWhile));
+			etiquetaWhile++;
+			etiqueta = crearTerceto(cadena,"","");
 
 			apilar(condPila,etiqueta);} //Lo pongo aca arriba antes de que se aumente el contador de tercetos
 						
