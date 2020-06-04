@@ -4,10 +4,10 @@ DEFVAR
 	INT : a; b; uno; dos; tres
 ENDEF
 BEGIN
+    a:=15
     if(BETWEEN (a, [b ; 12])){
 		DISPLAY "VERDADERO"
 	}
-	else{
-       DISPLAY "FALSO"     
-	}
+     a1:=25+b1
+     boke:="BOKEEEEEE"
 END

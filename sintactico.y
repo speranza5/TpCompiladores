@@ -142,6 +142,9 @@ int izqPointer;
 int derPointer;
 void completarTercetosAnd(int);
 char * devolverSalto(int );
+/*punteros y esas cosas para el IF */
+int salto;
+int numeroCondicion;
 
 %}
 
@@ -251,10 +254,15 @@ factor: ID {printf("factor es ID: %s\n",$1 ); factorPointer=crearTerceto($1,"","
                             terminoPointer = desapilar(&pilaTerminos);
            };
 
-decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");}| 
+decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");
+                                                 salto = desapilar(&pilaSaltos); 
+												                         numeroCondicion = desapilar(&condPila); 
+												                         crearTercetoNumero (devolverSalto(salto), crearIndice(contadorTercetos),"", numeroCondicion);
+												                         completarTercetosAnd(contadorTercetos);
+                                                }| 
           IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C {printf("IF con rama falsa\n");};
 
-condicion: comparacion {printf("Comparacion unica");
+condicion: comparacion {printf("Comparacion unica\n");
                         if(esBetween==0){
 			                    cmpPointer = crearTerceto("CMP",crearIndice(izqPointer),crearIndice(derPointer)); 
 						              vectorComparaciones[contadorComparaciones]= -1;
@@ -287,8 +295,8 @@ condicion: comparacion {printf("Comparacion unica");
            comparacion {
              				if(esBetween==0){
 				              cmpPointer = crearTerceto("CMP",crearIndice(izqPointer),crearIndice(derPointer)); 
-				              /*vectorComparaciones[contadorComparaciones]= -1;
-				              contadorComparaciones++;*/
+				              vectorComparaciones[contadorComparaciones]= -1;
+				              contadorComparaciones++;
 				              tipoSaltoPalOr = desapilar(&pilaSaltos);
 				              posicionACompletarOrFalso = contadorTercetos;
 				              contadorTercetos++;
