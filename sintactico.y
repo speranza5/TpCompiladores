@@ -112,7 +112,7 @@ int asigPointer;
 char * cadenaAsigString;
 t_pila pilaOperaciones;
 t_pila pilaTerminos;
-
+t_pila pilaSaltosAnd;
 
 /*punteros y esas cosas para el LET*/
 int tercetoID;
@@ -145,6 +145,8 @@ char * devolverSalto(int );
 /*punteros y esas cosas para el IF */
 int salto;
 int numeroCondicion;
+int numeroSalto;
+t_pila pilaCompletarAnds;
 
 %}
 
@@ -260,13 +262,24 @@ decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");
 												                         crearTercetoNumero (devolverSalto(salto), crearIndice(contadorTercetos),"", numeroCondicion);
 												                         completarTercetosAnd(contadorTercetos);
                                                 }| 
-          IF P_A condicion P_C LL_A bloque LL_C ELSE LL_A bloque LL_C {printf("IF con rama falsa\n");};
+          IF P_A condicion P_C LL_A bloque LL_C ELSE {
+            					salto = desapilar(&pilaSaltos); 
+											numeroCondicion = desapilar(&condPila); 
+											crearTercetoNumero(devolverSalto(salto), crearIndice(contadorTercetos+1),"", numeroCondicion);
+											apilar(&condPila,contadorTercetos); 
+										  contadorTercetos++;
+                      completarTercetosAnd(contadorTercetos);
+                      } 
+           LL_A bloque LL_C {printf("IF con rama falsa\n"); 
+                          numeroSalto = desapilar(&condPila);
+                          printf("Numero de salto: %d\n",numeroSalto);
+                          crearTercetoNumero("JMP",crearIndice(contadorTercetos),"", numeroSalto);
+                            };
 
 condicion: comparacion {printf("Comparacion unica\n");
                         if(esBetween==0){
 			                    cmpPointer = crearTerceto("CMP",crearIndice(izqPointer),crearIndice(derPointer)); 
-						              vectorComparaciones[contadorComparaciones]= -1;
-						              contadorComparaciones++;
+                          apilar(&pilaCompletarAnds,-1);
 						              apilar(&condPila, contadorTercetos);
 						              contadorTercetos ++; 
 						              condicionPointer = cmpPointer;
@@ -276,9 +289,9 @@ condicion: comparacion {printf("Comparacion unica\n");
            comparacion {
             if(esBetween==0){
 						  cmpPointer = crearTerceto("CMP",crearIndice(izqPointer),crearIndice(derPointer)); 
-						  vectorComparaciones[contadorComparaciones]= contadorTercetos;
-						  contadorComparaciones++;
-						  apilar(&condPila, contadorTercetos);
+						  apilar(&pilaCompletarAnds,contadorTercetos);
+						  //pilar(&condPila, contadorTercetos);
+              apilar(&pilaSaltosAnd,desapilar(&pilaSaltos));
 						  contadorTercetos ++; 
 						  condicionPointer = cmpPointer;
 						 }
@@ -295,8 +308,7 @@ condicion: comparacion {printf("Comparacion unica\n");
            comparacion {
              				if(esBetween==0){
 				              cmpPointer = crearTerceto("CMP",crearIndice(izqPointer),crearIndice(derPointer)); 
-				              vectorComparaciones[contadorComparaciones]= -1;
-				              contadorComparaciones++;
+                      apilar(&pilaCompletarAnds,-1);
 				              tipoSaltoPalOr = desapilar(&pilaSaltos);
 				              posicionACompletarOrFalso = contadorTercetos;
 				              contadorTercetos++;
@@ -307,8 +319,6 @@ condicion: comparacion {printf("Comparacion unica\n");
             OP_OR comparacion {printf("comparacion por or");
             				           if(esBetween==0){
 				                          cmpPointer = crearTerceto("CMP",crearIndice(izqPointer),crearIndice(derPointer));
-				                          vectorComparaciones[contadorComparaciones]= -1;
-				                          contadorComparaciones++;
 				                          apilar(&condPila, contadorTercetos); 
 				                          contadorTercetos ++; 
 				                          crearTercetoNumero(devolverSalto(tipoSaltoPalOr),crearIndice(cmpPointer),"",posicionACompletarOrFalso);
@@ -338,10 +348,9 @@ between: BETWEEN P_A ID {esBetween = 1;
                          cadenaIDBetween = malloc(sizeof(char)*strlen($3));
                          strcpy(cadenaIDBetween,$3);
                         } COMA COR_A operacion{
-                                                apilar(&pilaSaltos, 4);
 																					      crearTerceto("CMP",cadenaIDBetween,crearIndice(operacionPointer));
-																					      vectorComparaciones[contadorComparaciones]= contadorTercetos;
-																					      contadorComparaciones++;
+						                                    apilar(&pilaCompletarAnds,contadorTercetos);
+                                                apilar(&pilaSaltosAnd,4);
 																					      apilar(&condPila, contadorTercetos);
 																					      contadorTercetos ++; 
                                                                             } 
@@ -412,6 +421,8 @@ int main(int argc,char *argv[])
     crearPila(&pilaOperacionesLet);
     crearPila(&condPila);
     crearPila(&pilaSaltos);
+    crearPila(&pilaCompletarAnds);
+    crearPila(&pilaSaltosAnd);
 	yyparse();
   }
   fclose(yyin);
@@ -815,7 +826,7 @@ char * devolverSalto(int numero){
 			return "JE";
 			break;
     default:
-      return "NASNOASNOASDO";
+      return "Invalido";
       break;
 	}
 }
@@ -876,15 +887,22 @@ void crearTercetosLet(){
 }
 
 void completarTercetosAnd(int posicion){
-	int tipoSalto, numeroTerceto;
+  int tipoSalto, numeroTerceto, n;
+  numeroTerceto = desapilar(&pilaCompletarAnds);
+  if(numeroTerceto != -1){
+    tipoSalto = desapilar(&pilaSaltosAnd);
+    crearTercetoNumero(devolverSalto(tipoSalto),crearIndice(contadorTercetos),"",numeroTerceto);
+  }
+/*	int tipoSalto, numeroTerceto;
 	if (vectorComparaciones[contadorComparaciones]==-1){
 		contadorComparaciones--;
 	}
 	else{
 		tipoSalto=desapilar(&pilaSaltos);
 		numeroTerceto = desapilar(&condPila);
+    printf("tipo de salto %d  numero de terceto %d\n", tipoSaltoPalOr,numeroTerceto);
 		crearTercetoNumero(devolverSalto(tipoSalto),crearIndice(posicion),"",numeroTerceto);
 		contadorComparaciones--;
 	}
-	
+	*/
 }
