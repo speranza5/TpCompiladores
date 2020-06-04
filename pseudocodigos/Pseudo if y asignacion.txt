@@ -47,6 +47,8 @@ int tipoSaltoPalOr;
 int posicionACompletarOr;
 int idBetween;
 int esBetween =0;
+int etiquetaWhile=0;
+t_pila pilaEtiquetas;
 
 asignacion: ID OP_ASIG operacion{printf("asignacion a operacion\n"); asigPointer = crearTerceto("=", $1, crearIndice(opPointer));}|
             ID OP_ASIG CONSTSTRING {printf( "asignacion a STRING: %s\n", yylval.str_val); agregarCteStringATabla(yylval.str_val); asigPointer = crearTerceto("=", $1, yylval.str_val);}};
@@ -89,19 +91,19 @@ decision: IF P_A condicion P_C LL_A bloque {
         ELSE LL_A bloque {numeroSalto = desapilar(condPila); crearTercetoNumero("JMP",contadorTercetos,null, numeroSalto);} LL_C {printf("IF con rama falsa\n");};
 
 repeticion: WHILE {
-			etiqueta = crearTerceto("BOKE","","");
+			etiqueta = crearTerceto("ETIQ1","","");
 
 			apilar(condPila,etiqueta);} //Lo pongo aca arriba antes de que se aumente el contador de tercetos
 						
 			P_A condicion P_C LL_A bloque
 			
 			LL_C {printf("bucle while\n");
-						salto = desapilar(pilaSalto); //numero de salto
-						numeroTerceto = desapilar(condPila); //numero de terceto (aca estaría el numero donde deberia ir el terceto del salto si ya no cumple la condicion del while)
-						crearTercetoNumero (devolverSalto(salto), crearIndice(contadorTercetos+1),null, numeroTerceto); //Hago un +2 porque tengo: 1-Terceto de JMP primero
+						saltoWhile = desapilar(pilaSaltos); //numero de salto
+						numeroTercetoWhile = desapilar(condPila); //numero de terceto (aca estaría el numero donde deberia ir el terceto del salto si ya no cumple la condicion del while)
+						crearTercetoNumero (devolverSalto(saltoWhile), crearIndice(contadorTercetos+1),null, numeroTercetoWhile); //Hago un +2 porque tengo: 1-Terceto de JMP primero
 						completarTercetosAnd(contadorTercetos);
-						numeroTerceto = desapilar(condPila); //Desapilo la posicion del inicio del While
-						crearTerceto ("JMP", crearIndice(numeroTerceto),null);
+						numeroTercetoWhile = desapilar(condPila); //Desapilo la posicion del inicio del While
+						crearTerceto ("JMP", crearIndice(numeroTercetoWhile),"");
 						
 			};
 condicion: comparacion {

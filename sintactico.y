@@ -147,7 +147,10 @@ int salto;
 int numeroCondicion;
 int numeroSalto;
 t_pila pilaCompletarAnds;
-
+/*punteros y esas cosas para el while*/
+int etiqueta;
+int numeroTercetoWhile;
+int saltoWhile;
 %}
 
 %union {
