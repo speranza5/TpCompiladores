@@ -166,89 +166,83 @@ Gramática
 
    86 $@37: /* vacío */
 
-   87 $@38: /* vacío */
+   87 repeticion: WHILE $@37 P_A condicion P_C LL_A bloque LL_C
 
-   88 $@39: /* vacío */
+   88 $@38: /* vacío */
 
-   89 $@40: /* vacío */
+   89 $@39: /* vacío */
 
-   90 repeticion: WHILE $@37 P_A condicion $@38 P_C LL_A $@39 bloque $@40 LL_C
+   90 $@40: /* vacío */
 
-   91 $@41: /* vacío */
+   91 between: BETWEEN P_A ID $@38 COMA COR_A operacion $@39 PUNTO_COMA operacion $@40 COR_C P_C
 
-   92 $@42: /* vacío */
+   92 asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C
 
-   93 $@43: /* vacío */
+   93 lista_var: lista_var COMA ID
+   94          | ID
 
-   94 between: BETWEEN P_A ID $@41 COMA COR_A operacion $@42 PUNTO_COMA operacion $@43 COR_C P_C
+   95 lista_valores: operacion
+   96              | lista_valores PUNTO_COMA operacion
 
-   95 asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C
+   97 comentarios: COMENTARIO
 
-   96 lista_var: lista_var COMA ID
-   97          | ID
+   98 ingreso: GET ID
 
-   98 lista_valores: operacion
-   99              | lista_valores PUNTO_COMA operacion
-
-  100 comentarios: COMENTARIO
-
-  101 ingreso: GET ID
-
-  102 egreso: DISPLAY CONSTSTRING
-  103       | DISPLAY ID
+   99 egreso: DISPLAY CONSTSTRING
+  100       | DISPLAY ID
 
 
 Terminales con las reglas donde aparecen
 
 $end (0) 0
 error (256)
-ID (258) 13 14 27 29 36 94 96 97 101 103
+ID (258) 13 14 27 29 36 91 93 94 98 100
 CONSTINT (259) 37
 CONSTREAL (260) 38
-CONSTSTRING (261) 29 102
+CONSTSTRING (261) 29 99
 ENTERO (262) 8
 STRING (263) 12
 REAL (264) 10
-PUNTO_COMA (265) 13 94 99
-COMA (266) 94 96
+PUNTO_COMA (265) 13 91 96
+COMA (266) 91 93
 DOS_PUNTOS (267) 8 10 12
 ENDEF (268) 4
 DEFVAR (269) 4
 PALABRA (270)
 TEXTO (271)
-COMENTARIO (272) 100
+COMENTARIO (272) 97
 OP_ASIG (273) 27 29
 INICIO (274) 16
 FIN (275) 16
-P_A (276) 40 41 43 90 94 95
-P_C (277) 40 41 43 90 94 95
+P_A (276) 40 41 43 87 91 92
+P_C (277) 40 41 43 87 91 92
 OP_SUMA (278) 30
 OP_RESTA (279) 31
 OP_MUL (280) 33
 OP_DIV (281) 34
 IF (282) 41 43
 ELSE (283) 43
-LL_A (284) 41 43 90
-LL_C (285) 41 43 90
+LL_A (284) 41 43 87
+LL_C (285) 41 43 87
 OP_AND (286) 46
 OP_OR (287) 48
 OP_NOT (288) 69 72 75 78 81 84
-WHILE (289) 90
+WHILE (289) 87
 OP_MENOR (290) 51 69
 OP_MENORIGUAL (291) 54 72
 OP_MAYOR (292) 57 75
 OP_MAYORIGUAL (293) 60 78
 OP_DISTINTO (294) 63 81
 OP_IGUALDAD (295) 66 84
-BETWEEN (296) 94
-COR_A (297) 94
-COR_C (298) 94
-LET (299) 95
-OP_IGUAL (300) 95
+BETWEEN (296) 91
+COR_A (297) 91
+COR_C (298) 91
+LET (299) 92
+OP_IGUAL (300) 92
 COM_CIERRE (301)
 COM_APER (302)
-GET (303) 101
-DISPLAY (304) 102 103
+GET (303) 98
+DISPLAY (304) 99 100
 
 
 No terminales con las reglas donde aparecen
@@ -280,7 +274,7 @@ algoritmo (61)
 $@6 (62)
     en la izquierda: 15, en la derecha: 16
 bloque (63)
-    en la izquierda: 17 18, en la derecha: 16 18 41 43 90
+    en la izquierda: 17 18, en la derecha: 16 18 41 43 87
 sentencia (64)
     en la izquierda: 19 20 21 22 23 24 25, en la derecha: 17 18
 asignacion (65)
@@ -291,7 +285,7 @@ $@8 (67)
     en la izquierda: 28, en la derecha: 29
 operacion (68)
     en la izquierda: 30 31 32, en la derecha: 27 30 31 40 51 54 57
-    60 63 66 69 72 75 78 81 84 94 98 99
+    60 63 66 69 72 75 78 81 84 91 95 96
 termino (69)
     en la izquierda: 33 34 35, en la derecha: 30 31 32 33 34
 factor (70)
@@ -303,7 +297,7 @@ decision (72)
 $@10 (73)
     en la izquierda: 42, en la derecha: 43
 condicion (74)
-    en la izquierda: 44 46 48, en la derecha: 41 43 90
+    en la izquierda: 44 46 48, en la derecha: 41 43 87
 $@11 (75)
     en la izquierda: 45, en la derecha: 46
 $@12 (76)
@@ -360,35 +354,29 @@ $@35 (100)
 $@36 (101)
     en la izquierda: 83, en la derecha: 84
 repeticion (102)
-    en la izquierda: 90, en la derecha: 21
+    en la izquierda: 87, en la derecha: 21
 $@37 (103)
-    en la izquierda: 86, en la derecha: 90
-$@38 (104)
-    en la izquierda: 87, en la derecha: 90
-$@39 (105)
-    en la izquierda: 88, en la derecha: 90
-$@40 (106)
-    en la izquierda: 89, en la derecha: 90
-between (107)
-    en la izquierda: 94, en la derecha: 85
-$@41 (108)
-    en la izquierda: 91, en la derecha: 94
-$@42 (109)
-    en la izquierda: 92, en la derecha: 94
-$@43 (110)
-    en la izquierda: 93, en la derecha: 94
-asignacionlet (111)
-    en la izquierda: 95, en la derecha: 22
-lista_var (112)
-    en la izquierda: 96 97, en la derecha: 95 96
-lista_valores (113)
-    en la izquierda: 98 99, en la derecha: 95 99
-comentarios (114)
-    en la izquierda: 100, en la derecha: 23
-ingreso (115)
-    en la izquierda: 101, en la derecha: 24
-egreso (116)
-    en la izquierda: 102 103, en la derecha: 25
+    en la izquierda: 86, en la derecha: 87
+between (104)
+    en la izquierda: 91, en la derecha: 85
+$@38 (105)
+    en la izquierda: 88, en la derecha: 91
+$@39 (106)
+    en la izquierda: 89, en la derecha: 91
+$@40 (107)
+    en la izquierda: 90, en la derecha: 91
+asignacionlet (108)
+    en la izquierda: 92, en la derecha: 22
+lista_var (109)
+    en la izquierda: 93 94, en la derecha: 92 93
+lista_valores (110)
+    en la izquierda: 95 96, en la derecha: 92 96
+comentarios (111)
+    en la izquierda: 97, en la derecha: 23
+ingreso (112)
+    en la izquierda: 98, en la derecha: 24
+egreso (113)
+    en la izquierda: 99 100, en la derecha: 25
 
 
 estado 0
@@ -584,9 +572,9 @@ estado 20
 
 estado 21
 
-  100 comentarios: COMENTARIO .
+   97 comentarios: COMENTARIO .
 
-    $default  reduce usando la regla 100 (comentarios)
+    $default  reduce usando la regla 97 (comentarios)
 
 
 estado 22
@@ -599,7 +587,7 @@ estado 22
 
 estado 23
 
-   90 repeticion: WHILE . $@37 P_A condicion $@38 P_C LL_A $@39 bloque $@40 LL_C
+   87 repeticion: WHILE . $@37 P_A condicion P_C LL_A bloque LL_C
 
     $default  reduce usando la regla 86 ($@37)
 
@@ -608,7 +596,7 @@ estado 23
 
 estado 24
 
-   95 asignacionlet: LET . lista_var OP_IGUAL P_A lista_valores P_C
+   92 asignacionlet: LET . lista_var OP_IGUAL P_A lista_valores P_C
 
     ID  desplazar e ir al estado 42
 
@@ -617,15 +605,15 @@ estado 24
 
 estado 25
 
-  101 ingreso: GET . ID
+   98 ingreso: GET . ID
 
     ID  desplazar e ir al estado 44
 
 
 estado 26
 
-  102 egreso: DISPLAY . CONSTSTRING
-  103       | DISPLAY . ID
+   99 egreso: DISPLAY . CONSTSTRING
+  100       | DISPLAY . ID
 
     ID           desplazar e ir al estado 45
     CONSTSTRING  desplazar e ir al estado 46
@@ -772,22 +760,22 @@ estado 40
 
 estado 41
 
-   90 repeticion: WHILE $@37 . P_A condicion $@38 P_C LL_A $@39 bloque $@40 LL_C
+   87 repeticion: WHILE $@37 . P_A condicion P_C LL_A bloque LL_C
 
     P_A  desplazar e ir al estado 67
 
 
 estado 42
 
-   97 lista_var: ID .
+   94 lista_var: ID .
 
-    $default  reduce usando la regla 97 (lista_var)
+    $default  reduce usando la regla 94 (lista_var)
 
 
 estado 43
 
-   95 asignacionlet: LET lista_var . OP_IGUAL P_A lista_valores P_C
-   96 lista_var: lista_var . COMA ID
+   92 asignacionlet: LET lista_var . OP_IGUAL P_A lista_valores P_C
+   93 lista_var: lista_var . COMA ID
 
     COMA      desplazar e ir al estado 68
     OP_IGUAL  desplazar e ir al estado 69
@@ -795,23 +783,23 @@ estado 43
 
 estado 44
 
-  101 ingreso: GET ID .
+   98 ingreso: GET ID .
 
-    $default  reduce usando la regla 101 (ingreso)
+    $default  reduce usando la regla 98 (ingreso)
 
 
 estado 45
 
-  103 egreso: DISPLAY ID .
+  100 egreso: DISPLAY ID .
 
-    $default  reduce usando la regla 103 (egreso)
+    $default  reduce usando la regla 100 (egreso)
 
 
 estado 46
 
-  102 egreso: DISPLAY CONSTSTRING .
+   99 egreso: DISPLAY CONSTSTRING .
 
-    $default  reduce usando la regla 102 (egreso)
+    $default  reduce usando la regla 99 (egreso)
 
 
 estado 47
@@ -937,7 +925,7 @@ estado 59
 
 estado 60
 
-   94 between: BETWEEN . P_A ID $@41 COMA COR_A operacion $@42 PUNTO_COMA operacion $@43 COR_C P_C
+   91 between: BETWEEN . P_A ID $@38 COMA COR_A operacion $@39 PUNTO_COMA operacion $@40 COR_C P_C
 
     P_A  desplazar e ir al estado 75
 
@@ -1021,7 +1009,7 @@ estado 66
 
 estado 67
 
-   90 repeticion: WHILE $@37 P_A . condicion $@38 P_C LL_A $@39 bloque $@40 LL_C
+   87 repeticion: WHILE $@37 P_A . condicion P_C LL_A bloque LL_C
 
     ID         desplazar e ir al estado 55
     CONSTINT   desplazar e ir al estado 56
@@ -1040,14 +1028,14 @@ estado 67
 
 estado 68
 
-   96 lista_var: lista_var COMA . ID
+   93 lista_var: lista_var COMA . ID
 
     ID  desplazar e ir al estado 90
 
 
 estado 69
 
-   95 asignacionlet: LET lista_var OP_IGUAL . P_A lista_valores P_C
+   92 asignacionlet: LET lista_var OP_IGUAL . P_A lista_valores P_C
 
     P_A  desplazar e ir al estado 91
 
@@ -1123,7 +1111,7 @@ estado 74
 
 estado 75
 
-   94 between: BETWEEN P_A . ID $@41 COMA COR_A operacion $@42 PUNTO_COMA operacion $@43 COR_C P_C
+   91 between: BETWEEN P_A . ID $@38 COMA COR_A operacion $@39 PUNTO_COMA operacion $@40 COR_C P_C
 
     ID  desplazar e ir al estado 100
 
@@ -1244,23 +1232,21 @@ estado 88
 
 estado 89
 
-   90 repeticion: WHILE $@37 P_A condicion . $@38 P_C LL_A $@39 bloque $@40 LL_C
+   87 repeticion: WHILE $@37 P_A condicion . P_C LL_A bloque LL_C
 
-    $default  reduce usando la regla 87 ($@38)
-
-    $@38  ir al estado 114
+    P_C  desplazar e ir al estado 114
 
 
 estado 90
 
-   96 lista_var: lista_var COMA ID .
+   93 lista_var: lista_var COMA ID .
 
-    $default  reduce usando la regla 96 (lista_var)
+    $default  reduce usando la regla 93 (lista_var)
 
 
 estado 91
 
-   95 asignacionlet: LET lista_var OP_IGUAL P_A . lista_valores P_C
+   92 asignacionlet: LET lista_var OP_IGUAL P_A . lista_valores P_C
 
     ID         desplazar e ir al estado 55
     CONSTINT   desplazar e ir al estado 56
@@ -1335,11 +1321,11 @@ estado 99
 
 estado 100
 
-   94 between: BETWEEN P_A ID . $@41 COMA COR_A operacion $@42 PUNTO_COMA operacion $@43 COR_C P_C
+   91 between: BETWEEN P_A ID . $@38 COMA COR_A operacion $@39 PUNTO_COMA operacion $@40 COR_C P_C
 
-    $default  reduce usando la regla 91 ($@41)
+    $default  reduce usando la regla 88 ($@38)
 
-    $@41  ir al estado 124
+    $@38  ir al estado 124
 
 
 estado 101
@@ -1496,27 +1482,27 @@ estado 113
 
 estado 114
 
-   90 repeticion: WHILE $@37 P_A condicion $@38 . P_C LL_A $@39 bloque $@40 LL_C
+   87 repeticion: WHILE $@37 P_A condicion P_C . LL_A bloque LL_C
 
-    P_C  desplazar e ir al estado 134
+    LL_A  desplazar e ir al estado 134
 
 
 estado 115
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
-   98 lista_valores: operacion .
+   95 lista_valores: operacion .
 
     OP_SUMA   desplazar e ir al estado 76
     OP_RESTA  desplazar e ir al estado 77
 
-    $default  reduce usando la regla 98 (lista_valores)
+    $default  reduce usando la regla 95 (lista_valores)
 
 
 estado 116
 
-   95 asignacionlet: LET lista_var OP_IGUAL P_A lista_valores . P_C
-   99 lista_valores: lista_valores . PUNTO_COMA operacion
+   92 asignacionlet: LET lista_var OP_IGUAL P_A lista_valores . P_C
+   96 lista_valores: lista_valores . PUNTO_COMA operacion
 
     PUNTO_COMA  desplazar e ir al estado 135
     P_C         desplazar e ir al estado 136
@@ -1585,7 +1571,7 @@ estado 123
 
 estado 124
 
-   94 between: BETWEEN P_A ID $@41 . COMA COR_A operacion $@42 PUNTO_COMA operacion $@43 COR_C P_C
+   91 between: BETWEEN P_A ID $@38 . COMA COR_A operacion $@39 PUNTO_COMA operacion $@40 COR_C P_C
 
     COMA  desplazar e ir al estado 143
 
@@ -1715,14 +1701,30 @@ estado 133
 
 estado 134
 
-   90 repeticion: WHILE $@37 P_A condicion $@38 P_C . LL_A $@39 bloque $@40 LL_C
+   87 repeticion: WHILE $@37 P_A condicion P_C LL_A . bloque LL_C
 
-    LL_A  desplazar e ir al estado 151
+    ID          desplazar e ir al estado 20
+    COMENTARIO  desplazar e ir al estado 21
+    IF          desplazar e ir al estado 22
+    WHILE       desplazar e ir al estado 23
+    LET         desplazar e ir al estado 24
+    GET         desplazar e ir al estado 25
+    DISPLAY     desplazar e ir al estado 26
+
+    bloque         ir al estado 151
+    sentencia      ir al estado 28
+    asignacion     ir al estado 29
+    decision       ir al estado 30
+    repeticion     ir al estado 31
+    asignacionlet  ir al estado 32
+    comentarios    ir al estado 33
+    ingreso        ir al estado 34
+    egreso         ir al estado 35
 
 
 estado 135
 
-   99 lista_valores: lista_valores PUNTO_COMA . operacion
+   96 lista_valores: lista_valores PUNTO_COMA . operacion
 
     ID         desplazar e ir al estado 55
     CONSTINT   desplazar e ir al estado 56
@@ -1736,9 +1738,9 @@ estado 135
 
 estado 136
 
-   95 asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C .
+   92 asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C .
 
-    $default  reduce usando la regla 95 (asignacionlet)
+    $default  reduce usando la regla 92 (asignacionlet)
 
 
 estado 137
@@ -1827,7 +1829,7 @@ estado 142
 
 estado 143
 
-   94 between: BETWEEN P_A ID $@41 COMA . COR_A operacion $@42 PUNTO_COMA operacion $@43 COR_C P_C
+   91 between: BETWEEN P_A ID $@38 COMA . COR_A operacion $@39 PUNTO_COMA operacion $@40 COR_C P_C
 
     COR_A  desplazar e ir al estado 159
 
@@ -1916,23 +1918,38 @@ estado 150
 
 estado 151
 
-   90 repeticion: WHILE $@37 P_A condicion $@38 P_C LL_A . $@39 bloque $@40 LL_C
+   18 bloque: bloque . sentencia
+   87 repeticion: WHILE $@37 P_A condicion P_C LL_A bloque . LL_C
 
-    $default  reduce usando la regla 88 ($@39)
+    ID          desplazar e ir al estado 20
+    COMENTARIO  desplazar e ir al estado 21
+    IF          desplazar e ir al estado 22
+    LL_C        desplazar e ir al estado 161
+    WHILE       desplazar e ir al estado 23
+    LET         desplazar e ir al estado 24
+    GET         desplazar e ir al estado 25
+    DISPLAY     desplazar e ir al estado 26
 
-    $@39  ir al estado 161
+    sentencia      ir al estado 48
+    asignacion     ir al estado 29
+    decision       ir al estado 30
+    repeticion     ir al estado 31
+    asignacionlet  ir al estado 32
+    comentarios    ir al estado 33
+    ingreso        ir al estado 34
+    egreso         ir al estado 35
 
 
 estado 152
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
-   99 lista_valores: lista_valores PUNTO_COMA operacion .
+   96 lista_valores: lista_valores PUNTO_COMA operacion .
 
     OP_SUMA   desplazar e ir al estado 76
     OP_RESTA  desplazar e ir al estado 77
 
-    $default  reduce usando la regla 99 (lista_valores)
+    $default  reduce usando la regla 96 (lista_valores)
 
 
 estado 153
@@ -2009,7 +2026,7 @@ estado 158
 
 estado 159
 
-   94 between: BETWEEN P_A ID $@41 COMA COR_A . operacion $@42 PUNTO_COMA operacion $@43 COR_C P_C
+   91 between: BETWEEN P_A ID $@38 COMA COR_A . operacion $@39 PUNTO_COMA operacion $@40 COR_C P_C
 
     ID         desplazar e ir al estado 55
     CONSTINT   desplazar e ir al estado 56
@@ -2032,82 +2049,40 @@ estado 160
 
 estado 161
 
-   90 repeticion: WHILE $@37 P_A condicion $@38 P_C LL_A $@39 . bloque $@40 LL_C
+   87 repeticion: WHILE $@37 P_A condicion P_C LL_A bloque LL_C .
 
-    ID          desplazar e ir al estado 20
-    COMENTARIO  desplazar e ir al estado 21
-    IF          desplazar e ir al estado 22
-    WHILE       desplazar e ir al estado 23
-    LET         desplazar e ir al estado 24
-    GET         desplazar e ir al estado 25
-    DISPLAY     desplazar e ir al estado 26
-
-    bloque         ir al estado 164
-    sentencia      ir al estado 28
-    asignacion     ir al estado 29
-    decision       ir al estado 30
-    repeticion     ir al estado 31
-    asignacionlet  ir al estado 32
-    comentarios    ir al estado 33
-    ingreso        ir al estado 34
-    egreso         ir al estado 35
+    $default  reduce usando la regla 87 (repeticion)
 
 
 estado 162
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
-   94 between: BETWEEN P_A ID $@41 COMA COR_A operacion . $@42 PUNTO_COMA operacion $@43 COR_C P_C
+   91 between: BETWEEN P_A ID $@38 COMA COR_A operacion . $@39 PUNTO_COMA operacion $@40 COR_C P_C
 
     OP_SUMA   desplazar e ir al estado 76
     OP_RESTA  desplazar e ir al estado 77
 
-    $default  reduce usando la regla 92 ($@42)
+    $default  reduce usando la regla 89 ($@39)
 
-    $@42  ir al estado 165
+    $@39  ir al estado 164
 
 
 estado 163
 
    43 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE $@10 . LL_A bloque LL_C
 
-    LL_A  desplazar e ir al estado 166
+    LL_A  desplazar e ir al estado 165
 
 
 estado 164
 
-   18 bloque: bloque . sentencia
-   90 repeticion: WHILE $@37 P_A condicion $@38 P_C LL_A $@39 bloque . $@40 LL_C
+   91 between: BETWEEN P_A ID $@38 COMA COR_A operacion $@39 . PUNTO_COMA operacion $@40 COR_C P_C
 
-    ID          desplazar e ir al estado 20
-    COMENTARIO  desplazar e ir al estado 21
-    IF          desplazar e ir al estado 22
-    WHILE       desplazar e ir al estado 23
-    LET         desplazar e ir al estado 24
-    GET         desplazar e ir al estado 25
-    DISPLAY     desplazar e ir al estado 26
-
-    $default  reduce usando la regla 89 ($@40)
-
-    sentencia      ir al estado 48
-    asignacion     ir al estado 29
-    decision       ir al estado 30
-    repeticion     ir al estado 31
-    $@40           ir al estado 167
-    asignacionlet  ir al estado 32
-    comentarios    ir al estado 33
-    ingreso        ir al estado 34
-    egreso         ir al estado 35
+    PUNTO_COMA  desplazar e ir al estado 166
 
 
 estado 165
-
-   94 between: BETWEEN P_A ID $@41 COMA COR_A operacion $@42 . PUNTO_COMA operacion $@43 COR_C P_C
-
-    PUNTO_COMA  desplazar e ir al estado 168
-
-
-estado 166
 
    43 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE $@10 LL_A . bloque LL_C
 
@@ -2119,7 +2094,7 @@ estado 166
     GET         desplazar e ir al estado 25
     DISPLAY     desplazar e ir al estado 26
 
-    bloque         ir al estado 169
+    bloque         ir al estado 167
     sentencia      ir al estado 28
     asignacion     ir al estado 29
     decision       ir al estado 30
@@ -2130,28 +2105,21 @@ estado 166
     egreso         ir al estado 35
 
 
-estado 167
+estado 166
 
-   90 repeticion: WHILE $@37 P_A condicion $@38 P_C LL_A $@39 bloque $@40 . LL_C
-
-    LL_C  desplazar e ir al estado 170
-
-
-estado 168
-
-   94 between: BETWEEN P_A ID $@41 COMA COR_A operacion $@42 PUNTO_COMA . operacion $@43 COR_C P_C
+   91 between: BETWEEN P_A ID $@38 COMA COR_A operacion $@39 PUNTO_COMA . operacion $@40 COR_C P_C
 
     ID         desplazar e ir al estado 55
     CONSTINT   desplazar e ir al estado 56
     CONSTREAL  desplazar e ir al estado 57
     P_A        desplazar e ir al estado 58
 
-    operacion  ir al estado 171
+    operacion  ir al estado 168
     termino    ir al estado 62
     factor     ir al estado 63
 
 
-estado 169
+estado 167
 
    18 bloque: bloque . sentencia
    43 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE $@10 LL_A bloque . LL_C
@@ -2159,7 +2127,7 @@ estado 169
     ID          desplazar e ir al estado 20
     COMENTARIO  desplazar e ir al estado 21
     IF          desplazar e ir al estado 22
-    LL_C        desplazar e ir al estado 172
+    LL_C        desplazar e ir al estado 169
     WHILE       desplazar e ir al estado 23
     LET         desplazar e ir al estado 24
     GET         desplazar e ir al estado 25
@@ -2175,50 +2143,43 @@ estado 169
     egreso         ir al estado 35
 
 
-estado 170
-
-   90 repeticion: WHILE $@37 P_A condicion $@38 P_C LL_A $@39 bloque $@40 LL_C .
-
-    $default  reduce usando la regla 90 (repeticion)
-
-
-estado 171
+estado 168
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
-   94 between: BETWEEN P_A ID $@41 COMA COR_A operacion $@42 PUNTO_COMA operacion . $@43 COR_C P_C
+   91 between: BETWEEN P_A ID $@38 COMA COR_A operacion $@39 PUNTO_COMA operacion . $@40 COR_C P_C
 
     OP_SUMA   desplazar e ir al estado 76
     OP_RESTA  desplazar e ir al estado 77
 
-    $default  reduce usando la regla 93 ($@43)
+    $default  reduce usando la regla 90 ($@40)
 
-    $@43  ir al estado 173
+    $@40  ir al estado 170
 
 
-estado 172
+estado 169
 
    43 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE $@10 LL_A bloque LL_C .
 
     $default  reduce usando la regla 43 (decision)
 
 
-estado 173
+estado 170
 
-   94 between: BETWEEN P_A ID $@41 COMA COR_A operacion $@42 PUNTO_COMA operacion $@43 . COR_C P_C
+   91 between: BETWEEN P_A ID $@38 COMA COR_A operacion $@39 PUNTO_COMA operacion $@40 . COR_C P_C
 
-    COR_C  desplazar e ir al estado 174
-
-
-estado 174
-
-   94 between: BETWEEN P_A ID $@41 COMA COR_A operacion $@42 PUNTO_COMA operacion $@43 COR_C . P_C
-
-    P_C  desplazar e ir al estado 175
+    COR_C  desplazar e ir al estado 171
 
 
-estado 175
+estado 171
 
-   94 between: BETWEEN P_A ID $@41 COMA COR_A operacion $@42 PUNTO_COMA operacion $@43 COR_C P_C .
+   91 between: BETWEEN P_A ID $@38 COMA COR_A operacion $@39 PUNTO_COMA operacion $@40 COR_C . P_C
 
-    $default  reduce usando la regla 94 (between)
+    P_C  desplazar e ir al estado 172
+
+
+estado 172
+
+   91 between: BETWEEN P_A ID $@38 COMA COR_A operacion $@39 PUNTO_COMA operacion $@40 COR_C P_C .
+
+    $default  reduce usando la regla 91 (between)

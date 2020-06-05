@@ -198,7 +198,7 @@ repeticion: WHILE {apilar(condPila,contadorTercetos);} //Lo pongo aca arriba ant
 
 
 
-between: BETWEEN {esBetween = 1;}P_A ID {idBetween =crearTerceto($3,null,null);} COMA COR_A operacion {apilar(pilaSaltos, 4);
+between: BETWEEN {esBetween = 1;}P_A ID {idBetween =crearTerceto($3,"","");} COMA COR_A operacion {apilar(pilaSaltos, 4);
 																					   crearTerceto("CMP",crearIndice(idBetween),crearIndice(opPointer));
 																					   vectorComparaciones[contadorComparaciones]= contadorTercetos;
 																					   contadorComparaciones++;

@@ -5,11 +5,20 @@ DEFVAR
 	INT : a; b; uno; dos
 ENDEF 
 BEGIN
-while( a<2 ){
-	a := 3
-}
-while( a == 3 ){
+if(b==4 AND a<2){
+    a := 3
+    if (a == 3 OR b == 2){
 	a := 4
+	}
+       else {
+	a := 5
+	}
+
+}
+else {
+
+a := 6
+
 }
 
 END

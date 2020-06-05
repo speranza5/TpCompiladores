@@ -134,6 +134,7 @@ char * cadenaIDBetween;
 int cmpPointer;
 t_pila condPila; //pila para los numeros de tercetos donde tendriamos que completar con las condiciones
 t_pila pilaSaltos;
+t_pila pilaBtw;
 int condicionPointer;
 int tipoSaltoPalOr;
 int posicionACompletarOrFalso;
@@ -142,6 +143,7 @@ int izqPointer;
 int derPointer;
 void completarTercetosAnd(int);
 char * devolverSalto(int );
+void completarTercetosBtw();
 /*punteros y esas cosas para el IF */
 int salto;
 int numeroCondicion;
@@ -248,7 +250,8 @@ factor: ID {printf("factor es ID: %s\n",$1 ); factorPointer=crearTerceto($1,"","
            |CONSTINT {printf("factor es entero: %d \n",$<intval>1);agregarCteIntATabla(yylval.intval); 
                       char *cadena = (char *)malloc (sizeof (int));
                       itoa($<intval>1,cadena,10);
-                      factorPointer=crearTerceto(cadena,"","");}
+                      factorPointer=crearTerceto(cadena,"","");
+                      }
            |CONSTREAL {printf("Factor es real: %f \n",$<val>1); agregarCteFloatATabla(yylval.val);
                        char*cadena = (char *)malloc(sizeof(float));
                        ftoa($<val>1,cadena,4);
@@ -268,6 +271,8 @@ decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");
 												                         numeroCondicion = desapilar(&condPila); 
 												                         crearTercetoNumero (devolverSalto(salto), crearIndice(contadorTercetos),"", numeroCondicion);
 												                         completarTercetosAnd(contadorTercetos);
+                                                 
+                                                 
                                                 }| 
           IF P_A condicion P_C LL_A bloque LL_C ELSE {
             					salto = desapilar(&pilaSaltos); 
@@ -276,6 +281,8 @@ decision: IF P_A condicion P_C LL_A bloque LL_C {printf("IF sin rama falsa\n");
 											apilar(&condPila,contadorTercetos); 
 										  contadorTercetos++;
                       completarTercetosAnd(contadorTercetos);
+                      
+                      
                       } 
            LL_A bloque LL_C {printf("IF con rama falsa\n"); 
                           numeroSalto = desapilar(&condPila);
@@ -334,7 +341,7 @@ condicion: comparacion {printf("Comparacion unica\n");
 			                      	}
                             };
 
-comparacion: operacion {izqPointer = operacionPointer; esBetween =0;} OP_MENOR {printf("Comparacion por menor\n"); apilar(&pilaSaltos, 1);}
+comparacion: operacion {izqPointer = operacionPointer; esBetween =0;apilar(&pilaBtw,0);} OP_MENOR {printf("Comparacion por menor\n"); apilar(&pilaSaltos, 1);}
              operacion{derPointer = operacionPointer;} 
              | 
              operacion {izqPointer = operacionPointer; esBetween =0;} OP_MENORIGUAL{printf("comparacion por menor o igual\n"); apilar(&pilaSaltos, 5);} operacion {derPointer = operacionPointer;} | 
@@ -345,9 +352,9 @@ comparacion: operacion {izqPointer = operacionPointer; esBetween =0;} OP_MENOR {
              OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;}  OP_MENOR {printf("Comparacion por menor negada\n"); apilar(&pilaSaltos,4); } operacion  {derPointer = operacionPointer;} |
              OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;} OP_MENORIGUAL{printf("comparacion por menor o igual negada\n"); apilar(&pilaSaltos,2); } operacion  {derPointer = operacionPointer;} |
              OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;} OP_MAYOR {printf("comparacion por mayor negada\n"); apilar(&pilaSaltos,5); } operacion  {derPointer = operacionPointer;} |
-             OP_NOT  operacion {izqPointer = operacionPointer; esBetween =0;} OP_MAYORIGUAL{printf("comparacion por mayor o igual negada \n"); apilar(&pilaSaltos,1); } operacion  {derPointer = operacionPointer;} |
-             OP_NOT  operacion {izqPointer = operacionPointer; esBetween =0;} OP_DISTINTO{printf("comparacion por distinto negada\n"); apilar(&pilaSaltos,3); } operacion  {derPointer = operacionPointer;} |
-             OP_NOT  operacion {izqPointer = operacionPointer; esBetween =0;} OP_IGUALDAD{printf("comparacion por igual negada\n"); apilar(&pilaSaltos,6); } operacion  {derPointer = operacionPointer;} |
+             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;} OP_MAYORIGUAL{printf("comparacion por mayor o igual negada \n"); apilar(&pilaSaltos,1); } operacion  {derPointer = operacionPointer;} |
+             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;} OP_DISTINTO{printf("comparacion por distinto negada\n"); apilar(&pilaSaltos,3); } operacion  {derPointer = operacionPointer;} |
+             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;} OP_IGUALDAD{printf("comparacion por igual negada\n"); apilar(&pilaSaltos,6); } operacion  {derPointer = operacionPointer;} |
              between ;
 
 repeticion: WHILE { 
@@ -373,6 +380,7 @@ repeticion: WHILE {
                                                 };
 
 between: BETWEEN P_A ID {esBetween = 1; 
+                         
                          cadenaIDBetween = malloc(sizeof(char)*strlen($3));
                          strcpy(cadenaIDBetween,$3);
                         } COMA COR_A operacion{
@@ -451,6 +459,7 @@ int main(int argc,char *argv[])
     crearPila(&pilaSaltos);
     crearPila(&pilaCompletarAnds);
     crearPila(&pilaSaltosAnd);
+    crearPila(&pilaBtw);
 	yyparse();
   }
   fclose(yyin);
@@ -921,16 +930,6 @@ void completarTercetosAnd(int posicion){
     tipoSalto = desapilar(&pilaSaltosAnd);
     crearTercetoNumero(devolverSalto(tipoSalto),crearIndice(contadorTercetos),"",numeroTerceto);
   }
-/*	int tipoSalto, numeroTerceto;
-	if (vectorComparaciones[contadorComparaciones]==-1){
-		contadorComparaciones--;
-	}
-	else{
-		tipoSalto=desapilar(&pilaSaltos);
-		numeroTerceto = desapilar(&condPila);
-    printf("tipo de salto %d  numero de terceto %d\n", tipoSaltoPalOr,numeroTerceto);
-		crearTercetoNumero(devolverSalto(tipoSalto),crearIndice(posicion),"",numeroTerceto);
-		contadorComparaciones--;
-	}
-	*/
+
 }
+
