@@ -217,11 +217,15 @@ asignacion: ID  OP_ASIG {
                            cadenaAsigString = malloc(sizeof(char) * strlen($<str_val>1));
                            parsearCadena($<str_val>1,cadenaAsigString);
                            ultimoTipoLeido = getTipoPorID(cadenaAsigString);
-                           printf("ULTIMO TIPO LEIDO: %d\n",ultimoTipoLeido);
+                          
                            
                         }
 
             operacion   {printf("asignacion a operacion\n");
+<<<<<<< HEAD
+                        validarAsignacionDeTipos();
+=======
+>>>>>>> 735876f5b11e1c59ada85c981f4fd771e1d5f36f
                         asigPointer = crearTerceto("=",cadenaAsigString,crearIndice(operacionPointer));
                         }
             |
@@ -261,10 +265,44 @@ termino: termino OP_MUL factor {printf("Termino es multiplicacion OK\n");
          }| 
          factor {printf("termino es factor\n"); terminoPointer = factorPointer;};
 
-factor: ID {printf("factor es ID: %s\n",$1 ); factorPointer=crearTerceto($1,"","");}
+factor: ID {printf("factor es ID: %s\n",$1 ); 
+           
+            int tipoDato = getTipoPorID($1);
+            if (tipoDato == String){
+              yyerror("Error en asignacion");
+
+            }
+            
+            if(tipoDato == Int && tipoDatoActual == Int){
+              tipoDatoActual = Int;
+              }
+
+              if(tipoDatoActual == Real && tipoDato == Int){
+                tipoDatoActual = Real;
+               }
+
+               if(tipoDato == Real && tipoDatoActual == Real){
+
+                 tipoDatoActual = Real;
+               }
+
+              if(tipoDato == Real && tipoDatoActual == Int){
+
+                  tipoDatoActual = Real;
+
+              }
+
+            factorPointer=crearTerceto($1,"","");}
+           
            |CONSTINT {
+                      if(tipoDatoActual=Real){
+                        tipoDatoActual = Real;
+                      }
+                      else{
                       tipoDatoActual = Int; 
-                      validarAsignacionDeTipos();
+                      }
+
+                     // validarAsignacionDeTipos();
                       printf("factor es entero: %d \n",$<intval>1);agregarCteIntATabla(yylval.intval); 
                       char *cadena = (char *)malloc (sizeof (int));
                       itoa($<intval>1,cadena,10);
@@ -272,7 +310,7 @@ factor: ID {printf("factor es ID: %s\n",$1 ); factorPointer=crearTerceto($1,"","
                       }
            |CONSTREAL {
                        tipoDatoActual = Real; 
-                       validarAsignacionDeTipos();
+                       //validarAsignacionDeTipos();
                        printf("Factor es real: %f \n",$<val>1); agregarCteFloatATabla(yylval.val);
                        char*cadena = (char *)malloc(sizeof(float));
                        ftoa($<val>1,cadena,4);

@@ -2,6 +2,7 @@ NOMBRE                        |TIPO                          |VALOR             
 .........................................................................................................
 a1                            |REAL                          | -                            | -                            
 b1                            |REAL                          | -                            | -                            
+a3                            |REAL                          | -                            | -                            
 variable1                     |STRING                        | -                            | -                            
 v2                            |STRING                        | -                            | -                            
 p1                            |REAL                          | -                            | -                            
@@ -13,3 +14,17 @@ uno                           |INT                           | -                
 dos                           |INT                           | -                            | -                            
 tres                          |INT                           | -                            | -                            
 _3                            |CTE_INT                       |3                             | -                            
+<<<<<<< HEAD
+_12.500000                    |CTE_REAL                      |12.500000                     | -                            
+_4                            |CTE_INT                       |4                             | -                            
+_43.200001                    |CTE_REAL                      |43.200001                     | -                            
+_12.570000                    |CTE_REAL                      |12.570000                     | -                            
+_12                           |CTE_INT                       |12                            | -                            
+_45                           |CTE_INT                       |45                            | -                            
+_13                           |CTE_INT                       |13                            | -                            
+"VERDADERA"                   |CTE_STRING                    |VERDADERA                     |9                             
+"FALSA"                       |CTE_STRING                    |FALSA                         |5                             
+"anidado"                     |CTE_STRING                    |anidado                       |7                             
+"HOLA SALGO EN PANTALLA"      |CTE_STRING                    |HOLA SALGO EN PANTALLA        |22                            
+=======
+>>>>>>> 735876f5b11e1c59ada85c981f4fd771e1d5f36f

@@ -47,8 +47,6 @@ int tipoSaltoPalOr;
 int posicionACompletarOr;
 int idBetween;
 int esBetween =0;
-int etiquetaWhile=0;
-t_pila pilaEtiquetas;
 
 asignacion: ID OP_ASIG operacion{printf("asignacion a operacion\n"); asigPointer = crearTerceto("=", $1, crearIndice(opPointer));}|
             ID OP_ASIG CONSTSTRING {printf( "asignacion a STRING: %s\n", yylval.str_val); agregarCteStringATabla(yylval.str_val); asigPointer = crearTerceto("=", $1, yylval.str_val);}};
@@ -90,26 +88,6 @@ decision: IF P_A condicion P_C LL_A bloque {
 		LL_C 
         ELSE LL_A bloque {numeroSalto = desapilar(condPila); crearTercetoNumero("JMP",contadorTercetos,null, numeroSalto);} LL_C {printf("IF con rama falsa\n");};
 
-repeticion: WHILE {
-			char * cadenaEtiq = malloc(sizeof (char)* 156);
-			strcpy(cadenaEtiq,"ETIQ");
-			strcat(cadenaEtiq,itoa(etiquetaWhile));
-			etiquetaWhile++;
-			etiqueta = crearTerceto(cadena,"","");
-
-			apilar(condPila,etiqueta);} //Lo pongo aca arriba antes de que se aumente el contador de tercetos
-						
-			P_A condicion P_C LL_A bloque
-			
-			LL_C {printf("bucle while\n");
-						saltoWhile = desapilar(pilaSaltos); //numero de salto
-						numeroTercetoWhile = desapilar(condPila); //numero de terceto (aca estaría el numero donde deberia ir el terceto del salto si ya no cumple la condicion del while)
-						crearTercetoNumero (devolverSalto(saltoWhile), crearIndice(contadorTercetos+1),null, numeroTercetoWhile); //Hago un +2 porque tengo: 1-Terceto de JMP primero
-						completarTercetosAnd(contadorTercetos);
-						numeroTercetoWhile = desapilar(condPila); //Desapilo la posicion del inicio del While
-						crearTerceto ("JMP", crearIndice(numeroTercetoWhile),"");
-						
-			};
 condicion: comparacion {
 						if(esBetween==0){
 						cmpPointer = crearTerceto("CMP",crearIndice(izqpointer),crearIndice(derpointer)); 
@@ -162,6 +140,9 @@ condicion: comparacion {
 				}
 			};
 
+
+		
+
 comparacion: operacion {izqpointer = opPointer; esBetween = 0; } OP_MENOR {printf("Comparacion por menor\n"); apilar(pilaSaltos, 1); } operacion 
 			{derpointer = opPointer; }| 
 			 
@@ -201,16 +182,32 @@ comparacion: operacion {izqpointer = opPointer; esBetween = 0; } OP_MENOR {print
 			 
 			 between ;
 
-between: BETWEEN P_A ID {esBetween = 1; idBetween =crearTerceto($3,null,null);} COMA COR_A operacion {apilar(&pilaSaltos, 4);
-																					   crearTerceto("CMP",crearIndice(idBetween),crearIndice(operacionPointer));
+
+repeticion: WHILE {apilar(condPila,contadorTercetos);} //Lo pongo aca arriba antes de que se aumente el contador de tercetos
+						
+			P_A condicion /El codigo de aca ya lo hago en regla condicion/P_C LL_A bloque
+			
+			LL_C {printf("bucle while\n");
+						salto = desapilar(pilaSalto); //numero de salto
+						numeroTerceto = desapilar(condPila); //numero de terceto (aca estaría el numero donde deberia ir el terceto del salto si ya no cumple la condicion del while)
+						crearTercetoNumero (devolverSalto(salto), crearIndice(contadorTercetos+2),null, numeroTerceto); //Hago un +2 porque tengo: 1-Terceto de JMP primero
+						
+						numeroTerceto = desapilar(condPila); //Desapilo la posicion del inicio del While
+						crearTerceto ("JMP", crearIndice(numeroTerceto),null);
+			};
+
+
+
+between: BETWEEN {esBetween = 1;}P_A ID {idBetween =crearTerceto($3,"","");} COMA COR_A operacion {apilar(pilaSaltos, 4);
+																					   crearTerceto("CMP",crearIndice(idBetween),crearIndice(opPointer));
 																					   vectorComparaciones[contadorComparaciones]= contadorTercetos;
 																					   contadorComparaciones++;
-																					   apilar(&condPila, contadorTercetos);
+																					   apilar(condPila, contadorTercetos);
 																					   contadorTercetos ++; 
 																					 } 
 		 PUNTO_COMA operacion { 
-	     apilar(&pilaSaltos, 5);
-		 cmpPointer = crearTerceto("CMP",crearIndice(idBetween),crearIndice(operacionPointer));
+	     apilar(pilaSaltos, 5);
+		 cmpPointer = crearTerceto("CMP",crearIndice(idBetween),crearIndice(opPointer));
 		 apilar(condPila, contadorTercetos);
 		 contadorTercetos ++; 
 		 condicionPointer = cmpPointer;
