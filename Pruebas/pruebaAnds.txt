@@ -9,7 +9,7 @@ GET a1
 DISPLAY a1
 if(a<3 AND b>5)
 {
-	v1:="RAMA VERDADERA"
+	v2:="RAMA VERDADERA"
 }
 else
 {

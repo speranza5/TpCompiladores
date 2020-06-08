@@ -1,6 +1,6 @@
 DEFVAR
 	FLOAT : a1; b1
-	STRING: boke
+	STRING: var
 	INT : a; b; uno; dos; tres
 ENDEF
 BEGIN
@@ -10,5 +10,5 @@ BEGIN
 	else{
 		DISPLAY "FALSO"
 	}
-     boke:="BOKEEEEEE"
+     var:="TERMINE"
 END
