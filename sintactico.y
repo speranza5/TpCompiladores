@@ -222,7 +222,6 @@ asignacion: ID  OP_ASIG {
                         }
 
             operacion   {printf("asignacion a operacion\n");
-                        //validarAsignacionDeTipos();
                         asigPointer = crearTerceto("=",cadenaAsigString,crearIndice(operacionPointer));
                         }
             |
@@ -965,6 +964,6 @@ void completarTercetosAnd(int posicion){
 
 void validarAsignacionDeTipos() {
   if(tipoDatoActual != ultimoTipoLeido) {
-    yyerror("Asignación de tipos incorrecta");
+    yyerror("Asignacion de tipos incorrecta");
   }
 }
