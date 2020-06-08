@@ -24,11 +24,11 @@ FILE  *yyin;
   /*Para verificar el LET*/
   int cantVariables = 0;
   int cantValores = 0;
+  int vectorLetTipoDatos[999];
 
   /* Funciones */
   int yyerror(char* mensaje);
-  void validarAsignacion(char *id,char *cadena);
-  void validarAsignacionInt(char *cadena);
+  void validarAsignacionDeTipos();
   void agregarVarATabla(char* nombre);
   void agregarTiposDatosATabla(void);
   void agregarCteStringATabla(char* nombre);
@@ -157,6 +157,10 @@ int saltoWhile;
 char * cadenaEtiq;
 char numeroTextoWhile[5];
 
+/*Validación de tipos*/
+int ultimoTipoLeido;
+int tipoDatoActual;
+
 %}
 
 %union {
@@ -210,20 +214,32 @@ bloque: sentencia|bloque sentencia;
 sentencia: asignacion| decision| repeticion |asignacionlet|comentarios|ingreso|egreso;
 
 asignacion: ID  OP_ASIG {
- 
-              cadenaAsigString = malloc(sizeof(char) * strlen($<str_val>1));
-              parsearCadena($<str_val>1,cadenaAsigString);
-            }
-            operacion{printf("asignacion a operacion\n");
-            asigPointer = crearTerceto("=",cadenaAsigString,crearIndice(operacionPointer));
-            }|
+                           cadenaAsigString = malloc(sizeof(char) * strlen($<str_val>1));
+                           parsearCadena($<str_val>1,cadenaAsigString);
+                           ultimoTipoLeido = getTipoPorID(cadenaAsigString);
+                           printf("ULTIMO TIPO LEIDO: %d\n",ultimoTipoLeido);
+                           
+                        }
+
+            operacion   {printf("asignacion a operacion\n");
+                        //validarAsignacionDeTipos();
+                        asigPointer = crearTerceto("=",cadenaAsigString,crearIndice(operacionPointer));
+                        }
+            |
+
             ID  OP_ASIG{
- 
+              
               cadenaAsigString = malloc(sizeof(char) * strlen($<str_val>1));
               parsearCadena($<str_val>1,cadenaAsigString);
+              printf("La cadena es: %s \n",cadenaAsigString);
+             ultimoTipoLeido = getTipoPorID(cadenaAsigString);
+             
             } CONSTSTRING {
             
-              printf( "asignacion a STRING: %s\n", yylval.str_val); agregarCteStringATabla(yylval.str_val);
+              printf( "asignacion a STRING: %s\n", yylval.str_val);
+              tipoDatoActual = String; 
+                                   validarAsignacionDeTipos();
+                                    agregarCteStringATabla(yylval.str_val);
                                     asigPointer=crearTerceto("=",cadenaAsigString,yylval.str_val);
                                    };
 
@@ -247,12 +263,18 @@ termino: termino OP_MUL factor {printf("Termino es multiplicacion OK\n");
          factor {printf("termino es factor\n"); terminoPointer = factorPointer;};
 
 factor: ID {printf("factor es ID: %s\n",$1 ); factorPointer=crearTerceto($1,"","");}
-           |CONSTINT {printf("factor es entero: %d \n",$<intval>1);agregarCteIntATabla(yylval.intval); 
+           |CONSTINT {
+                      tipoDatoActual = Int; 
+                      validarAsignacionDeTipos();
+                      printf("factor es entero: %d \n",$<intval>1);agregarCteIntATabla(yylval.intval); 
                       char *cadena = (char *)malloc (sizeof (int));
                       itoa($<intval>1,cadena,10);
                       factorPointer=crearTerceto(cadena,"","");
                       }
-           |CONSTREAL {printf("Factor es real: %f \n",$<val>1); agregarCteFloatATabla(yylval.val);
+           |CONSTREAL {
+                       tipoDatoActual = Real; 
+                       validarAsignacionDeTipos();
+                       printf("Factor es real: %f \n",$<val>1); agregarCteFloatATabla(yylval.val);
                        char*cadena = (char *)malloc(sizeof(float));
                        ftoa($<val>1,cadena,4);
                        factorPointer=crearTerceto(cadena,"","");
@@ -405,23 +427,29 @@ asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C { if(cantValores != 
                                                               };
 
 lista_var: lista_var COMA ID {cantVariables++;printf("Item de la lista del let %s\n",yylval.str_val);
+                              vectorLetTipoDatos[cantVariables-1] = getTipoPorID($<str_val>3);
+                              printf("EL TIPO DE DATOS DEL LET ES: %d \n", vectorLetTipoDatos[cantVariables-1]);
 							                tercetoID = crearTerceto(yylval.str_val,"","");
 							                apilar(&pilaIdsLet,tercetoID);
                             };
 
 lista_var: ID {cantVariables++;
+              vectorLetTipoDatos[cantVariables-1] = getTipoPorID($<str_val>1);
+              
                printf("Item de la lista del let %s\n",yylval.str_val);
                tercetoID = crearTerceto(yylval.str_val,"",""); 
 			         apilar(&pilaIdsLet,tercetoID);
               };
 
-lista_valores: operacion{cantValores++;
+lista_valores: {ultimoTipoLeido =  vectorLetTipoDatos[cantValores];} operacion {cantValores++;
+                          
                          printf("argumento del let es operacion \n");
                          tercetoOperacion = operacionPointer;
 						             apilar(&pilaOperacionesLet,tercetoOperacion);
                         };
+                        
 
-lista_valores: lista_valores PUNTO_COMA operacion {cantValores++;
+lista_valores: lista_valores PUNTO_COMA {ultimoTipoLeido =  vectorLetTipoDatos[cantValores];} operacion {cantValores++;
                                                    printf("argumento del let es operacion \n");
                                                    tercetoOperacion = operacionPointer;
 						                                       apilar(&pilaOperacionesLet,tercetoOperacion);
@@ -889,6 +917,8 @@ int getTipoPorID(char* name)
      }
      i++;
    }
+
+   yyerror("Error: la variable no se encontraba");
    return -1;
 }
 
@@ -898,7 +928,7 @@ char* getValorPorID(char* name)
  int i=0;
    while(i<=finDeTabla){
      if(strcmp(tablaSimbolo[i].nombre,name) == 0){
-       return tablaSimbolo[i].valorSimbolo; // No devuelve el float, ojo
+       return tablaSimbolo[i].valorSimbolo;
      }
      i++;
    }
@@ -933,3 +963,8 @@ void completarTercetosAnd(int posicion){
 
 }
 
+void validarAsignacionDeTipos() {
+  if(tipoDatoActual != ultimoTipoLeido) {
+    yyerror("Asignación de tipos incorrecta");
+  }
+}

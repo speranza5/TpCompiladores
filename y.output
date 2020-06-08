@@ -181,36 +181,41 @@ Gramática
    93 lista_var: lista_var COMA ID
    94          | ID
 
-   95 lista_valores: operacion
-   96              | lista_valores PUNTO_COMA operacion
+   95 $@41: /* vacío */
 
-   97 comentarios: COMENTARIO
+   96 lista_valores: $@41 operacion
 
-   98 ingreso: GET ID
+   97 $@42: /* vacío */
 
-   99 egreso: DISPLAY CONSTSTRING
-  100       | DISPLAY ID
+   98 lista_valores: lista_valores PUNTO_COMA $@42 operacion
+
+   99 comentarios: COMENTARIO
+
+  100 ingreso: GET ID
+
+  101 egreso: DISPLAY CONSTSTRING
+  102       | DISPLAY ID
 
 
 Terminales con las reglas donde aparecen
 
 $end (0) 0
 error (256)
-ID (258) 13 14 27 29 36 91 93 94 98 100
+ID (258) 13 14 27 29 36 91 93 94 100 102
 CONSTINT (259) 37
 CONSTREAL (260) 38
-CONSTSTRING (261) 29 99
+CONSTSTRING (261) 29 101
 ENTERO (262) 8
 STRING (263) 12
 REAL (264) 10
-PUNTO_COMA (265) 13 91 96
+PUNTO_COMA (265) 13 91 98
 COMA (266) 91 93
 DOS_PUNTOS (267) 8 10 12
 ENDEF (268) 4
 DEFVAR (269) 4
 PALABRA (270)
 TEXTO (271)
-COMENTARIO (272) 97
+COMENTARIO (272) 99
 OP_ASIG (273) 27 29
 INICIO (274) 16
 FIN (275) 16
@@ -241,8 +246,8 @@ LET (299) 92
 OP_IGUAL (300) 92
 COM_CIERRE (301)
 COM_APER (302)
-GET (303) 98
-DISPLAY (304) 99 100
+GET (303) 100
+DISPLAY (304) 101 102
 
 
 No terminales con las reglas donde aparecen
@@ -285,7 +290,7 @@ $@8 (67)
     en la izquierda: 28, en la derecha: 29
 operacion (68)
     en la izquierda: 30 31 32, en la derecha: 27 30 31 40 51 54 57
-    60 63 66 69 72 75 78 81 84 91 95 96
+    60 63 66 69 72 75 78 81 84 91 96 98
 termino (69)
     en la izquierda: 33 34 35, en la derecha: 30 31 32 33 34
 factor (70)
@@ -370,13 +375,17 @@ asignacionlet (108)
 lista_var (109)
     en la izquierda: 93 94, en la derecha: 92 93
 lista_valores (110)
-    en la izquierda: 95 96, en la derecha: 92 96
-comentarios (111)
-    en la izquierda: 97, en la derecha: 23
-ingreso (112)
-    en la izquierda: 98, en la derecha: 24
-egreso (113)
-    en la izquierda: 99 100, en la derecha: 25
+    en la izquierda: 96 98, en la derecha: 92 98
+$@41 (111)
+    en la izquierda: 95, en la derecha: 96
+$@42 (112)
+    en la izquierda: 97, en la derecha: 98
+comentarios (113)
+    en la izquierda: 99, en la derecha: 23
+ingreso (114)
+    en la izquierda: 100, en la derecha: 24
+egreso (115)
+    en la izquierda: 101 102, en la derecha: 25
 
 
 estado 0
@@ -572,9 +581,9 @@ estado 20
 
 estado 21
 
-   97 comentarios: COMENTARIO .
+   99 comentarios: COMENTARIO .
 
-    $default  reduce usando la regla 97 (comentarios)
+    $default  reduce usando la regla 99 (comentarios)
 
 
 estado 22
@@ -605,15 +614,15 @@ estado 24
 
 estado 25
 
-   98 ingreso: GET . ID
+  100 ingreso: GET . ID
 
     ID  desplazar e ir al estado 44
 
 
 estado 26
 
-   99 egreso: DISPLAY . CONSTSTRING
-  100       | DISPLAY . ID
+  101 egreso: DISPLAY . CONSTSTRING
+  102       | DISPLAY . ID
 
     ID           desplazar e ir al estado 45
     CONSTSTRING  desplazar e ir al estado 46
@@ -783,23 +792,23 @@ estado 43
 
 estado 44
 
-   98 ingreso: GET ID .
+  100 ingreso: GET ID .
 
-    $default  reduce usando la regla 98 (ingreso)
+    $default  reduce usando la regla 100 (ingreso)
 
 
 estado 45
 
-  100 egreso: DISPLAY ID .
+  102 egreso: DISPLAY ID .
 
-    $default  reduce usando la regla 100 (egreso)
+    $default  reduce usando la regla 102 (egreso)
 
 
 estado 46
 
-   99 egreso: DISPLAY CONSTSTRING .
+  101 egreso: DISPLAY CONSTSTRING .
 
-    $default  reduce usando la regla 99 (egreso)
+    $default  reduce usando la regla 101 (egreso)
 
 
 estado 47
@@ -1248,15 +1257,10 @@ estado 91
 
    92 asignacionlet: LET lista_var OP_IGUAL P_A . lista_valores P_C
 
-    ID         desplazar e ir al estado 55
-    CONSTINT   desplazar e ir al estado 56
-    CONSTREAL  desplazar e ir al estado 57
-    P_A        desplazar e ir al estado 58
+    $default  reduce usando la regla 95 ($@41)
 
-    operacion      ir al estado 115
-    termino        ir al estado 62
-    factor         ir al estado 63
-    lista_valores  ir al estado 116
+    lista_valores  ir al estado 115
+    $@41           ir al estado 116
 
 
 estado 92
@@ -1489,23 +1493,25 @@ estado 114
 
 estado 115
 
-   30 operacion: operacion . OP_SUMA termino
-   31          | operacion . OP_RESTA termino
-   95 lista_valores: operacion .
+   92 asignacionlet: LET lista_var OP_IGUAL P_A lista_valores . P_C
+   98 lista_valores: lista_valores . PUNTO_COMA $@42 operacion
 
-    OP_SUMA   desplazar e ir al estado 76
-    OP_RESTA  desplazar e ir al estado 77
-
-    $default  reduce usando la regla 95 (lista_valores)
+    PUNTO_COMA  desplazar e ir al estado 135
+    P_C         desplazar e ir al estado 136
 
 
 estado 116
 
-   92 asignacionlet: LET lista_var OP_IGUAL P_A lista_valores . P_C
-   96 lista_valores: lista_valores . PUNTO_COMA operacion
+   96 lista_valores: $@41 . operacion
 
-    PUNTO_COMA  desplazar e ir al estado 135
-    P_C         desplazar e ir al estado 136
+    ID         desplazar e ir al estado 55
+    CONSTINT   desplazar e ir al estado 56
+    CONSTREAL  desplazar e ir al estado 57
+    P_A        desplazar e ir al estado 58
+
+    operacion  ir al estado 137
+    termino    ir al estado 62
+    factor     ir al estado 63
 
 
 estado 117
@@ -1521,7 +1527,7 @@ estado 118
 
     $default  reduce usando la regla 68 ($@26)
 
-    $@26  ir al estado 137
+    $@26  ir al estado 138
 
 
 estado 119
@@ -1530,7 +1536,7 @@ estado 119
 
     $default  reduce usando la regla 71 ($@28)
 
-    $@28  ir al estado 138
+    $@28  ir al estado 139
 
 
 estado 120
@@ -1539,7 +1545,7 @@ estado 120
 
     $default  reduce usando la regla 74 ($@30)
 
-    $@30  ir al estado 139
+    $@30  ir al estado 140
 
 
 estado 121
@@ -1548,7 +1554,7 @@ estado 121
 
     $default  reduce usando la regla 77 ($@32)
 
-    $@32  ir al estado 140
+    $@32  ir al estado 141
 
 
 estado 122
@@ -1557,7 +1563,7 @@ estado 122
 
     $default  reduce usando la regla 80 ($@34)
 
-    $@34  ir al estado 141
+    $@34  ir al estado 142
 
 
 estado 123
@@ -1566,14 +1572,14 @@ estado 123
 
     $default  reduce usando la regla 83 ($@36)
 
-    $@36  ir al estado 142
+    $@36  ir al estado 143
 
 
 estado 124
 
    91 between: BETWEEN P_A ID $@38 . COMA COR_A operacion $@39 PUNTO_COMA operacion $@40 COR_C P_C
 
-    COMA  desplazar e ir al estado 143
+    COMA  desplazar e ir al estado 144
 
 
 estado 125
@@ -1585,7 +1591,7 @@ estado 125
     CONSTREAL  desplazar e ir al estado 57
     P_A        desplazar e ir al estado 58
 
-    operacion  ir al estado 144
+    operacion  ir al estado 145
     termino    ir al estado 62
     factor     ir al estado 63
 
@@ -1599,7 +1605,7 @@ estado 126
     CONSTREAL  desplazar e ir al estado 57
     P_A        desplazar e ir al estado 58
 
-    operacion  ir al estado 145
+    operacion  ir al estado 146
     termino    ir al estado 62
     factor     ir al estado 63
 
@@ -1613,7 +1619,7 @@ estado 127
     CONSTREAL  desplazar e ir al estado 57
     P_A        desplazar e ir al estado 58
 
-    operacion  ir al estado 146
+    operacion  ir al estado 147
     termino    ir al estado 62
     factor     ir al estado 63
 
@@ -1627,7 +1633,7 @@ estado 128
     CONSTREAL  desplazar e ir al estado 57
     P_A        desplazar e ir al estado 58
 
-    operacion  ir al estado 147
+    operacion  ir al estado 148
     termino    ir al estado 62
     factor     ir al estado 63
 
@@ -1641,7 +1647,7 @@ estado 129
     CONSTREAL  desplazar e ir al estado 57
     P_A        desplazar e ir al estado 58
 
-    operacion  ir al estado 148
+    operacion  ir al estado 149
     termino    ir al estado 62
     factor     ir al estado 63
 
@@ -1655,7 +1661,7 @@ estado 130
     CONSTREAL  desplazar e ir al estado 57
     P_A        desplazar e ir al estado 58
 
-    operacion  ir al estado 149
+    operacion  ir al estado 150
     termino    ir al estado 62
     factor     ir al estado 63
 
@@ -1669,7 +1675,7 @@ estado 131
     ID          desplazar e ir al estado 20
     COMENTARIO  desplazar e ir al estado 21
     IF          desplazar e ir al estado 22
-    LL_C        desplazar e ir al estado 150
+    LL_C        desplazar e ir al estado 151
     WHILE       desplazar e ir al estado 23
     LET         desplazar e ir al estado 24
     GET         desplazar e ir al estado 25
@@ -1711,7 +1717,7 @@ estado 134
     GET         desplazar e ir al estado 25
     DISPLAY     desplazar e ir al estado 26
 
-    bloque         ir al estado 151
+    bloque         ir al estado 152
     sentencia      ir al estado 28
     asignacion     ir al estado 29
     decision       ir al estado 30
@@ -1724,16 +1730,11 @@ estado 134
 
 estado 135
 
-   96 lista_valores: lista_valores PUNTO_COMA . operacion
+   98 lista_valores: lista_valores PUNTO_COMA . $@42 operacion
 
-    ID         desplazar e ir al estado 55
-    CONSTINT   desplazar e ir al estado 56
-    CONSTREAL  desplazar e ir al estado 57
-    P_A        desplazar e ir al estado 58
+    $default  reduce usando la regla 97 ($@42)
 
-    operacion  ir al estado 152
-    termino    ir al estado 62
-    factor     ir al estado 63
+    $@42  ir al estado 153
 
 
 estado 136
@@ -1745,21 +1746,19 @@ estado 136
 
 estado 137
 
-   69 comparacion: OP_NOT operacion $@25 OP_MENOR $@26 . operacion
+   30 operacion: operacion . OP_SUMA termino
+   31          | operacion . OP_RESTA termino
+   96 lista_valores: $@41 operacion .
 
-    ID         desplazar e ir al estado 55
-    CONSTINT   desplazar e ir al estado 56
-    CONSTREAL  desplazar e ir al estado 57
-    P_A        desplazar e ir al estado 58
+    OP_SUMA   desplazar e ir al estado 76
+    OP_RESTA  desplazar e ir al estado 77
 
-    operacion  ir al estado 153
-    termino    ir al estado 62
-    factor     ir al estado 63
+    $default  reduce usando la regla 96 (lista_valores)
 
 
 estado 138
 
-   72 comparacion: OP_NOT operacion $@27 OP_MENORIGUAL $@28 . operacion
+   69 comparacion: OP_NOT operacion $@25 OP_MENOR $@26 . operacion
 
     ID         desplazar e ir al estado 55
     CONSTINT   desplazar e ir al estado 56
@@ -1773,7 +1772,7 @@ estado 138
 
 estado 139
 
-   75 comparacion: OP_NOT operacion $@29 OP_MAYOR $@30 . operacion
+   72 comparacion: OP_NOT operacion $@27 OP_MENORIGUAL $@28 . operacion
 
     ID         desplazar e ir al estado 55
     CONSTINT   desplazar e ir al estado 56
@@ -1787,7 +1786,7 @@ estado 139
 
 estado 140
 
-   78 comparacion: OP_NOT operacion $@31 OP_MAYORIGUAL $@32 . operacion
+   75 comparacion: OP_NOT operacion $@29 OP_MAYOR $@30 . operacion
 
     ID         desplazar e ir al estado 55
     CONSTINT   desplazar e ir al estado 56
@@ -1801,7 +1800,7 @@ estado 140
 
 estado 141
 
-   81 comparacion: OP_NOT operacion $@33 OP_DISTINTO $@34 . operacion
+   78 comparacion: OP_NOT operacion $@31 OP_MAYORIGUAL $@32 . operacion
 
     ID         desplazar e ir al estado 55
     CONSTINT   desplazar e ir al estado 56
@@ -1815,7 +1814,7 @@ estado 141
 
 estado 142
 
-   84 comparacion: OP_NOT operacion $@35 OP_IGUALDAD $@36 . operacion
+   81 comparacion: OP_NOT operacion $@33 OP_DISTINTO $@34 . operacion
 
     ID         desplazar e ir al estado 55
     CONSTINT   desplazar e ir al estado 56
@@ -1829,12 +1828,26 @@ estado 142
 
 estado 143
 
-   91 between: BETWEEN P_A ID $@38 COMA . COR_A operacion $@39 PUNTO_COMA operacion $@40 COR_C P_C
+   84 comparacion: OP_NOT operacion $@35 OP_IGUALDAD $@36 . operacion
 
-    COR_A  desplazar e ir al estado 159
+    ID         desplazar e ir al estado 55
+    CONSTINT   desplazar e ir al estado 56
+    CONSTREAL  desplazar e ir al estado 57
+    P_A        desplazar e ir al estado 58
+
+    operacion  ir al estado 159
+    termino    ir al estado 62
+    factor     ir al estado 63
 
 
 estado 144
+
+   91 between: BETWEEN P_A ID $@38 COMA . COR_A operacion $@39 PUNTO_COMA operacion $@40 COR_C P_C
+
+    COR_A  desplazar e ir al estado 160
+
+
+estado 145
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
@@ -1846,7 +1859,7 @@ estado 144
     $default  reduce usando la regla 51 (comparacion)
 
 
-estado 145
+estado 146
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
@@ -1858,7 +1871,7 @@ estado 145
     $default  reduce usando la regla 54 (comparacion)
 
 
-estado 146
+estado 147
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
@@ -1870,7 +1883,7 @@ estado 146
     $default  reduce usando la regla 57 (comparacion)
 
 
-estado 147
+estado 148
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
@@ -1882,7 +1895,7 @@ estado 147
     $default  reduce usando la regla 60 (comparacion)
 
 
-estado 148
+estado 149
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
@@ -1894,7 +1907,7 @@ estado 148
     $default  reduce usando la regla 63 (comparacion)
 
 
-estado 149
+estado 150
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
@@ -1906,17 +1919,17 @@ estado 149
     $default  reduce usando la regla 66 (comparacion)
 
 
-estado 150
+estado 151
 
    41 decision: IF P_A condicion P_C LL_A bloque LL_C .
    43         | IF P_A condicion P_C LL_A bloque LL_C . ELSE $@10 LL_A bloque LL_C
 
-    ELSE  desplazar e ir al estado 160
+    ELSE  desplazar e ir al estado 161
 
     $default  reduce usando la regla 41 (decision)
 
 
-estado 151
+estado 152
 
    18 bloque: bloque . sentencia
    87 repeticion: WHILE $@37 P_A condicion P_C LL_A bloque . LL_C
@@ -1924,7 +1937,7 @@ estado 151
     ID          desplazar e ir al estado 20
     COMENTARIO  desplazar e ir al estado 21
     IF          desplazar e ir al estado 22
-    LL_C        desplazar e ir al estado 161
+    LL_C        desplazar e ir al estado 162
     WHILE       desplazar e ir al estado 23
     LET         desplazar e ir al estado 24
     GET         desplazar e ir al estado 25
@@ -1940,19 +1953,21 @@ estado 151
     egreso         ir al estado 35
 
 
-estado 152
-
-   30 operacion: operacion . OP_SUMA termino
-   31          | operacion . OP_RESTA termino
-   96 lista_valores: lista_valores PUNTO_COMA operacion .
-
-    OP_SUMA   desplazar e ir al estado 76
-    OP_RESTA  desplazar e ir al estado 77
-
-    $default  reduce usando la regla 96 (lista_valores)
-
-
 estado 153
+
+   98 lista_valores: lista_valores PUNTO_COMA $@42 . operacion
+
+    ID         desplazar e ir al estado 55
+    CONSTINT   desplazar e ir al estado 56
+    CONSTREAL  desplazar e ir al estado 57
+    P_A        desplazar e ir al estado 58
+
+    operacion  ir al estado 163
+    termino    ir al estado 62
+    factor     ir al estado 63
+
+
+estado 154
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
@@ -1964,7 +1979,7 @@ estado 153
     $default  reduce usando la regla 69 (comparacion)
 
 
-estado 154
+estado 155
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
@@ -1976,7 +1991,7 @@ estado 154
     $default  reduce usando la regla 72 (comparacion)
 
 
-estado 155
+estado 156
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
@@ -1988,7 +2003,7 @@ estado 155
     $default  reduce usando la regla 75 (comparacion)
 
 
-estado 156
+estado 157
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
@@ -2000,7 +2015,7 @@ estado 156
     $default  reduce usando la regla 78 (comparacion)
 
 
-estado 157
+estado 158
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
@@ -2012,7 +2027,7 @@ estado 157
     $default  reduce usando la regla 81 (comparacion)
 
 
-estado 158
+estado 159
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
@@ -2024,7 +2039,7 @@ estado 158
     $default  reduce usando la regla 84 (comparacion)
 
 
-estado 159
+estado 160
 
    91 between: BETWEEN P_A ID $@38 COMA COR_A . operacion $@39 PUNTO_COMA operacion $@40 COR_C P_C
 
@@ -2033,28 +2048,40 @@ estado 159
     CONSTREAL  desplazar e ir al estado 57
     P_A        desplazar e ir al estado 58
 
-    operacion  ir al estado 162
+    operacion  ir al estado 164
     termino    ir al estado 62
     factor     ir al estado 63
 
 
-estado 160
+estado 161
 
    43 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE . $@10 LL_A bloque LL_C
 
     $default  reduce usando la regla 42 ($@10)
 
-    $@10  ir al estado 163
+    $@10  ir al estado 165
 
 
-estado 161
+estado 162
 
    87 repeticion: WHILE $@37 P_A condicion P_C LL_A bloque LL_C .
 
     $default  reduce usando la regla 87 (repeticion)
 
 
-estado 162
+estado 163
+
+   30 operacion: operacion . OP_SUMA termino
+   31          | operacion . OP_RESTA termino
+   98 lista_valores: lista_valores PUNTO_COMA $@42 operacion .
+
+    OP_SUMA   desplazar e ir al estado 76
+    OP_RESTA  desplazar e ir al estado 77
+
+    $default  reduce usando la regla 98 (lista_valores)
+
+
+estado 164
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
@@ -2065,24 +2092,24 @@ estado 162
 
     $default  reduce usando la regla 89 ($@39)
 
-    $@39  ir al estado 164
-
-
-estado 163
-
-   43 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE $@10 . LL_A bloque LL_C
-
-    LL_A  desplazar e ir al estado 165
-
-
-estado 164
-
-   91 between: BETWEEN P_A ID $@38 COMA COR_A operacion $@39 . PUNTO_COMA operacion $@40 COR_C P_C
-
-    PUNTO_COMA  desplazar e ir al estado 166
+    $@39  ir al estado 166
 
 
 estado 165
+
+   43 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE $@10 . LL_A bloque LL_C
+
+    LL_A  desplazar e ir al estado 167
+
+
+estado 166
+
+   91 between: BETWEEN P_A ID $@38 COMA COR_A operacion $@39 . PUNTO_COMA operacion $@40 COR_C P_C
+
+    PUNTO_COMA  desplazar e ir al estado 168
+
+
+estado 167
 
    43 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE $@10 LL_A . bloque LL_C
 
@@ -2094,7 +2121,7 @@ estado 165
     GET         desplazar e ir al estado 25
     DISPLAY     desplazar e ir al estado 26
 
-    bloque         ir al estado 167
+    bloque         ir al estado 169
     sentencia      ir al estado 28
     asignacion     ir al estado 29
     decision       ir al estado 30
@@ -2105,7 +2132,7 @@ estado 165
     egreso         ir al estado 35
 
 
-estado 166
+estado 168
 
    91 between: BETWEEN P_A ID $@38 COMA COR_A operacion $@39 PUNTO_COMA . operacion $@40 COR_C P_C
 
@@ -2114,12 +2141,12 @@ estado 166
     CONSTREAL  desplazar e ir al estado 57
     P_A        desplazar e ir al estado 58
 
-    operacion  ir al estado 168
+    operacion  ir al estado 170
     termino    ir al estado 62
     factor     ir al estado 63
 
 
-estado 167
+estado 169
 
    18 bloque: bloque . sentencia
    43 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE $@10 LL_A bloque . LL_C
@@ -2127,7 +2154,7 @@ estado 167
     ID          desplazar e ir al estado 20
     COMENTARIO  desplazar e ir al estado 21
     IF          desplazar e ir al estado 22
-    LL_C        desplazar e ir al estado 169
+    LL_C        desplazar e ir al estado 171
     WHILE       desplazar e ir al estado 23
     LET         desplazar e ir al estado 24
     GET         desplazar e ir al estado 25
@@ -2143,7 +2170,7 @@ estado 167
     egreso         ir al estado 35
 
 
-estado 168
+estado 170
 
    30 operacion: operacion . OP_SUMA termino
    31          | operacion . OP_RESTA termino
@@ -2154,31 +2181,31 @@ estado 168
 
     $default  reduce usando la regla 90 ($@40)
 
-    $@40  ir al estado 170
+    $@40  ir al estado 172
 
 
-estado 169
+estado 171
 
    43 decision: IF P_A condicion P_C LL_A bloque LL_C ELSE $@10 LL_A bloque LL_C .
 
     $default  reduce usando la regla 43 (decision)
 
 
-estado 170
+estado 172
 
    91 between: BETWEEN P_A ID $@38 COMA COR_A operacion $@39 PUNTO_COMA operacion $@40 . COR_C P_C
 
-    COR_C  desplazar e ir al estado 171
+    COR_C  desplazar e ir al estado 173
 
 
-estado 171
+estado 173
 
    91 between: BETWEEN P_A ID $@38 COMA COR_A operacion $@39 PUNTO_COMA operacion $@40 COR_C . P_C
 
-    P_C  desplazar e ir al estado 172
+    P_C  desplazar e ir al estado 174
 
 
-estado 172
+estado 174
 
    91 between: BETWEEN P_A ID $@38 COMA COR_A operacion $@39 PUNTO_COMA operacion $@40 COR_C P_C .
 
