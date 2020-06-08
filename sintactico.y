@@ -222,10 +222,7 @@ asignacion: ID  OP_ASIG {
                         }
 
             operacion   {printf("asignacion a operacion\n");
-<<<<<<< HEAD
                         validarAsignacionDeTipos();
-=======
->>>>>>> 735876f5b11e1c59ada85c981f4fd771e1d5f36f
                         asigPointer = crearTerceto("=",cadenaAsigString,crearIndice(operacionPointer));
                         }
             |

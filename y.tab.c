@@ -3318,7 +3318,7 @@ void completarTercetosAnd(int posicion){
 
 void validarAsignacionDeTipos() {
   if(tipoDatoActual != ultimoTipoLeido) {
-    yyerror("Asignación de tipos incorrecta");
+    yyerror("Asignacion de tipos incorrecta");
   }
 }
 
