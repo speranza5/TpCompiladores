@@ -162,6 +162,7 @@ int ultimoTipoLeido;
 
 /*Cosas para Assembler */
 void generaAsm();
+void pasarTsAssembler(FILE* fp);
 
 
 int tipoDatoActual;
@@ -192,7 +193,7 @@ int tipoDatoActual;
 %token GET DISPLAY
 
 %%
-programa: {printf("Inicio compilador\n");} declaracion algoritmo {guardarTabla(); guardarTercetosEnArchivo("tercetos.txt"); printf("fin compilador\n");}
+programa: {printf("Inicio compilador\n");} declaracion algoritmo {guardarTabla(); guardarTercetosEnArchivo("tercetos.txt"); generaAsm(); printf("fin compilador\n");}
 
 declaracion: DEFVAR {printf("Inicio de declaraciones:\n");} declaraciones_variables ENDEF {printf("fin de declaraciones\n"); agregarTiposDatosATabla();}
 
@@ -1012,8 +1013,8 @@ void validarAsignacionDeTipos() {
 
 void generaAsm(){
 
-FILE * fp;
-fp = fopen("Final.asm","w+t");
+FILE* fp;
+fp = fopen("Final.txt","w+t");
 terceto aux;
 
 fprintf(fp, "include macros2.asm\n");
@@ -1024,6 +1025,7 @@ fprintf(fp, ".STACK 200h \n"); //bytes en stack
 
 //DATA: variables de la tabla de simbolos
 fprintf(fp, ".DATA \n");
+pasarTsAssembler(fp);
 //funcion que pase la TS a este archivo.
 
 
@@ -1039,11 +1041,53 @@ fprintf(fp, "\n");
 //ACA deberia ir la parte de tercetos:
 
 //Todavia falta, aca se tienen que pasar los tercetos al txt.
-
+fprintf(fp, "EN DESARROLLO \n");
 
 //Final
 fprintf(fp, "\t mov AX, 4C00h \t ; Genera la interrupcion 21h\n");
 fprintf(fp, "\t int 21h \t ; Genera la interrupcion 21h\n");
 fclose(fp);
+
+}
+
+void pasarTsAssembler(FILE* fp){
+int i=0;
+   while(i<=finDeTabla){
+      
+    int tipo = tablaSimbolo[i].tipoDato;
+    char* cadena = (char *) malloc(sizeof(float));
+
+    switch (tipo){
+		case Int:
+			fprintf(fp, "\t%s dd ?\t\t\t\t\t\t\t\t\t\t ; Declaracion de Variable Int\n", tablaSimbolo[i].nombre );
+			break;
+		case Real:
+			fprintf(fp, "\t%s dd ?\t\t\t\t\t\t\t\t\t\t ; Declaracion de Variable Real\n", tablaSimbolo[i].nombre );
+			break;
+		case String:
+			fprintf(fp,  "\t%s db 30 dup (?),\"$\"\t\t\t\t\t\t\t\t\t\t;Declaracion de Variable String\n", tablaSimbolo[i].nombre );
+			break;
+		case CteInt:
+				fprintf(fp, "\t%s dd %d.0\t\t\t\t\t\t\t\t\t\t;Declaracion de CTEINT \n", tablaSimbolo[i].nombre, tablaSimbolo[i].limite);
+			break;
+    case CteFloat:
+      ftoa(tablaSimbolo[i].valorFloat,cadena,4);
+			if(strstr(cadena,".")){
+				fprintf(fp, "\t%s dd %f\t\t\t\t\t\t\t\t\t\t;Declaracion de CTEREAL\n", tablaSimbolo[i].nombre, tablaSimbolo[i].valorFloat);
+			}else{
+				fprintf(fp, "\t%s dd %f.0\t\t\t\t\t\t\t\t\t\t;Declaracion de CTEREAL\n", tablaSimbolo[i].nombre, tablaSimbolo[i].valorFloat);
+      }
+			break;
+		case CteString:
+			fprintf(fp, "\t%s db %s, \"$\", 30 dup (?)\t\t\t\t\t\t\t\t\t\t;Declaracion de CTESTRING\n", tablaSimbolo[i].nombre, &(tablaSimbolo[i].valorSimbolo));
+			break;
+      
+      }
+     
+     i++;
+
+  }
+
+   
 
 }
