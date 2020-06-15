@@ -159,6 +159,11 @@ char numeroTextoWhile[5];
 
 /*Validación de tipos*/
 int ultimoTipoLeido;
+
+/*Cosas para Assembler */
+void generaAsm();
+
+
 int tipoDatoActual;
 
 %}
@@ -1001,4 +1006,44 @@ void validarAsignacionDeTipos() {
   if(tipoDatoActual != ultimoTipoLeido) {
     yyerror("Asignacion de tipos incorrecta");
   }
+}
+
+/**************************************ASSEMBLER****************************************/
+
+void generaAsm(){
+
+FILE * fp;
+fp = fopen("Final.asm","w+t");
+terceto aux;
+
+fprintf(fp, "include macros2.asm\n");
+fprintf(fp, "include number.asm\n"); //Creo que la vamos a necesitar.
+fprintf(fp, ".MODEL	LARGE \n");
+fprintf(fp, ".386\n");
+fprintf(fp, ".STACK 200h \n"); //bytes en stack
+
+//DATA: variables de la tabla de simbolos
+fprintf(fp, ".DATA \n");
+//funcion que pase la TS a este archivo.
+
+
+//CODE: comienza la seccion de codigo
+fprintf(fp, ".CODE \n");
+fprintf(fp, "\n");
+fprintf(fp, "\t MOV AX,@DATA 	;inicializa el segmento de datos\n");
+fprintf(fp, "\t MOV DS,AX \n");
+fprintf(fp, "\t MOV ES,AX \n");
+fprintf(fp, "\t FNINIT \n");;
+fprintf(fp, "\n");
+
+//ACA deberia ir la parte de tercetos:
+
+//Todavia falta, aca se tienen que pasar los tercetos al txt.
+
+
+//Final
+fprintf(fp, "\t mov AX, 4C00h \t ; Genera la interrupcion 21h\n");
+fprintf(fp, "\t int 21h \t ; Genera la interrupcion 21h\n");
+fclose(fp);
+
 }
