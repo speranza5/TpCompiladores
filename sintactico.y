@@ -1012,9 +1012,9 @@ void validarAsignacionDeTipos() {
 /**************************************ASSEMBLER****************************************/
 
 void generaAsm(){
-
+int i;
 FILE* fp;
-fp = fopen("Final.txt","w+t");
+fp = fopen("Final.asm","w+t");
 terceto aux;
 
 fprintf(fp, "include macros2.asm\n");
@@ -1039,9 +1039,11 @@ fprintf(fp, "\t FNINIT \n");;
 fprintf(fp, "\n");
 
 //ACA deberia ir la parte de tercetos:
+for(i=0;i<contadorTercetos;i++){
 
+}
 //Todavia falta, aca se tienen que pasar los tercetos al txt.
-fprintf(fp, "EN DESARROLLO \n");
+fprintf(fp, ";EN DESARROLLO \n");
 
 //Final
 fprintf(fp, "\t mov AX, 4C00h \t ; Genera la interrupcion 21h\n");
@@ -1087,7 +1089,20 @@ int i=0;
      i++;
 
   }
+}
 
-   
-
+int devolverIndice(char * cadena){
+  char destino[4];
+  int i =0,cont =0;
+  int numeroFinal;
+  while(cadena[i]!=']'){
+    if(cadena[i]!='['){
+      destino[cont]=cadena[i];
+      cont++;
+    }
+    i++;
+  }
+  destino[cont]='\0';
+  numeroFinal = atoi(destino);
+  return numeroFinal;
 }

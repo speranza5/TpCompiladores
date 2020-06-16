@@ -1,15 +1,8 @@
 DEFVAR
 	FLOAT : a1; b1;c1
-	STRING: cadena
-	INT : a; b; uno; dos; tres
 ENDEF
 BEGIN
-	DISPLAY a1
-	DISPLAY "HOLA"
-	GET a1
-	cadena:= "CADENA"
-	a1 :=3.25 * (4+355+a1)
-	b1 :=a1/3 -5
-	c1 :=1
-	LET uno, dos, tres = (a*1; a*2; a*3)
+	a1:=2
+	b1:= 3 + a1
+	c1:=a1
 END
