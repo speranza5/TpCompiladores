@@ -1070,7 +1070,7 @@ for(i=0;i<contadorTercetos;i++){
   for(k=0;k<cantEtiquetas;k++){
     if(i == tercetosEtiquetas[k]){
     printf("Aca va una etiqueta man\n");
-    fprintf(fp,"SALTO%d \t ;Etiqueta para los saltos \n",i);
+    fprintf(fp,"SALTO%d: \t ;Etiqueta para los saltos \n",i);
     }
   }
    if(strcmp(vectorTercetos[i].elementoIzquierda,"")==0 && strcmp(vectorTercetos[i].elementoDerecha,"")==0){
@@ -1096,7 +1096,7 @@ for(i=0;i<contadorTercetos;i++){
        printf("Se carga un dato solo\n");
      }
      else{
-       fprintf(fp,"%s\t;ETIQUETA\n",vectorTercetos[i].primerElemento);
+       fprintf(fp,"%s:\t;ETIQUETA\n",vectorTercetos[i].primerElemento);
        printf("Se pone una etiqueta en el archivo\n");
      }
    }
