@@ -3369,6 +3369,7 @@ for(i=0;i<contadorTercetos;i++){
       if (strcmp(vectorTercetos[i].primerElemento, "GET") != 0 && strcmp(vectorTercetos[i].primerElemento, "DISPLAY") != 0){
         int repetido=-1,j;
         int indiceEtiqueta = devolverIndice(vectorTercetos[i].elementoIzquierda);
+        printf("%d\n",indiceEtiqueta);
         for(j=0;j<cantEtiquetas;j++){
           if(tercetosEtiquetas[j]==indiceEtiqueta){
               repetido =1;
@@ -3403,8 +3404,8 @@ for(i=0;i<contadorTercetos;i++){
    }
     if(strcmp(vectorTercetos[i].elementoIzquierda,"")!=0 && strcmp(vectorTercetos[i].elementoDerecha,"")!=0){
      opSimple =0;
-     opUnaria=1;
-     opBinaria =0;
+     opUnaria=0;
+     opBinaria =1;
    }
    if(opSimple ==1){
      if(vectorTercetos[i].primerElemento[0]!='E'){

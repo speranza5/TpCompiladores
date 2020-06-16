@@ -6,8 +6,15 @@ include number.asm
 .DATA 
 	a1 dd ?										 ; Declaracion de Variable Real
 	b1 dd ?										 ; Declaracion de Variable Real
-	_2 dd 2.0										;Declaracion de CTEINT 
-	"HOLA" db HOLA, "$", 30 dup (?)										;Declaracion de CTESTRING
+	var db 30 dup (?),"$"										;Declaracion de Variable String
+	a dd ?										 ; Declaracion de Variable Int
+	b dd ?										 ; Declaracion de Variable Int
+	uno dd ?										 ; Declaracion de Variable Int
+	dos dd ?										 ; Declaracion de Variable Int
+	tres dd ?										 ; Declaracion de Variable Int
+	"VERDADERO" db VERDADERO, "$", 30 dup (?)										;Declaracion de CTESTRING
+	"FALSO" db FALSO, "$", 30 dup (?)										;Declaracion de CTESTRING
+	"TERMINE" db TERMINE, "$", 30 dup (?)										;Declaracion de CTESTRING
 .CODE 
 
 	 MOV AX,@DATA 	;inicializa el segmento de datos
@@ -15,11 +22,9 @@ include number.asm
 	 MOV ES,AX 
 	 FNINIT 
 
-= SALTO0 	 ;salto a donde tengo que ir 
-= SALTO0 	 ;salto a donde tengo que ir 
-ETIQ0	;ETIQUETA
-CMP SALTO5 	 ;salto a donde tengo que ir 
-JNBE SALTO11 	 ;salto a donde tengo que ir 
-JMP SALTO4 	 ;salto a donde tengo que ir 
+JNBE SALTO6 	 ;salto a donde tengo que ir 
+JMP SALTO7 	 ;salto a donde tengo que ir 
+SALTO6 	 ;Etiqueta para los saltos 
+SALTO7 	 ;Etiqueta para los saltos 
 	 mov AX, 4C00h 	 ; Genera la interrupcion 21h
 	 int 21h 	 ; Genera la interrupcion 21h
