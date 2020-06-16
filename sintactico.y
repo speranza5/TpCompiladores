@@ -1016,6 +1016,8 @@ int i;
 FILE* fp;
 fp = fopen("Final.asm","w+t");
 terceto aux;
+char vectorOperandos[100][100];
+int contadorOperandos =0;
 
 fprintf(fp, "include macros2.asm\n");
 fprintf(fp, "include number.asm\n"); //Creo que la vamos a necesitar.
@@ -1037,14 +1039,41 @@ fprintf(fp, "\t MOV DS,AX \n");
 fprintf(fp, "\t MOV ES,AX \n");
 fprintf(fp, "\t FNINIT \n");;
 fprintf(fp, "\n");
-
+  int opSimple,  // Formato terceto (x,  ,  ) 
+	opUnaria,  // Formato terceto (x, x,  )
+	opBinaria; // Formato terceto (x, x, x)
 //ACA deberia ir la parte de tercetos:
 for(i=0;i<contadorTercetos;i++){
+   if(strcmp(vectorTercetos[i].elementoIzquierda,"")==0 && strcmp(vectorTercetos[i].elementoDerecha,"")==0){
+     opSimple =1;
+     opUnaria=0;
+     opBinaria =0;
+   }
+    if(strcmp(vectorTercetos[i].elementoIzquierda,"")!=0 && strcmp(vectorTercetos[i].elementoDerecha,"")==0){
+     opSimple =0;
+     opUnaria=1;
+     opBinaria =0;
+   }
+    if(strcmp(vectorTercetos[i].elementoIzquierda,"")!=0 && strcmp(vectorTercetos[i].elementoDerecha,"")!=0){
+     opSimple =0;
+     opUnaria=1;
+     opBinaria =0;
+   }
+   if(opSimple ==1){
+     if(vectorTercetos[i].primerElemento[0]!='E'){
+       //es una constante o un ID
+       strcpy(vectorOperandos[contadorOperandos],vectorTercetos[i].primerElemento);
+       contadorOperandos++;
+       printf("Se carga un dato solo\n");
+     }
+     else{
+       fprintf(fp,"%s\t;ETIQUETA\n",vectorTercetos[i].primerElemento);
+       printf("Se pone una etiqueta en el archivo\n");
+     }
+   }
 
 }
 //Todavia falta, aca se tienen que pasar los tercetos al txt.
-fprintf(fp, ";EN DESARROLLO \n");
-
 //Final
 fprintf(fp, "\t mov AX, 4C00h \t ; Genera la interrupcion 21h\n");
 fprintf(fp, "\t int 21h \t ; Genera la interrupcion 21h\n");

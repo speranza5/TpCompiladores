@@ -4,7 +4,7 @@ DEFVAR
 	INT : a; b; uno; dos; tres
 ENDEF
 BEGIN
-    if(BETWEEN (a, [b ; 12]) ){
+    if(a1>b1){
 		DISPLAY "VERDADERO"
 	}
 	else{
