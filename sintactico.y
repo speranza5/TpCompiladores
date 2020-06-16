@@ -1100,6 +1100,16 @@ for(i=0;i<contadorTercetos;i++){
      }
    }
    if(opUnaria==1){
+     //puede ser un get, un display o un salto (creo)
+     if (strcmp(vectorTercetos[i].primerElemento, "GET") != 0 && strcmp(vectorTercetos[i].primerElemento, "DISPLAY") != 0){
+       //no es ni get ni display, entonces es un salto
+       int numeroSalto = devolverIndice(vectorTercetos[i].elementoIzquierda);
+       fprintf(fp,"%s SALTO%d \t ;salto a donde tengo que ir \n",vectorTercetos[i].primerElemento,numeroSalto);
+     }
+     else{
+       //aca es un get o un display, hay que seguir preguntando
+     }
+
 
    }
 
