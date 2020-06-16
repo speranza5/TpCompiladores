@@ -22,5 +22,7 @@ include number.asm
 	 MOV ES,AX 
 	 FNINIT 
 
+SALTO6 	 ;Etiqueta para los saltos 
+SALTO7 	 ;Etiqueta para los saltos 
 	 mov AX, 4C00h 	 ; Genera la interrupcion 21h
 	 int 21h 	 ; Genera la interrupcion 21h

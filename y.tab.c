@@ -3337,7 +3337,8 @@ fp = fopen("Final.asm","w+t");
 terceto aux;
 char vectorOperandos[100][100];
 int contadorOperandos =0;
-
+int tercetosEtiquetas[1200];
+int cantEtiquetas = 0;
 fprintf(fp, "include macros2.asm\n");
 fprintf(fp, "include number.asm\n"); //Creo que la vamos a necesitar.
 fprintf(fp, ".MODEL	LARGE \n");
@@ -3362,7 +3363,34 @@ fprintf(fp, "\n");
 	opUnaria,  // Formato terceto (x, x,  )
 	opBinaria; // Formato terceto (x, x, x)
 //ACA deberia ir la parte de tercetos:
+//nos fijamos en que terceto tenemos que poner una etiqueta
 for(i=0;i<contadorTercetos;i++){
+    if (strcmp(vectorTercetos[i].elementoIzquierda, "") != 0 && strcmp(vectorTercetos[i].elementoDerecha, "") ==0){
+      if (strcmp(vectorTercetos[i].primerElemento, "GET") != 0 && strcmp(vectorTercetos[i].primerElemento, "DISPLAY") != 0){
+        int repetido=-1,j;
+        int indiceEtiqueta = devolverIndice(vectorTercetos[i].elementoIzquierda);
+        for(j=0;j<cantEtiquetas;j++){
+          if(tercetosEtiquetas[j]==indiceEtiqueta){
+              repetido =1;
+          }
+        }
+        if(repetido ==-1){
+					tercetosEtiquetas[cantEtiquetas] = indiceEtiqueta;
+          cantEtiquetas++;
+        }
+      }
+    }
+}
+
+for(i=0;i<contadorTercetos;i++){
+  //vemos si antes que nada tenemos que poner una etiqueta
+  int k;
+  for(k=0;k<cantEtiquetas;k++){
+    if(i == tercetosEtiquetas[k]){
+    printf("Aca va una etiqueta man\n");
+    fprintf(fp,"SALTO%d \t ;Etiqueta para los saltos \n",i);
+    }
+  }
    if(strcmp(vectorTercetos[i].elementoIzquierda,"")==0 && strcmp(vectorTercetos[i].elementoDerecha,"")==0){
      opSimple =1;
      opUnaria=0;
@@ -3389,6 +3417,9 @@ for(i=0;i<contadorTercetos;i++){
        fprintf(fp,"%s\t;ETIQUETA\n",vectorTercetos[i].primerElemento);
        printf("Se pone una etiqueta en el archivo\n");
      }
+   }
+   if(opUnaria==1){
+
    }
 
 }
