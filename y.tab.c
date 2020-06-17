@@ -728,13 +728,13 @@ static const yytype_uint16 yyrline[] =
      205,   205,   206,   206,   209,   213,   218,   218,   220,   220,
      222,   222,   222,   222,   222,   222,   222,   224,   224,   238,
      238,   255,   258,   261,   265,   268,   271,   273,   302,   316,
-     324,   324,   333,   341,   341,   357,   368,   368,   387,   387,
-     408,   408,   408,   411,   411,   411,   412,   412,   412,   413,
-     413,   413,   414,   414,   414,   415,   415,   415,   416,   416,
-     416,   417,   417,   417,   418,   418,   418,   419,   419,   419,
-     420,   420,   420,   421,   421,   421,   422,   424,   424,   446,
-     450,   457,   446,   466,   471,   478,   486,   486,   494,   494,
-     500,   502,   507,   510
+     324,   324,   334,   342,   342,   358,   369,   369,   388,   388,
+     409,   409,   409,   412,   412,   412,   413,   413,   413,   414,
+     414,   414,   415,   415,   415,   416,   416,   416,   417,   417,
+     417,   418,   418,   418,   419,   419,   419,   420,   420,   420,
+     421,   421,   421,   422,   422,   422,   423,   425,   425,   447,
+     451,   458,   447,   467,   472,   479,   487,   487,   495,   495,
+     501,   503,   508,   511
 };
 #endif
 
@@ -2052,7 +2052,8 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 327 ".\\sintactico.y"
     {printf("factor es operacion entre parentesis\n");
-                            factorPointer = crearTerceto(crearIndice(operacionPointer),"","");
+                            //factorPointer = crearTerceto(crearIndice(operacionPointer),"","");
+                            factorPointer = operacionPointer;
                             operacionPointer = desapilar(&pilaOperaciones);
                             terminoPointer = desapilar(&pilaTerminos);
            }
@@ -2061,7 +2062,7 @@ yyreduce:
   case 42:
 
 /* Line 1455 of yacc.c  */
-#line 333 ".\\sintactico.y"
+#line 334 ".\\sintactico.y"
     {printf("IF sin rama falsa\n");
                                                  salto = desapilar(&pilaSaltos); 
 												                         numeroCondicion = desapilar(&condPila); 
@@ -2075,7 +2076,7 @@ yyreduce:
   case 43:
 
 /* Line 1455 of yacc.c  */
-#line 341 ".\\sintactico.y"
+#line 342 ".\\sintactico.y"
     {
             					salto = desapilar(&pilaSaltos); 
 											numeroCondicion = desapilar(&condPila); 
@@ -2091,7 +2092,7 @@ yyreduce:
   case 44:
 
 /* Line 1455 of yacc.c  */
-#line 351 ".\\sintactico.y"
+#line 352 ".\\sintactico.y"
     {printf("IF con rama falsa\n"); 
                           numeroSalto = desapilar(&condPila);
                           printf("Numero de salto: %d\n",numeroSalto);
@@ -2102,7 +2103,7 @@ yyreduce:
   case 45:
 
 /* Line 1455 of yacc.c  */
-#line 357 ".\\sintactico.y"
+#line 358 ".\\sintactico.y"
     {printf("Comparacion unica\n");
                         if(esBetween==0){
 			                    cmpPointer = crearTerceto("CMP",crearIndice(izqPointer),crearIndice(derPointer)); 
@@ -2119,7 +2120,7 @@ yyreduce:
   case 46:
 
 /* Line 1455 of yacc.c  */
-#line 368 ".\\sintactico.y"
+#line 369 ".\\sintactico.y"
     {
             if(esBetween==0){
 						  cmpPointer = crearTerceto("CMP",crearIndice(izqPointer),crearIndice(derPointer)); 
@@ -2135,7 +2136,7 @@ yyreduce:
   case 47:
 
 /* Line 1455 of yacc.c  */
-#line 379 ".\\sintactico.y"
+#line 380 ".\\sintactico.y"
     {printf("Comparacion con and");
            				             if(esBetween==0){
 				                       cmpPointer = crearTerceto("CMP",crearIndice(izqPointer),crearIndice(derPointer)); 
@@ -2149,7 +2150,7 @@ yyreduce:
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 387 ".\\sintactico.y"
+#line 388 ".\\sintactico.y"
     {
              				if(esBetween==0){
 				              cmpPointer = crearTerceto("CMP",crearIndice(izqPointer),crearIndice(derPointer)); 
@@ -2166,7 +2167,7 @@ yyreduce:
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 398 ".\\sintactico.y"
+#line 399 ".\\sintactico.y"
     {printf("comparacion por or");
             				           if(esBetween==0){
 				                          cmpPointer = crearTerceto("CMP",crearIndice(izqPointer),crearIndice(derPointer));
@@ -2181,259 +2182,259 @@ yyreduce:
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 408 ".\\sintactico.y"
+#line 409 ".\\sintactico.y"
     {izqPointer = operacionPointer; esBetween =0;apilar(&pilaBtw,0);}
     break;
 
   case 51:
 
 /* Line 1455 of yacc.c  */
-#line 408 ".\\sintactico.y"
+#line 409 ".\\sintactico.y"
     {printf("Comparacion por menor\n"); apilar(&pilaSaltos, 1);}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 409 ".\\sintactico.y"
+#line 410 ".\\sintactico.y"
     {derPointer = operacionPointer;}
     break;
 
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 411 ".\\sintactico.y"
+#line 412 ".\\sintactico.y"
     {izqPointer = operacionPointer; esBetween =0;}
     break;
 
   case 54:
 
 /* Line 1455 of yacc.c  */
-#line 411 ".\\sintactico.y"
+#line 412 ".\\sintactico.y"
     {printf("comparacion por menor o igual\n"); apilar(&pilaSaltos, 5);}
     break;
 
   case 55:
 
 /* Line 1455 of yacc.c  */
-#line 411 ".\\sintactico.y"
+#line 412 ".\\sintactico.y"
     {derPointer = operacionPointer;}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 412 ".\\sintactico.y"
+#line 413 ".\\sintactico.y"
     {izqPointer = operacionPointer; esBetween =0;}
     break;
 
   case 57:
 
 /* Line 1455 of yacc.c  */
-#line 412 ".\\sintactico.y"
+#line 413 ".\\sintactico.y"
     {printf("comparacion por mayor\n");  apilar(&pilaSaltos,2) ;}
     break;
 
   case 58:
 
 /* Line 1455 of yacc.c  */
-#line 412 ".\\sintactico.y"
+#line 413 ".\\sintactico.y"
     {derPointer = operacionPointer;}
     break;
 
   case 59:
 
 /* Line 1455 of yacc.c  */
-#line 413 ".\\sintactico.y"
+#line 414 ".\\sintactico.y"
     {izqPointer = operacionPointer; esBetween =0;}
     break;
 
   case 60:
 
 /* Line 1455 of yacc.c  */
-#line 413 ".\\sintactico.y"
+#line 414 ".\\sintactico.y"
     {printf("comparacion por mayor o igual\n"); apilar(&pilaSaltos,4);}
     break;
 
   case 61:
 
 /* Line 1455 of yacc.c  */
-#line 413 ".\\sintactico.y"
+#line 414 ".\\sintactico.y"
     {derPointer = operacionPointer;}
     break;
 
   case 62:
 
 /* Line 1455 of yacc.c  */
-#line 414 ".\\sintactico.y"
+#line 415 ".\\sintactico.y"
     {izqPointer = operacionPointer; esBetween =0;}
     break;
 
   case 63:
 
 /* Line 1455 of yacc.c  */
-#line 414 ".\\sintactico.y"
+#line 415 ".\\sintactico.y"
     {printf("comparacion por distinto\n"); apilar(&pilaSaltos,6);}
     break;
 
   case 64:
 
 /* Line 1455 of yacc.c  */
-#line 414 ".\\sintactico.y"
+#line 415 ".\\sintactico.y"
     {derPointer = operacionPointer;}
     break;
 
   case 65:
 
 /* Line 1455 of yacc.c  */
-#line 415 ".\\sintactico.y"
+#line 416 ".\\sintactico.y"
     {izqPointer = operacionPointer; esBetween =0;}
     break;
 
   case 66:
 
 /* Line 1455 of yacc.c  */
-#line 415 ".\\sintactico.y"
+#line 416 ".\\sintactico.y"
     {printf("comparacion por igual\n"); apilar(&pilaSaltos,3); }
     break;
 
   case 67:
 
 /* Line 1455 of yacc.c  */
-#line 415 ".\\sintactico.y"
+#line 416 ".\\sintactico.y"
     {derPointer = operacionPointer;}
     break;
 
   case 68:
 
 /* Line 1455 of yacc.c  */
-#line 416 ".\\sintactico.y"
+#line 417 ".\\sintactico.y"
     {izqPointer = operacionPointer; esBetween =0;}
     break;
 
   case 69:
 
 /* Line 1455 of yacc.c  */
-#line 416 ".\\sintactico.y"
+#line 417 ".\\sintactico.y"
     {printf("Comparacion por menor negada\n"); apilar(&pilaSaltos,4); }
     break;
 
   case 70:
 
 /* Line 1455 of yacc.c  */
-#line 416 ".\\sintactico.y"
+#line 417 ".\\sintactico.y"
     {derPointer = operacionPointer;}
     break;
 
   case 71:
 
 /* Line 1455 of yacc.c  */
-#line 417 ".\\sintactico.y"
+#line 418 ".\\sintactico.y"
     {izqPointer = operacionPointer; esBetween =0;}
     break;
 
   case 72:
 
 /* Line 1455 of yacc.c  */
-#line 417 ".\\sintactico.y"
+#line 418 ".\\sintactico.y"
     {printf("comparacion por menor o igual negada\n"); apilar(&pilaSaltos,2); }
     break;
 
   case 73:
 
 /* Line 1455 of yacc.c  */
-#line 417 ".\\sintactico.y"
+#line 418 ".\\sintactico.y"
     {derPointer = operacionPointer;}
     break;
 
   case 74:
 
 /* Line 1455 of yacc.c  */
-#line 418 ".\\sintactico.y"
+#line 419 ".\\sintactico.y"
     {izqPointer = operacionPointer; esBetween =0;}
     break;
 
   case 75:
 
 /* Line 1455 of yacc.c  */
-#line 418 ".\\sintactico.y"
+#line 419 ".\\sintactico.y"
     {printf("comparacion por mayor negada\n"); apilar(&pilaSaltos,5); }
     break;
 
   case 76:
 
 /* Line 1455 of yacc.c  */
-#line 418 ".\\sintactico.y"
+#line 419 ".\\sintactico.y"
     {derPointer = operacionPointer;}
     break;
 
   case 77:
 
 /* Line 1455 of yacc.c  */
-#line 419 ".\\sintactico.y"
+#line 420 ".\\sintactico.y"
     {izqPointer = operacionPointer; esBetween =0;}
     break;
 
   case 78:
 
 /* Line 1455 of yacc.c  */
-#line 419 ".\\sintactico.y"
+#line 420 ".\\sintactico.y"
     {printf("comparacion por mayor o igual negada \n"); apilar(&pilaSaltos,1); }
     break;
 
   case 79:
 
 /* Line 1455 of yacc.c  */
-#line 419 ".\\sintactico.y"
+#line 420 ".\\sintactico.y"
     {derPointer = operacionPointer;}
     break;
 
   case 80:
 
 /* Line 1455 of yacc.c  */
-#line 420 ".\\sintactico.y"
+#line 421 ".\\sintactico.y"
     {izqPointer = operacionPointer; esBetween =0;}
     break;
 
   case 81:
 
 /* Line 1455 of yacc.c  */
-#line 420 ".\\sintactico.y"
+#line 421 ".\\sintactico.y"
     {printf("comparacion por distinto negada\n"); apilar(&pilaSaltos,3); }
     break;
 
   case 82:
 
 /* Line 1455 of yacc.c  */
-#line 420 ".\\sintactico.y"
+#line 421 ".\\sintactico.y"
     {derPointer = operacionPointer;}
     break;
 
   case 83:
 
 /* Line 1455 of yacc.c  */
-#line 421 ".\\sintactico.y"
+#line 422 ".\\sintactico.y"
     {izqPointer = operacionPointer; esBetween =0;}
     break;
 
   case 84:
 
 /* Line 1455 of yacc.c  */
-#line 421 ".\\sintactico.y"
+#line 422 ".\\sintactico.y"
     {printf("comparacion por igual negada\n"); apilar(&pilaSaltos,6); }
     break;
 
   case 85:
 
 /* Line 1455 of yacc.c  */
-#line 421 ".\\sintactico.y"
+#line 422 ".\\sintactico.y"
     {derPointer = operacionPointer;}
     break;
 
   case 87:
 
 /* Line 1455 of yacc.c  */
-#line 424 ".\\sintactico.y"
+#line 425 ".\\sintactico.y"
     { 
                      cadenaEtiq = malloc(sizeof (char)* 156);
 		                  strcpy(cadenaEtiq,"ETIQ");
@@ -2448,7 +2449,7 @@ yyreduce:
   case 88:
 
 /* Line 1455 of yacc.c  */
-#line 434 ".\\sintactico.y"
+#line 435 ".\\sintactico.y"
     {
               
                                                 printf("bucle while\n");
@@ -2465,7 +2466,7 @@ yyreduce:
   case 89:
 
 /* Line 1455 of yacc.c  */
-#line 446 ".\\sintactico.y"
+#line 447 ".\\sintactico.y"
     {esBetween = 1; 
                          
                          cadenaIDBetween = malloc(sizeof(char)*strlen((yyvsp[(3) - (3)].str_val)));
@@ -2476,7 +2477,7 @@ yyreduce:
   case 90:
 
 /* Line 1455 of yacc.c  */
-#line 450 ".\\sintactico.y"
+#line 451 ".\\sintactico.y"
     {
 																					      crearTerceto("CMP",cadenaIDBetween,crearIndice(operacionPointer));
 						                                    apilar(&pilaCompletarAnds,contadorTercetos);
@@ -2489,7 +2490,7 @@ yyreduce:
   case 91:
 
 /* Line 1455 of yacc.c  */
-#line 457 ".\\sintactico.y"
+#line 458 ".\\sintactico.y"
     {
                     	     apilar(&pilaSaltos, 5);
 		                       cmpPointer = crearTerceto("CMP",cadenaIDBetween,crearIndice(operacionPointer));
@@ -2502,14 +2503,14 @@ yyreduce:
   case 92:
 
 /* Line 1455 of yacc.c  */
-#line 464 ".\\sintactico.y"
+#line 465 ".\\sintactico.y"
     {printf("comparacion con between\n");}
     break;
 
   case 93:
 
 /* Line 1455 of yacc.c  */
-#line 466 ".\\sintactico.y"
+#line 467 ".\\sintactico.y"
     { if(cantValores != cantVariables){yyerror("Error, no coinciden los argumentos del let con las variables");} 
                                                               printf("lista let\n");
                                                               crearTercetosLet();
@@ -2519,7 +2520,7 @@ yyreduce:
   case 94:
 
 /* Line 1455 of yacc.c  */
-#line 471 ".\\sintactico.y"
+#line 472 ".\\sintactico.y"
     {cantVariables++;printf("Item de la lista del let %s\n",yylval.str_val);
                               vectorLetTipoDatos[cantVariables-1] = getTipoPorID((yyvsp[(3) - (3)].str_val));
                               printf("EL TIPO DE DATOS DEL LET ES: %d \n", vectorLetTipoDatos[cantVariables-1]);
@@ -2531,7 +2532,7 @@ yyreduce:
   case 95:
 
 /* Line 1455 of yacc.c  */
-#line 478 ".\\sintactico.y"
+#line 479 ".\\sintactico.y"
     {cantVariables++;
               vectorLetTipoDatos[cantVariables-1] = getTipoPorID((yyvsp[(1) - (1)].str_val));
               
@@ -2544,14 +2545,14 @@ yyreduce:
   case 96:
 
 /* Line 1455 of yacc.c  */
-#line 486 ".\\sintactico.y"
+#line 487 ".\\sintactico.y"
     {ultimoTipoLeido =  vectorLetTipoDatos[cantValores];}
     break;
 
   case 97:
 
 /* Line 1455 of yacc.c  */
-#line 486 ".\\sintactico.y"
+#line 487 ".\\sintactico.y"
     {cantValores++;
                           
                          printf("argumento del let es operacion \n");
@@ -2563,14 +2564,14 @@ yyreduce:
   case 98:
 
 /* Line 1455 of yacc.c  */
-#line 494 ".\\sintactico.y"
+#line 495 ".\\sintactico.y"
     {ultimoTipoLeido =  vectorLetTipoDatos[cantValores];}
     break;
 
   case 99:
 
 /* Line 1455 of yacc.c  */
-#line 494 ".\\sintactico.y"
+#line 495 ".\\sintactico.y"
     {cantValores++;
                                                    printf("argumento del let es operacion \n");
                                                    tercetoOperacion = operacionPointer;
@@ -2581,14 +2582,14 @@ yyreduce:
   case 100:
 
 /* Line 1455 of yacc.c  */
-#line 500 ".\\sintactico.y"
+#line 501 ".\\sintactico.y"
     {printf("Se muestra un comentario: \n");}
     break;
 
   case 101:
 
 /* Line 1455 of yacc.c  */
-#line 502 ".\\sintactico.y"
+#line 503 ".\\sintactico.y"
     {printf("Ingreso de datos\n");
                 //numeroGET = crearTerceto($2,"","");
 				        crearTerceto("GET",(yyvsp[(2) - (2)].str_val),"");
@@ -2598,7 +2599,7 @@ yyreduce:
   case 102:
 
 /* Line 1455 of yacc.c  */
-#line 507 ".\\sintactico.y"
+#line 508 ".\\sintactico.y"
     {printf("Salida de string por pantalla\n");agregarCteStringATabla(yylval.str_val);
                             crearTerceto("DISPLAY",yylval.str_val,"");
                             }
@@ -2607,7 +2608,7 @@ yyreduce:
   case 103:
 
 /* Line 1455 of yacc.c  */
-#line 510 ".\\sintactico.y"
+#line 511 ".\\sintactico.y"
     {printf("Salida de variable por pantalla\n");
                     crearTerceto("DISPLAY",(yyvsp[(2) - (2)].str_val),"");
                    }
@@ -2616,7 +2617,7 @@ yyreduce:
 
 
 /* Line 1455 of yacc.c  */
-#line 2620 "y.tab.c"
+#line 2621 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2828,7 +2829,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 513 ".\\sintactico.y"
+#line 514 ".\\sintactico.y"
 
 
 
@@ -3445,13 +3446,16 @@ for(i=0;i<contadorTercetos;i++){
 				if (tipo == Real) 
 				{
 					fprintf(fp, "\t DisplayFloat %s,2 \n", vectorTercetos[i].elementoIzquierda);
+          fprintf(fp, "\t newLine \n");
 				}
 				else if (tipo == Int) 
 				{
 					fprintf(fp, "\t DisplayFloat %s.0,2 \n", vectorTercetos[i].elementoIzquierda);
+          fprintf(fp, "\t newLine \n");
 				} else 
 				{
 					fprintf(fp, "\t DisplayString %s \n", vectorTercetos[i].elementoIzquierda);
+          fprintf(fp, "\t newLine \n");
 				}
 
       
@@ -3474,7 +3478,7 @@ for(i=0;i<contadorTercetos;i++){
 				
      }
      // Siempre inserto nueva linea despues de mostrar msj
-				fprintf(fp, "\t newLine \n");
+				
 
    }
 
