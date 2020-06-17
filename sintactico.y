@@ -1259,3 +1259,10 @@ indice = devolverIndice(posicion);
 printf("INDICE: %d \n",indice);
 return vectorTercetos[indice];
 }
+
+int esTercetoSimple(int indice){
+  if(strcmp(vectorTercetos[indice].elementoIzquierda,"")==0 && strcmp(vectorTercetos[indice].elementoDerecha,"")==0){
+      return 1;
+  }
+  return -1;
+}
