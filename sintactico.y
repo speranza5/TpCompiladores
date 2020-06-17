@@ -163,6 +163,8 @@ int ultimoTipoLeido;
 /*Cosas para Assembler */
 void generaAsm();
 void pasarTsAssembler(FILE* fp);
+int devolverIndice(char * cadena);
+terceto devolverTerceto (char* posicion);
 
 
 int tipoDatoActual;
@@ -1040,11 +1042,14 @@ fprintf(fp, "\t MOV DS,AX \n");
 fprintf(fp, "\t MOV ES,AX \n");
 fprintf(fp, "\t FNINIT \n");;
 fprintf(fp, "\n");
+
   int opSimple,  // Formato terceto (x,  ,  ) 
 	opUnaria,  // Formato terceto (x, x,  )
 	opBinaria; // Formato terceto (x, x, x)
+
 //ACA deberia ir la parte de tercetos:
 //nos fijamos en que terceto tenemos que poner una etiqueta
+
 for(i=0;i<contadorTercetos;i++){
     if (strcmp(vectorTercetos[i].elementoIzquierda, "") != 0 && strcmp(vectorTercetos[i].elementoDerecha, "") ==0){
       if (strcmp(vectorTercetos[i].primerElemento, "GET") != 0 && strcmp(vectorTercetos[i].primerElemento, "DISPLAY") != 0){
@@ -1063,6 +1068,8 @@ for(i=0;i<contadorTercetos;i++){
       }
     }
 }
+
+//////////EMPEZAMOS A ARMAR LA SECUENCIA DE TERCETOS EN ASSEMBLER //////////////////////////////////////
 
 for(i=0;i<contadorTercetos;i++){
   //vemos si antes que nada tenemos que poner una etiqueta
@@ -1088,11 +1095,15 @@ for(i=0;i<contadorTercetos;i++){
      opUnaria=0;
      opBinaria =1;
    }
+
+  //VERIFICAMOS QUE CONTIENE EL TERCETO, EN BASE A QUE CLASE DE OPERADOR ES:
+
    if(opSimple ==1){
-     if(vectorTercetos[i].primerElemento[0]!='E'){
+     if(strncmp(vectorTercetos[i].primerElemento, "ETIQ", 4) != 0 ){
        //es una constante o un ID
        strcpy(vectorOperandos[contadorOperandos],vectorTercetos[i].primerElemento);
        contadorOperandos++;
+       fprintf(fp, "\t FLD %s \t;Cargo valor \n", vectorTercetos[i].primerElemento);
        printf("Se carga un dato solo\n");
      }
      else{
@@ -1100,6 +1111,7 @@ for(i=0;i<contadorTercetos;i++){
        printf("Se pone una etiqueta en el archivo\n");
      }
    }
+
    if(opUnaria==1){
      //puede ser un get, un display o un salto (creo)
      if (strcmp(vectorTercetos[i].primerElemento, "GET") != 0 && strcmp(vectorTercetos[i].primerElemento, "DISPLAY") != 0){
@@ -1107,14 +1119,49 @@ for(i=0;i<contadorTercetos;i++){
        int numeroSalto = devolverIndice(vectorTercetos[i].elementoIzquierda);
        fprintf(fp,"%s SALTO%d \t ;salto a donde tengo que ir \n",vectorTercetos[i].primerElemento,numeroSalto);
      }
-     else{
-       //aca es un get o un display, hay que seguir preguntando
-     }
+     else if (strcmp(vectorTercetos[i].primerElemento, "DISPLAY") == 0){
+       printf("Entro al DISPLAY \n");
+       int tipo = getTipoPorID(vectorTercetos[i].elementoIzquierda);
+       
+				if (tipo == Real) 
+				{
+					fprintf(fp, "\t DisplayFloat %s,2 \n", vectorTercetos[i].elementoIzquierda);
+				}
+				else if (tipo == Int) 
+				{
+					fprintf(fp, "\t DisplayFloat %s.0,2 \n", vectorTercetos[i].elementoIzquierda);
+				} else 
+				{
+					fprintf(fp, "\t DisplayString %s \n", vectorTercetos[i].elementoIzquierda);
+				}
 
+      
+     }
+     else if (strcmp(vectorTercetos[i].primerElemento, "GET") == 0)
+     {printf("Entro al GET \n");
+     terceto tercetito = devolverTerceto(vectorTercetos[i].elementoIzquierda); 
+          int tipo = getTipoPorID(tercetito.primerElemento);
+      
+				if (tipo == Real) 
+				{
+					fprintf(fp, "\t GetFloat %s\n", tercetito.primerElemento);
+				}
+				else if (tipo == Int) 
+				{
+					fprintf(fp, "\t GetFloat %s\n", tercetito.primerElemento);
+				} else 
+				{
+					fprintf(fp, "\t GetString %s\n", tercetito.primerElemento);
+				}
+				
+     }
+     // Siempre inserto nueva linea despues de mostrar msj
+				fprintf(fp, "\t newLine \n");
 
    }
 
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////
 //Todavia falta, aca se tienen que pasar los tercetos al txt.
 //Final
 fprintf(fp, "\t mov AX, 4C00h \t ; Genera la interrupcion 21h\n");
@@ -1176,4 +1223,36 @@ int devolverIndice(char * cadena){
   destino[cont]='\0';
   numeroFinal = atoi(destino);
   return numeroFinal;
+}
+
+char* getCodOp(char* token)
+{
+	if(!strcmp(token, "+"))
+	{
+		return "FADD";
+	}
+	else if(!strcmp(token, "="))
+	{
+		return "MOV";
+	}
+	else if(!strcmp(token, "-"))
+	{
+		return "FSUB";
+	}
+	else if(!strcmp(token, "*"))
+	{
+		return "FMUL";
+	}
+	else if(!strcmp(token, "/"))
+	{
+		return "FDIV";
+	}
+	
+}
+
+terceto devolverTerceto (char* posicion){
+int indice = -1;
+indice = devolverIndice(posicion);
+printf("INDICE: %d \n",indice);
+return vectorTercetos[indice];
 }
