@@ -36,7 +36,6 @@ include number.asm
 	 MOV ES,AX 
 	 FNINIT 
 
-	 FLD a1 	;Cargo valor 
 	 GetFloat a1
 	 newLine 
 	 DisplayFloat a1,2 
@@ -46,50 +45,49 @@ include number.asm
 	 FLD 4 	;Cargo valor 
 	 FLD a1 	;Cargo valor 
 	 FLD b1 	;Cargo valor 
-	 FLD [11] 	;Cargo valor 
+	 FLD [10] 	;Cargo valor 
 	 FLD a1 	;Cargo valor 
 	 FLD b1 	;Cargo valor 
-	 FLD [15] 	;Cargo valor 
+	 FLD [14] 	;Cargo valor 
 	 FLD b1 	;Cargo valor 
-	 FLD [18] 	;Cargo valor 
+	 FLD [17] 	;Cargo valor 
 	 FLD 43.2000 	;Cargo valor 
 	 FLD 12.5699 	;Cargo valor 
 ETIQ0:	;ETIQUETA
 	 FLD b 	;Cargo valor 
-SALTO29: 	 ;Etiqueta para los saltos 
-JNB SALTO54 	 ;salto a donde tengo que ir 
+SALTO28: 	 ;Etiqueta para los saltos 
+JNB SALTO53 	 ;salto a donde tengo que ir 
 	 newLine 
 	 FLD 12 	;Cargo valor 
-JNA SALTO55 	 ;salto a donde tengo que ir 
+JNA SALTO54 	 ;salto a donde tengo que ir 
 	 newLine 
 	 FLD a 	;Cargo valor 
 	 FLD 45 	;Cargo valor 
-JNAE SALTO43 	 ;salto a donde tengo que ir 
+JNAE SALTO42 	 ;salto a donde tengo que ir 
 	 newLine 
 	 FLD b 	;Cargo valor 
 	 FLD 13 	;Cargo valor 
-JNAE SALTO43 	 ;salto a donde tengo que ir 
-	 newLine 
-JMP SALTO54 	 ;salto a donde tengo que ir 
-	 newLine 
-SALTO43: 	 ;Etiqueta para los saltos 
-	 FLD b 	;Cargo valor 
-	 FLD 12 	;Cargo valor 
-JNAE SALTO51 	 ;salto a donde tengo que ir 
+JNAE SALTO42 	 ;salto a donde tengo que ir 
 	 newLine 
 JMP SALTO53 	 ;salto a donde tengo que ir 
 	 newLine 
+SALTO42: 	 ;Etiqueta para los saltos 
+	 FLD b 	;Cargo valor 
+	 FLD 12 	;Cargo valor 
+JNAE SALTO50 	 ;salto a donde tengo que ir 
+	 newLine 
+JMP SALTO52 	 ;salto a donde tengo que ir 
+	 newLine 
 	 FLD a 	;Cargo valor 
 	 FLD 13 	;Cargo valor 
-SALTO51: 	 ;Etiqueta para los saltos 
-JNE SALTO54 	 ;salto a donde tengo que ir 
+SALTO50: 	 ;Etiqueta para los saltos 
+JNE SALTO53 	 ;salto a donde tengo que ir 
 	 newLine 
+SALTO52: 	 ;Etiqueta para los saltos 
 SALTO53: 	 ;Etiqueta para los saltos 
-SALTO54: 	 ;Etiqueta para los saltos 
-JMP SALTO29 	 ;salto a donde tengo que ir 
+JMP SALTO28 	 ;salto a donde tengo que ir 
 	 newLine 
-SALTO55: 	 ;Etiqueta para los saltos 
-	 FLD b1 	;Cargo valor 
+SALTO54: 	 ;Etiqueta para los saltos 
 	 GetFloat b1
 	 newLine 
 	 DisplayString "HOLA SALGO EN PANTALLA" 

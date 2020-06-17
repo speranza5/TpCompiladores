@@ -500,8 +500,8 @@ lista_valores: lista_valores PUNTO_COMA {ultimoTipoLeido =  vectorLetTipoDatos[c
 comentarios: COMENTARIO {printf("Se muestra un comentario: \n");};
 
 ingreso:GET ID {printf("Ingreso de datos\n");
-                numeroGET = crearTerceto($2,"","");
-				        crearTerceto("GET",crearIndice(numeroGET),"");
+                //numeroGET = crearTerceto($2,"","");
+				        crearTerceto("GET",$2,"");
                }
 
 egreso: DISPLAY CONSTSTRING {printf("Salida de string por pantalla\n");agregarCteStringATabla(yylval.str_val);
@@ -1126,37 +1126,39 @@ for(i=0;i<contadorTercetos;i++){
 				if (tipo == Real) 
 				{
 					fprintf(fp, "\t DisplayFloat %s,2 \n", vectorTercetos[i].elementoIzquierda);
+          fprintf(fp, "\t newLine \n");
 				}
 				else if (tipo == Int) 
 				{
 					fprintf(fp, "\t DisplayFloat %s.0,2 \n", vectorTercetos[i].elementoIzquierda);
+          fprintf(fp, "\t newLine \n");
 				} else 
 				{
 					fprintf(fp, "\t DisplayString %s \n", vectorTercetos[i].elementoIzquierda);
+          fprintf(fp, "\t newLine \n");
 				}
 
       
      }
      else if (strcmp(vectorTercetos[i].primerElemento, "GET") == 0)
      {printf("Entro al GET \n");
-     terceto tercetito = devolverTerceto(vectorTercetos[i].elementoIzquierda); 
-          int tipo = getTipoPorID(tercetito.primerElemento);
+          int tipo = getTipoPorID(vectorTercetos[i].elementoIzquierda);
       
 				if (tipo == Real) 
 				{
-					fprintf(fp, "\t GetFloat %s\n", tercetito.primerElemento);
+					fprintf(fp, "\t GetFloat %s\n", vectorTercetos[i].elementoIzquierda);
 				}
 				else if (tipo == Int) 
 				{
-					fprintf(fp, "\t GetFloat %s\n", tercetito.primerElemento);
+					fprintf(fp, "\t GetFloat %s\n", vectorTercetos[i].elementoIzquierda);
 				} else 
 				{
-					fprintf(fp, "\t GetString %s\n", tercetito.primerElemento);
+					fprintf(fp, "\t GetString %s\n",vectorTercetos[i].elementoIzquierda);
 				}
 				
      }
      // Siempre inserto nueva linea despues de mostrar msj
-				fprintf(fp, "\t newLine \n");
+				
 
    }
 
