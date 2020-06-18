@@ -1,7 +1,8 @@
 DEFVAR
-	FLOAT : a1; b1
+	INT : a1; b1; c1
 ENDEF
 BEGIN
-	a1:=2 + 3/(b1 +2)
+	a1:=2
 	b1:=2+2
+	c1:= a1 + b1
 END

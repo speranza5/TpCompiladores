@@ -4,8 +4,9 @@ include number.asm
 .386
 .STACK 200h 
 .DATA 
-	a1 dd ?										 ; Declaracion de Variable Real
-	b1 dd ?										 ; Declaracion de Variable Real
+	a1 dd ?										 ; Declaracion de Variable Int
+	b1 dd ?										 ; Declaracion de Variable Int
+	c1 dd ?										 ; Declaracion de Variable Int
 	_2 dd 2.0										;Declaracion de CTEINT 
 	_3 dd 3.0										;Declaracion de CTEINT 
 .CODE 
@@ -17,9 +18,7 @@ include number.asm
 
 	 FLD 2 	;Cargo valor 
 	 FLD 3 	;Cargo valor 
+	 FLD a1 	;Cargo valor 
 	 FLD b1 	;Cargo valor 
-	 FLD 2 	;Cargo valor 
-	 FLD 2 	;Cargo valor 
-	 FLD 2 	;Cargo valor 
 	 mov AX, 4C00h 	 ; Genera la interrupcion 21h
 	 int 21h 	 ; Genera la interrupcion 21h

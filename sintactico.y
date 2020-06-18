@@ -230,6 +230,7 @@ asignacion: ID  OP_ASIG {
                         }
 
             operacion   {printf("asignacion a operacion\n");
+             
                         validarAsignacionDeTipos();
                         asigPointer = crearTerceto("=",cadenaAsigString,crearIndice(operacionPointer));
                         }
@@ -273,6 +274,7 @@ termino: termino OP_MUL factor {printf("Termino es multiplicacion OK\n");
 factor: ID {printf("factor es ID: %s\n",$1 ); 
            
             int tipoDato = getTipoPorID($1);
+        
             if (tipoDato == String){
               yyerror("Error en asignacion");
 
@@ -297,10 +299,11 @@ factor: ID {printf("factor es ID: %s\n",$1 );
 
               }
 
+           
             factorPointer=crearTerceto($1,"","");}
            
            |CONSTINT {
-                      if(tipoDatoActual=Real){
+                      if(tipoDatoActual==Real){
                         tipoDatoActual = Real;
                       }
                       else{
@@ -1160,6 +1163,13 @@ for(i=0;i<contadorTercetos;i++){
      }
      // Siempre inserto nueva linea despues de mostrar msj
 				
+
+   }
+   if(opBinaria==1){
+    // Expresiones ; Comparaciones ; Asignacion
+    
+
+
 
    }
 

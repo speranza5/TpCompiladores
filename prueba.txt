@@ -1,31 +1,8 @@
-DEFVAR 
-	FLOAT : a1; b1; a3             
-	STRING : variable1; v2       
-	FLOAT : p1; p2; p3      
-	INT : a; b; uno; dos; tres
-ENDEF 
+DEFVAR
+	INT : a1; b1; c1
+ENDEF
 BEGIN
-GET a1
-DISPLAY a1
-a3 := 3+12.5 * 4
-a1 := (a1+b1)*((a1-b1)+b1)
-p1:=43.2
-p2:=12.57
-while(BETWEEN (a, [b ; 12])){
-	if(a<45 AND b<13){
-		v2:="VERDADERA"
-	}
-	else{
-		v2:="FALSA"
-		if(b<12 OR a==13){
-		  v2:="anidado"
-		}
-	}
-}
-
-***/Comentario/***
-GET b1
-DISPLAY "HOLA SALGO EN PANTALLA"
-
-LET uno, dos, tres = (a*b; a*b; a*b)
+a1 := 2
+b1 := 3
+c1 := a1 + b1
 END
