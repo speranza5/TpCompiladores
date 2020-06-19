@@ -165,6 +165,9 @@ void generaAsm();
 void pasarTsAssembler(FILE* fp);
 int devolverIndice(char * cadena);
 terceto devolverTerceto (char* posicion);
+char* getCodOp(char* token);
+
+terceto vector_operandos[999];
 
 
 int tipoDatoActual;
@@ -1106,6 +1109,7 @@ for(i=0;i<contadorTercetos;i++){
      if(strncmp(vectorTercetos[i].primerElemento, "ETIQ", 4) != 0 ){
        //es una constante o un ID
        strcpy(vectorOperandos[contadorOperandos],vectorTercetos[i].primerElemento);
+       vector_operandos[contadorOperandos] = vectorTercetos[i];
        contadorOperandos++;
        fprintf(fp, "\t FLD %s \t;Cargo valor \n", vectorTercetos[i].primerElemento);
        printf("Se carga un dato solo\n");
@@ -1167,13 +1171,34 @@ for(i=0;i<contadorTercetos;i++){
    }
    if(opBinaria==1){
     // Expresiones ; Comparaciones ; Asignacion
+    char resultado[6];
+    strcpy(resultado,getCodOp(vectorTercetos[i].primerElemento));
     
+    if(strcmp(resultado, "NULL")!=0){
 
+      fprintf(fp, "\t %s \t\t;Opero\n", resultado);
+     }
 
+     if(strcmp(vectorTercetos[i].primerElemento,"=") == 0){
 
-   }
+                                             int tipo = getTipoPorID(vectorTercetos[i].elementoIzquierda); //solo funciona para ids, todavia no para [3]
 
-}
+                                              if (tipo == Real | tipo == Int) // Si se quiere separar integer hay que ver tambien las expresiones
+	                                          	{
+	                                          		fprintf(fp, "\t FLD %s \t;Cargo valor \n", vectorTercetos[i].elementoDerecha);
+	                                          		fprintf(fp, "\t FSTP %s \t; Se lo asigno a la variable que va a guardar el resultado \n", vectorTercetos[i].elementoIzquierda);
+	                                          	}
+	                                          	else
+	                                          	{
+	                                          		fprintf(fp, "\t mov si,OFFSET %s \t;Cargo en si el origen\n", vectorTercetos[i].elementoIzquierda);
+	                                          		fprintf(fp, "\t mov di,OFFSET %s \t; cargo en di el destino \n", vectorTercetos[i].elementoDerecha);
+	                                          		fprintf(fp, "\t STRCPY\t; llamo a la macro para copiar \n");
+                                             }
+
+                                                           }
+                    }
+
+    }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //Todavia falta, aca se tienen que pasar los tercetos al txt.
 //Final
@@ -1244,10 +1269,6 @@ char* getCodOp(char* token)
 	{
 		return "FADD";
 	}
-	else if(!strcmp(token, "="))
-	{
-		return "MOV";
-	}
 	else if(!strcmp(token, "-"))
 	{
 		return "FSUB";
@@ -1260,6 +1281,10 @@ char* getCodOp(char* token)
 	{
 		return "FDIV";
 	}
+  else{
+    return "NULL";
+  }
+  
 	
 }
 
