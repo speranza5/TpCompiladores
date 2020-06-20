@@ -157,6 +157,7 @@ int numeroTercetoWhile;
 int saltoWhile;
 char * cadenaEtiq;
 char numeroTextoWhile[5];
+t_pila pilaWhile;
 
 /*Validación de tipos*/
 int ultimoTipoLeido;
@@ -439,7 +440,8 @@ repeticion: WHILE {
 		                  strcat(cadenaEtiq,numeroTextoWhile);
 		                  etiquetaWhile++;
 		                  etiqueta = crearTerceto(cadenaEtiq,"","");
-	                    apilar(&condPila,etiqueta); //Lo pongo aca arriba antes de que se aumente el contador de tercetos */
+	                    //apilar(&condPila,etiqueta); //Lo pongo aca arriba antes de que se aumente el contador de tercetos */
+                      apilar(&pilaWhile,etiqueta);
                   }
 
             P_A condicion P_C LL_A bloque LL_C {
@@ -449,7 +451,7 @@ repeticion: WHILE {
 					                                      numeroTercetoWhile = desapilar(&condPila); //numero de terceto (aca estaría el numero donde deberia ir el terceto del salto si ya no cumple la condicion del while)
 					                                      crearTercetoNumero (devolverSalto(saltoWhile), crearIndice(contadorTercetos+1),"", numeroTercetoWhile); //Hago un +2 porque tengo: 1-Terceto de JMP primero
 					                                      completarTercetosAnd(contadorTercetos);
-					                                      numeroTercetoWhile = desapilar(&condPila); //Desapilo la posicion del inicio del While
+					                                      numeroTercetoWhile = desapilar(&pilaWhile); //Desapilo la posicion del inicio del While
 					                                      crearTerceto ("JMP", crearIndice(numeroTercetoWhile),"");
             
                                                 };
@@ -543,6 +545,7 @@ int main(int argc,char *argv[])
     crearPila(&pilaCompletarAnds);
     crearPila(&pilaSaltosAnd);
     crearPila(&pilaBtw);
+    crearPila(&pilaWhile);
 	yyparse();
   }
   fclose(yyin);
@@ -1031,8 +1034,6 @@ int i;
 FILE* fp;
 fp = fopen("Final.asm","w+t");
 terceto aux;
-char vectorOperandos[100][100];
-int contadorOperandos =0;
 int tercetosEtiquetas[1200];
 int cantEtiquetas = 0;
 
@@ -1092,7 +1093,7 @@ for(i=0;i<contadorTercetos;i++){
    }
 
   //VERIFICAMOS QUE CONTIENE EL TERCETO, EN BASE A QUE CLASE DE OPERADOR ES:
-
+  //1(+,a,[25])
    if(opSimple ==1){
      if(strncmp(vectorTercetos[i].primerElemento, "ETIQ", 4) != 0 ){
        //es una constante o un ID
@@ -1139,7 +1140,7 @@ for(i=0;i<contadorTercetos;i++){
           contadorOperacionesAssember ++;
 				} else 
 				{
-					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t DisplayString %s \n", vectorTercetos[i].elementoIzquierda);
+					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t DisplayString %s \n", vectorTercetos[i].elementoIzquierda);//replace de la primer comilla por un T_, los espacios por _ y la ultima " por un \0
           contadorOperacionesAssember ++;
           sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t newLine \n");
           contadorOperacionesAssember ++;
@@ -1202,7 +1203,8 @@ for(i=0;i<contadorTercetos;i++){
         contadorOperacionesAssember++;
 				sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FLD %s\t\t;comparacion, operando2 \n", devolverNombreParaCargar(vectorTercetos[i].elementoDerecha));
         contadorOperacionesAssember++;
-				sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FCOMP\t\t;Comparo \n");
+				//falta el fxch
+        sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FCOMP\t\t;Comparo \n");
         contadorOperacionesAssember++;
 				sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FFREE ST(0) \t; Vacio ST0\n");
         contadorOperacionesAssember++;
@@ -1235,7 +1237,6 @@ for(i=0;i<contadorTercetos;i++){
 
 }//fin for tercetos
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//Todavia falta, aca se tienen que pasar los tercetos al txt.
 //Inicio del asm
 fprintf(fp, "include macros2.asm\n");
 fprintf(fp, "include number.asm\n"); //Creo que la vamos a necesitar.
@@ -1301,7 +1302,7 @@ int i=0;
       }
 			break;
 		case CteString:
-			fprintf(fp, "\tT_%s db %s, \"$\", 30 dup (?)\t\t\t\t\t\t\t\t\t\t;Declaracion de CTESTRING\n",&(tablaSimbolo[i].valorSimbolo) ,tablaSimbolo[i].nombre );
+			fprintf(fp, "\tT_%s db %s, \"$\", 30 dup (?)\t\t\t\t\t\t\t\t\t\t;Declaracion de CTESTRING\n",&(tablaSimbolo[i].valorSimbolo) ,tablaSimbolo[i].nombre );//deberia haber un replace
 			break;
       
       }
