@@ -3459,7 +3459,7 @@ for(i=0;i<contadorTercetos;i++){
           contadorOperacionesAssember ++;
 				} else 
 				{
-					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t DisplayString %s \n", vectorTercetos[i].elementoIzquierda);
+					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t DisplayString %s \n", vectorTercetos[i].elementoIzquierda);//replace de la primer comilla por un T_, los espacios por _ y la ultima " por un \0
           contadorOperacionesAssember ++;
           sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t newLine \n");
           contadorOperacionesAssember ++;
@@ -3522,7 +3522,8 @@ for(i=0;i<contadorTercetos;i++){
         contadorOperacionesAssember++;
 				sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FLD %s\t\t;comparacion, operando2 \n", devolverNombreParaCargar(vectorTercetos[i].elementoDerecha));
         contadorOperacionesAssember++;
-				sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FCOMP\t\t;Comparo \n");
+				//falta el fxch
+        sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FCOMP\t\t;Comparo \n");
         contadorOperacionesAssember++;
 				sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FFREE ST(0) \t; Vacio ST0\n");
         contadorOperacionesAssember++;
@@ -3555,7 +3556,6 @@ for(i=0;i<contadorTercetos;i++){
 
 }//fin for tercetos
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//Todavia falta, aca se tienen que pasar los tercetos al txt.
 //Inicio del asm
 fprintf(fp, "include macros2.asm\n");
 fprintf(fp, "include number.asm\n"); //Creo que la vamos a necesitar.
@@ -3621,7 +3621,7 @@ int i=0;
       }
 			break;
 		case CteString:
-			fprintf(fp, "\tT_%s db %s, \"$\", 30 dup (?)\t\t\t\t\t\t\t\t\t\t;Declaracion de CTESTRING\n",&(tablaSimbolo[i].valorSimbolo) ,tablaSimbolo[i].nombre );
+			fprintf(fp, "\tT_%s db %s, \"$\", 30 dup (?)\t\t\t\t\t\t\t\t\t\t;Declaracion de CTESTRING\n",&(tablaSimbolo[i].valorSimbolo) ,tablaSimbolo[i].nombre );//deberia haber un replace
 			break;
       
       }

@@ -74,7 +74,7 @@ FILE  *yyin;
   		int numeroTerceto;
   		char * primerElemento; //primer elemento del terceto, duh
   		char * elementoIzquierda; //segundo elemento del terceto
-  		char * elementoDerecha; //tercer elemento del terceto
+  		char * elementoDerecha; //tercer elemento del terceto.
   	}terceto;
  terceto vectorTercetos[CANT_TERCETOS];
 void reverse(char* str, int len);
