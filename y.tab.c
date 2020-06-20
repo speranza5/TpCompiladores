@@ -3415,8 +3415,13 @@ for(i=0;i<contadorTercetos;i++){
    if(opSimple ==1){
      if(strncmp(vectorTercetos[i].primerElemento, "ETIQ", 4) != 0 ){
        //es una constante o un ID
-       //sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FLD %s \t;Cargo valor \n", vectorTercetos[i].primerElemento);
-       //contadorOperacionesAssember ++;
+       sprintf(vectorVariablesAssembler[contadorVariablesAssembler],"\t@aux%d dd ?\t\t\t\t\t\t\t\t\t\t ; Declaracion de Variable Auxiliar real\n", i);
+       contadorVariablesAssembler++;
+       sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FLD %s \t;Cargo valor \n", devolverNombreParaCargar(vectorTercetos[i].primerElemento));
+       contadorOperacionesAssember ++;
+      sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FSTP @aux%d \t;Almaceno el valor en una var auxiliar\n", i);
+       contadorOperacionesAssember++;
+       
        //printf("Se carga un dato solo\n");
      }
      else{
@@ -3531,16 +3536,16 @@ for(i=0;i<contadorTercetos;i++){
        sprintf(vectorVariablesAssembler[contadorVariablesAssembler],"\t@aux%d dd ?\t\t\t\t\t\t\t\t\t\t ; Declaracion de Variable Auxiliar real\n", i);
        contadorVariablesAssembler++;
        //cargo izquierda
-       sprintf(vectorVariablesAssembler[contadorVariablesAssembler], "\t FLD %s \t;Cargo operando izquierda\n", devolverNombreParaCargar(vectorTercetos[i].elementoIzquierda));
+       sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FLD %s \t;Cargo operando izquierda\n", devolverNombreParaCargar(vectorTercetos[i].elementoIzquierda));
        contadorOperacionesAssember++;
        //cargo derecha
-       sprintf(vectorVariablesAssembler[contadorVariablesAssembler], "\t FLD %s \t;Cargo operando derecha\n", devolverNombreParaCargar(vectorTercetos[i].elementoDerecha));
+       sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FLD %s \t;Cargo operando derecha\n", devolverNombreParaCargar(vectorTercetos[i].elementoDerecha));
        contadorOperacionesAssember++;
       //operacion
-       sprintf(vectorVariablesAssembler[contadorVariablesAssembler], "\t %s \t\t;Opero\n", getCodOp(vectorTercetos[i].primerElemento));
+       sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t %s \t\t;Opero\n", getCodOp(vectorTercetos[i].primerElemento));
        contadorOperacionesAssember++;
        //guardamos el resultado en un auxiliar
-       sprintf(vectorVariablesAssembler[contadorVariablesAssembler], "\t FSTP @aux%d \t;Almaceno el resultado en una var auxiliar\n", i);
+       sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FSTP @aux%d \t;Almaceno el resultado en una var auxiliar\n", i);
        contadorOperacionesAssember++;
      }
      }
