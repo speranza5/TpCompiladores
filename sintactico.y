@@ -120,6 +120,7 @@ int tercetoOperacion;
 t_pila pilaIdsLet;
 t_pila pilaOperacionesLet;
 void crearTercetosLet();
+char vectorLets[155][30];
 
 /*punteros y esas cosas para GET*/
 int numeroGET;
@@ -165,9 +166,15 @@ void generaAsm();
 void pasarTsAssembler(FILE* fp);
 int devolverIndice(char * cadena);
 terceto devolverTerceto (char* posicion);
+char vectorOperacionesAssembler[1200][100];
+char vectorVariablesAssembler[1200][400];
+int contadorOperacionesAssember = 0;
+int contadorVariablesAssembler = 0;
+char * devolverNombreParaCargar(char * elemento);
+int esConstante (char * elemento);
+int esReferencia (char * elemento);
+int esId(char * elemento);
 char* getCodOp(char* token);
-
-terceto vector_operandos[999];
 
 
 int tipoDatoActual;
@@ -233,7 +240,6 @@ asignacion: ID  OP_ASIG {
                         }
 
             operacion   {printf("asignacion a operacion\n");
-             
                         validarAsignacionDeTipos();
                         asigPointer = crearTerceto("=",cadenaAsigString,crearIndice(operacionPointer));
                         }
@@ -277,7 +283,6 @@ termino: termino OP_MUL factor {printf("Termino es multiplicacion OK\n");
 factor: ID {printf("factor es ID: %s\n",$1 ); 
            
             int tipoDato = getTipoPorID($1);
-        
             if (tipoDato == String){
               yyerror("Error en asignacion");
 
@@ -302,7 +307,6 @@ factor: ID {printf("factor es ID: %s\n",$1 );
 
               }
 
-           
             factorPointer=crearTerceto($1,"","");}
            
            |CONSTINT {
@@ -471,7 +475,7 @@ between: BETWEEN P_A ID {esBetween = 1;
          COR_C P_C {printf("comparacion con between\n");};
 
 asignacionlet: LET lista_var OP_IGUAL P_A lista_valores P_C { if(cantValores != cantVariables){yyerror("Error, no coinciden los argumentos del let con las variables");} 
-                                                              printf("lista let\n");
+                                                              printf("listalista let\n");
                                                               crearTercetosLet();
                                                               };
 
@@ -480,6 +484,7 @@ lista_var: lista_var COMA ID {cantVariables++;printf("Item de la lista del let %
                               printf("EL TIPO DE DATOS DEL LET ES: %d \n", vectorLetTipoDatos[cantVariables-1]);
 							                tercetoID = crearTerceto(yylval.str_val,"","");
 							                apilar(&pilaIdsLet,tercetoID);
+                              strcpy(vectorLets[tercetoID],yylval.str_val);
                             };
 
 lista_var: ID {cantVariables++;
@@ -488,6 +493,7 @@ lista_var: ID {cantVariables++;
                printf("Item de la lista del let %s\n",yylval.str_val);
                tercetoID = crearTerceto(yylval.str_val,"",""); 
 			         apilar(&pilaIdsLet,tercetoID);
+               strcpy(vectorLets[tercetoID],yylval.str_val);
               };
 
 lista_valores: {ultimoTipoLeido =  vectorLetTipoDatos[cantValores];} operacion {cantValores++;
@@ -998,7 +1004,7 @@ void crearTercetosLet(){
 	while(!pilaVacia(&pilaIdsLet)){
 		numeroID = desapilar(&pilaIdsLet);
 		numeroOperacion = desapilar(&pilaOperacionesLet);
-		crearTerceto("=",crearIndice(numeroID),crearIndice(numeroOperacion));
+		crearTerceto("=",vectorLets[numeroID],crearIndice(numeroOperacion));
 	}
 }
 
@@ -1029,26 +1035,7 @@ char vectorOperandos[100][100];
 int contadorOperandos =0;
 int tercetosEtiquetas[1200];
 int cantEtiquetas = 0;
-fprintf(fp, "include macros2.asm\n");
-fprintf(fp, "include number.asm\n"); //Creo que la vamos a necesitar.
-fprintf(fp, ".MODEL	LARGE \n");
-fprintf(fp, ".386\n");
-fprintf(fp, ".STACK 200h \n"); //bytes en stack
 
-//DATA: variables de la tabla de simbolos
-fprintf(fp, ".DATA \n");
-pasarTsAssembler(fp);
-//funcion que pase la TS a este archivo.
-
-
-//CODE: comienza la seccion de codigo
-fprintf(fp, ".CODE \n");
-fprintf(fp, "\n");
-fprintf(fp, "\t MOV AX,@DATA 	;inicializa el segmento de datos\n");
-fprintf(fp, "\t MOV DS,AX \n");
-fprintf(fp, "\t MOV ES,AX \n");
-fprintf(fp, "\t FNINIT \n");;
-fprintf(fp, "\n");
 
   int opSimple,  // Formato terceto (x,  ,  ) 
 	opUnaria,  // Formato terceto (x, x,  )
@@ -1084,7 +1071,8 @@ for(i=0;i<contadorTercetos;i++){
   for(k=0;k<cantEtiquetas;k++){
     if(i == tercetosEtiquetas[k]){
     printf("Aca va una etiqueta man\n");
-    fprintf(fp,"SALTO%d: \t ;Etiqueta para los saltos \n",i);
+    sprintf(vectorOperacionesAssembler[contadorOperacionesAssember],"SALTO%d: \t ;Etiqueta para los saltos \n",i);
+    contadorOperacionesAssember++;
     }
   }
    if(strcmp(vectorTercetos[i].elementoIzquierda,"")==0 && strcmp(vectorTercetos[i].elementoDerecha,"")==0){
@@ -1108,14 +1096,13 @@ for(i=0;i<contadorTercetos;i++){
    if(opSimple ==1){
      if(strncmp(vectorTercetos[i].primerElemento, "ETIQ", 4) != 0 ){
        //es una constante o un ID
-       strcpy(vectorOperandos[contadorOperandos],vectorTercetos[i].primerElemento);
-       vector_operandos[contadorOperandos] = vectorTercetos[i];
-       contadorOperandos++;
-       fprintf(fp, "\t FLD %s \t;Cargo valor \n", vectorTercetos[i].primerElemento);
-       printf("Se carga un dato solo\n");
+       //sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FLD %s \t;Cargo valor \n", vectorTercetos[i].primerElemento);
+       //contadorOperacionesAssember ++;
+       //printf("Se carga un dato solo\n");
      }
      else{
-       fprintf(fp,"%s:\t;ETIQUETA\n",vectorTercetos[i].primerElemento);
+       sprintf(vectorOperacionesAssembler[contadorOperacionesAssember],"%s:\t;ETIQUETA\n",vectorTercetos[i].primerElemento);
+       contadorOperacionesAssember ++;
        printf("Se pone una etiqueta en el archivo\n");
      }
    }
@@ -1125,7 +1112,8 @@ for(i=0;i<contadorTercetos;i++){
      if (strcmp(vectorTercetos[i].primerElemento, "GET") != 0 && strcmp(vectorTercetos[i].primerElemento, "DISPLAY") != 0){
        //no es ni get ni display, entonces es un salto
        int numeroSalto = devolverIndice(vectorTercetos[i].elementoIzquierda);
-       fprintf(fp,"%s SALTO%d \t ;salto a donde tengo que ir \n",vectorTercetos[i].primerElemento,numeroSalto);
+       sprintf(vectorOperacionesAssembler[contadorOperacionesAssember],"\t%s SALTO%d \t ;salto a donde tengo que ir \n",vectorTercetos[i].primerElemento,numeroSalto);
+       contadorOperacionesAssember ++;
      }
      else if (strcmp(vectorTercetos[i].primerElemento, "DISPLAY") == 0){
        printf("Entro al DISPLAY \n");
@@ -1133,82 +1121,153 @@ for(i=0;i<contadorTercetos;i++){
        
 				if (tipo == Real) 
 				{
-					fprintf(fp, "\t DisplayFloat %s,2 \n", vectorTercetos[i].elementoIzquierda);
-          fprintf(fp, "\t newLine \n");
+					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t DisplayFloat %s,2 \n", vectorTercetos[i].elementoIzquierda);
+          contadorOperacionesAssember ++;
+          sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t newLine \n");
+          contadorOperacionesAssember ++;
 				}
 				else if (tipo == Int) 
 				{
-					fprintf(fp, "\t DisplayFloat %s.0,2 \n", vectorTercetos[i].elementoIzquierda);
-          fprintf(fp, "\t newLine \n");
+					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t DisplayFloat %s.0,2 \n", vectorTercetos[i].elementoIzquierda);
+          contadorOperacionesAssember ++;
+          sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t newLine \n");
+          contadorOperacionesAssember ++;
 				} else 
 				{
-					fprintf(fp, "\t DisplayString %s \n", vectorTercetos[i].elementoIzquierda);
-          fprintf(fp, "\t newLine \n");
+					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t DisplayString %s \n", vectorTercetos[i].elementoIzquierda);
+          contadorOperacionesAssember ++;
+          sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t newLine \n");
+          contadorOperacionesAssember ++;
 				}
-
+    // Siempre inserto nueva linea despues de mostrar msj
       
      }
      else if (strcmp(vectorTercetos[i].primerElemento, "GET") == 0)
-     {printf("Entro al GET \n");
+     {
+        printf("Entro al GET \n");
           int tipo = getTipoPorID(vectorTercetos[i].elementoIzquierda);
       
 				if (tipo == Real) 
 				{
-					fprintf(fp, "\t GetFloat %s\n", vectorTercetos[i].elementoIzquierda);
+					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t GetFloat %s\n", vectorTercetos[i].elementoIzquierda);
+          contadorOperacionesAssember ++;
+
 				}
 				else if (tipo == Int) 
 				{
-					fprintf(fp, "\t GetFloat %s\n", vectorTercetos[i].elementoIzquierda);
+					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t GetFloat %s\n", vectorTercetos[i].elementoIzquierda);
+          contadorOperacionesAssember ++;
+
 				} else 
 				{
-					fprintf(fp, "\t GetString %s\n",vectorTercetos[i].elementoIzquierda);
+					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t GetString %s\n",vectorTercetos[i].elementoIzquierda);
+          contadorOperacionesAssember ++;
+
 				}
 				
+     }	
+
+   }//fin if unarios
+   if(opBinaria ==1){
+     //aca tenemos que ver porque puede ser una suma o una comparacion, la cosa se pone linda
+     if(strcmp(vectorTercetos[i].primerElemento,"=")==0){
+       //es un asig, tenemos que ver el tipo, supuestamente ya son compatibles 
+       printf("Busco aca por izquierda");
+       printf(" Variable a buscar: %s\n",vectorTercetos[i].elementoIzquierda);
+        int tipoAsig = getTipoPorID(vectorTercetos[i].elementoIzquierda);
+        if(tipoAsig == Real || tipoAsig == Int){
+          sprintf(vectorOperacionesAssembler[contadorOperacionesAssember],"\t FLD %s \t;Cargo valor \n",devolverNombreParaCargar(vectorTercetos[i].elementoDerecha));
+          contadorOperacionesAssember++;
+          sprintf(vectorOperacionesAssembler[contadorOperacionesAssember],"\t FSTP %s \t;Se lo asigno a la variable que va a guardar el resultado \n",devolverNombreParaCargar(vectorTercetos[i].elementoIzquierda));
+          contadorOperacionesAssember++;
+        }
+        else{
+        	sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t mov si,OFFSET %s \t;Cargo en si el origen\n", vectorTercetos[i].elementoDerecha);
+          contadorOperacionesAssember++;
+					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t mov di,OFFSET %s \t; cargo en di el destino \n", devolverNombreParaCargar(vectorTercetos[i].elementoIzquierda));
+          contadorOperacionesAssember++;
+					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t STRCPY\t; llamo a la macro para copiar \n");
+          contadorOperacionesAssember++;
+        }
      }
-     // Siempre inserto nueva linea despues de mostrar msj
-				
-
-   }
-   if(opBinaria==1){
-    // Expresiones ; Comparaciones ; Asignacion
-    char resultado[6];
-    strcpy(resultado,getCodOp(vectorTercetos[i].primerElemento));
-    
-    if(strcmp(resultado, "NULL")!=0){
-
-      fprintf(fp, "\t %s \t\t;Opero\n", resultado);
+     else{
+     if(strcmp(vectorTercetos[i].primerElemento,"CMP")==0){
+       //es una comparacion, a los botes!
+       	sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FLD %s\t\t;comparacion, operando1 \n", devolverNombreParaCargar(vectorTercetos[i].elementoIzquierda));
+        contadorOperacionesAssember++;
+				sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FLD %s\t\t;comparacion, operando2 \n", devolverNombreParaCargar(vectorTercetos[i].elementoDerecha));
+        contadorOperacionesAssember++;
+				sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FCOMP\t\t;Comparo \n");
+        contadorOperacionesAssember++;
+				sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FFREE ST(0) \t; Vacio ST0\n");
+        contadorOperacionesAssember++;
+				sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FSTSW AX \t\t; mueve los bits C a FLAGS\n");
+        contadorOperacionesAssember++;
+				sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t SAHF \t\t\t;Almacena el registro AH en el registro FLAGS \n");
+        contadorOperacionesAssember++;
+     }
+     else{
+       //es una suma o algo de esas mierdas, otra vez a los botes!
+       //agrego variable auxiliar para guardar el resultdo
+       sprintf(vectorVariablesAssembler[contadorVariablesAssembler],"\t@aux%d dd ?\t\t\t\t\t\t\t\t\t\t ; Declaracion de Variable Auxiliar real\n", i);
+       contadorVariablesAssembler++;
+       //cargo izquierda
+       sprintf(vectorVariablesAssembler[contadorVariablesAssembler], "\t FLD %s \t;Cargo operando izquierda\n", devolverNombreParaCargar(vectorTercetos[i].elementoIzquierda));
+       contadorOperacionesAssember++;
+       //cargo derecha
+       sprintf(vectorVariablesAssembler[contadorVariablesAssembler], "\t FLD %s \t;Cargo operando derecha\n", devolverNombreParaCargar(vectorTercetos[i].elementoDerecha));
+       contadorOperacionesAssember++;
+      //operacion
+       sprintf(vectorVariablesAssembler[contadorVariablesAssembler], "\t %s \t\t;Opero\n", getCodOp(vectorTercetos[i].primerElemento));
+       contadorOperacionesAssember++;
+       //guardamos el resultado en un auxiliar
+       sprintf(vectorVariablesAssembler[contadorVariablesAssembler], "\t FSTP @aux%d \t;Almaceno el resultado en una var auxiliar\n", i);
+       contadorOperacionesAssember++;
+     }
      }
 
-     if(strcmp(vectorTercetos[i].primerElemento,"=") == 0){
+   }//fin if binarios
 
-                                             int tipo = getTipoPorID(vectorTercetos[i].elementoIzquierda); //solo funciona para ids, todavia no para [3]
-
-                                              if (tipo == Real | tipo == Int) // Si se quiere separar integer hay que ver tambien las expresiones
-	                                          	{
-	                                          		fprintf(fp, "\t FLD %s \t;Cargo valor \n", vectorTercetos[i].elementoDerecha);
-	                                          		fprintf(fp, "\t FSTP %s \t; Se lo asigno a la variable que va a guardar el resultado \n", vectorTercetos[i].elementoIzquierda);
-	                                          	}
-	                                          	else
-	                                          	{
-	                                          		fprintf(fp, "\t mov si,OFFSET %s \t;Cargo en si el origen\n", vectorTercetos[i].elementoIzquierda);
-	                                          		fprintf(fp, "\t mov di,OFFSET %s \t; cargo en di el destino \n", vectorTercetos[i].elementoDerecha);
-	                                          		fprintf(fp, "\t STRCPY\t; llamo a la macro para copiar \n");
-                                             }
-
-                                                           }
-                    }
-
-    }
+}//fin for tercetos
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //Todavia falta, aca se tienen que pasar los tercetos al txt.
+//Inicio del asm
+fprintf(fp, "include macros2.asm\n");
+fprintf(fp, "include number.asm\n"); //Creo que la vamos a necesitar.
+fprintf(fp, ".MODEL	LARGE \n");
+fprintf(fp, ".386\n");
+fprintf(fp, ".STACK 200h \n"); //bytes en stack
+fprintf(fp,"MAXTEXTSIZE equ 50 \n");
+//DATA: variables de la tabla de simbolos
+fprintf(fp, ".DATA \n");
+pasarTsAssembler(fp);
+//funcion que pase la TS a este archivo.
+
+
+//CODE: comienza la seccion de codigo
+fprintf(fp, ".CODE \n");
+fprintf(fp, "\n");
+fprintf(fp, "\t MOV AX,@DATA 	;inicializa el segmento de datos\n");
+fprintf(fp, "\t MOV DS,AX \n");
+fprintf(fp, "\t MOV ES,AX \n");
+fprintf(fp, "\t FNINIT \n");;
+fprintf(fp, "\n");
+//aca viene el vector de las operaciones
+for(i=0;i<contadorOperacionesAssember;i++){
+  fprintf(fp,"%s",vectorOperacionesAssembler[i]);
+}
+
 //Final
-fprintf(fp, "\t mov AX, 4C00h \t ; Genera la interrupcion 21h\n");
-fprintf(fp, "\t int 21h \t ; Genera la interrupcion 21h\n");
+fprintf(fp, "mov AX, 4C00h \t ; Genera la interrupcion 21h\n");
+fprintf(fp, "int 21h \t ; Genera la interrupcion 21h\n");
 fclose(fp);
 
 }
 
 void pasarTsAssembler(FILE* fp){
+/*
+Aca faltaria poner que vuelque todo el vector de auxiliares
+*/
 int i=0;
    while(i<=finDeTabla){
       
@@ -1217,13 +1276,13 @@ int i=0;
 
     switch (tipo){
 		case Int:
-			fprintf(fp, "\t%s dd ?\t\t\t\t\t\t\t\t\t\t ; Declaracion de Variable Int\n", tablaSimbolo[i].nombre );
+			fprintf(fp, "\t@%s dd ?\t\t\t\t\t\t\t\t\t\t ; Declaracion de Variable Int\n", tablaSimbolo[i].nombre );
 			break;
 		case Real:
-			fprintf(fp, "\t%s dd ?\t\t\t\t\t\t\t\t\t\t ; Declaracion de Variable Real\n", tablaSimbolo[i].nombre );
+			fprintf(fp, "\t@%s dd ?\t\t\t\t\t\t\t\t\t\t ; Declaracion de Variable Real\n", tablaSimbolo[i].nombre );
 			break;
 		case String:
-			fprintf(fp,  "\t%s db 30 dup (?),\"$\"\t\t\t\t\t\t\t\t\t\t;Declaracion de Variable String\n", tablaSimbolo[i].nombre );
+			fprintf(fp,  "\t@%s db 30 dup (?),\"$\"\t\t\t\t\t\t\t\t\t\t;Declaracion de Variable String\n", tablaSimbolo[i].nombre );
 			break;
 		case CteInt:
 				fprintf(fp, "\t%s dd %d.0\t\t\t\t\t\t\t\t\t\t;Declaracion de CTEINT \n", tablaSimbolo[i].nombre, tablaSimbolo[i].limite);
@@ -1237,13 +1296,16 @@ int i=0;
       }
 			break;
 		case CteString:
-			fprintf(fp, "\t%s db %s, \"$\", 30 dup (?)\t\t\t\t\t\t\t\t\t\t;Declaracion de CTESTRING\n", tablaSimbolo[i].nombre, &(tablaSimbolo[i].valorSimbolo));
+			fprintf(fp, "\tT_%s db %s, \"$\", 30 dup (?)\t\t\t\t\t\t\t\t\t\t;Declaracion de CTESTRING\n",&(tablaSimbolo[i].valorSimbolo) ,tablaSimbolo[i].nombre );
 			break;
       
       }
      
      i++;
 
+  }
+  for(i=0;i<contadorVariablesAssembler;i++){
+    fprintf(fp,"%s",vectorVariablesAssembler[i]);
   }
 }
 
@@ -1265,26 +1327,27 @@ int devolverIndice(char * cadena){
 
 char* getCodOp(char* token)
 {
+  char * resultado = malloc(sizeof(char) * 5);
 	if(!strcmp(token, "+"))
 	{
-		return "FADD";
+    strcpy(resultado,"FADD");
 	}
 	else if(!strcmp(token, "-"))
 	{
-		return "FSUB";
+    strcpy(resultado,"FSUB");
 	}
 	else if(!strcmp(token, "*"))
 	{
-		return "FMUL";
+    strcpy(resultado,"FMUL");
 	}
 	else if(!strcmp(token, "/"))
 	{
-		return "FDIV";
+		strcpy(resultado,"FDIV");
 	}
   else{
-    return "NULL";
+    yyerror("Error, la operacion no es soportada aca\n");
   }
-  
+  return resultado;
 	
 }
 
@@ -1300,4 +1363,39 @@ int esTercetoSimple(int indice){
       return 1;
   }
   return -1;
+}
+
+char * devolverNombreParaCargar(char * elemento){
+  char * nombre = malloc(sizeof(char) * 50);
+  if(esConstante(elemento)==1){
+    sprintf(nombre,"_%s\0",elemento);
+  }
+  if(esReferencia(elemento)==1){
+    sprintf(nombre,"@aux%d\0",devolverIndice(elemento));
+  }
+  if(esId(elemento)==1){
+    sprintf(nombre,"@%s\0",elemento);
+  }
+  return nombre;
+}
+
+int esConstante (char * elemento){
+   if(elemento[0]>='0' && elemento[0]<='9'){
+     return 1;
+   }
+   return 0;
+}
+
+int esReferencia (char * elemento){
+  if(elemento[0]=='['){
+    return 1;
+  }
+  return 0;
+}
+
+int esId(char * elemento){
+  if((elemento[0]>='a' && elemento[0]<='z')||(elemento[0]>='A' && elemento[0]<='Z')){
+    return 1;
+  }
+  return 0;
 }
