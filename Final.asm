@@ -29,7 +29,7 @@ MAXTEXTSIZE equ 50
 	T_VERDADERA db "VERDADERA", "$", 30 dup (?)										;Declaracion de CTESTRING
 	T_FALSA db "FALSA", "$", 30 dup (?)										;Declaracion de CTESTRING
 	T_anidado db "anidado", "$", 30 dup (?)										;Declaracion de CTESTRING
-	T_HOLA SALGO EN PANTALLA db "HOLA SALGO EN PANTALLA", "$", 30 dup (?)										;Declaracion de CTESTRING
+	T_HOLA_SALGO_EN_PANTALLA db "HOLA SALGO EN PANTALLA", "$", 30 dup (?)										;Declaracion de CTESTRING
 	@aux2 dd ?										 ; Declaracion de Variable Auxiliar real
 	@aux3 dd ?										 ; Declaracion de Variable Auxiliar real
 	@aux4 dd ?										 ; Declaracion de Variable Auxiliar real
@@ -212,7 +212,7 @@ SALTO50: 	 ;Etiqueta para los saltos
 	JMP SALTO22 	 ;salto a donde tengo que ir 
 SALTO51: 	 ;Etiqueta para los saltos 
 	 GetFloat b1
-	 DisplayString "HOLA SALGO EN PANTALLA" 
+	 DisplayString T_HOLA_SALGO_EN_PANTALLA 
 	 newLine 
 	 FLD @uno 	;Cargo valor 
 	 FSTP @aux53 	;Almaceno el valor en una var auxiliar

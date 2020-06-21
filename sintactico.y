@@ -176,6 +176,7 @@ int esConstante (char * elemento);
 int esReferencia (char * elemento);
 int esId(char * elemento);
 char* getCodOp(char* token);
+char* seteoVariablesString (char* str);
 
 
 int tipoDatoActual;
@@ -1140,7 +1141,7 @@ for(i=0;i<contadorTercetos;i++){
           contadorOperacionesAssember ++;
 				} else 
 				{
-					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t DisplayString %s \n", vectorTercetos[i].elementoIzquierda);//replace de la primer comilla por un T_, los espacios por _ y la ultima " por un \0
+					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t DisplayString %s \n", seteoVariablesString(vectorTercetos[i].elementoIzquierda));//replace de la primer comilla por un T_, los espacios por _ y la ultima " por un \0
           contadorOperacionesAssember ++;
           sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t newLine \n");
           contadorOperacionesAssember ++;
@@ -1302,7 +1303,8 @@ int i=0;
       }
 			break;
 		case CteString:
-			fprintf(fp, "\tT_%s db %s, \"$\", 30 dup (?)\t\t\t\t\t\t\t\t\t\t;Declaracion de CTESTRING\n",&(tablaSimbolo[i].valorSimbolo) ,tablaSimbolo[i].nombre );//deberia haber un replace
+			fprintf(fp, "\tT_%s db %s, \"$\", 30 dup (?)\t\t\t\t\t\t\t\t\t\t;Declaracion de CTESTRING\n",seteoVariablesString(tablaSimbolo[i].valorSimbolo) ,tablaSimbolo[i].nombre );//deberia haber un replace
+      
 			break;
       
       }
@@ -1405,3 +1407,37 @@ int esId(char * elemento){
   }
   return 0;
 }
+
+char* seteoVariablesString (char* str){
+
+char resultado [300] ;
+ 
+  int longitud=strlen(str);
+  int i =0;
+  int contador=0;
+  int delimitador = 0;
+
+  for(i;i<longitud;i++){
+    
+    if(str[i]=='"'){
+    resultado[contador]='T';
+    contador++;
+    resultado[contador] = '_';
+    delimitador = 2;
+    
+    }
+    else if(str[i]==' '){
+      resultado[contador] = '_';
+    }
+    else{
+      resultado[contador]=str[i];
+    }
+    
+    contador++;
+
+  }
+  resultado[contador-delimitador] ='\0';
+return resultado;  
+
+}
+
