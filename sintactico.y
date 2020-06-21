@@ -1,4 +1,12 @@
 %{
+  /*
+  menor 1
+  menor o igual 5
+  mayor 2
+  mayor o igual 4
+  distinto 6
+  igualdad 3
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -17,6 +25,12 @@
 #define CANT_TERCETOS 2000
 #define TAM_PILA 120
 
+#define CONST_MENOR 1
+#define CONST_MENOR_I 5
+#define CONST_MAYOR 2
+#define CONST_MAYOR_I 4
+#define CONST_DISTINTO 6
+#define CONST_IGUAL 3
 int yylex();
 int yystopparser=0;
 FILE  *yyin;
@@ -418,20 +432,20 @@ condicion: comparacion {printf("Comparacion unica\n");
 			                      	}
                             };
 
-comparacion: operacion {izqPointer = operacionPointer; esBetween =0;apilar(&pilaBtw,0);} OP_MENOR {printf("Comparacion por menor\n"); apilar(&pilaSaltos, 1);}
+comparacion: operacion {izqPointer = operacionPointer; esBetween =0;apilar(&pilaBtw,0);} OP_MENOR {printf("Comparacion por menor\n"); apilar(&pilaSaltos, CONST_MENOR);}
              operacion{derPointer = operacionPointer;} 
              | 
-             operacion {izqPointer = operacionPointer; esBetween =0;} OP_MENORIGUAL{printf("comparacion por menor o igual\n"); apilar(&pilaSaltos, 5);} operacion {derPointer = operacionPointer;} | 
-             operacion {izqPointer = operacionPointer; esBetween =0;} OP_MAYOR {printf("comparacion por mayor\n");  apilar(&pilaSaltos,2) ;} operacion {derPointer = operacionPointer;} | 
-             operacion {izqPointer = operacionPointer; esBetween =0;} OP_MAYORIGUAL{printf("comparacion por mayor o igual\n"); apilar(&pilaSaltos,4);} operacion  {derPointer = operacionPointer;}| 
-             operacion {izqPointer = operacionPointer; esBetween =0;} OP_DISTINTO{printf("comparacion por distinto\n"); apilar(&pilaSaltos,6);} operacion  {derPointer = operacionPointer;}| 
-             operacion {izqPointer = operacionPointer; esBetween =0;} OP_IGUALDAD{printf("comparacion por igual\n"); apilar(&pilaSaltos,3); } operacion  {derPointer = operacionPointer;} |
-             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;}  OP_MENOR {printf("Comparacion por menor negada\n"); apilar(&pilaSaltos,4); } operacion  {derPointer = operacionPointer;} |
-             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;} OP_MENORIGUAL{printf("comparacion por menor o igual negada\n"); apilar(&pilaSaltos,2); } operacion  {derPointer = operacionPointer;} |
-             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;} OP_MAYOR {printf("comparacion por mayor negada\n"); apilar(&pilaSaltos,5); } operacion  {derPointer = operacionPointer;} |
-             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;} OP_MAYORIGUAL{printf("comparacion por mayor o igual negada \n"); apilar(&pilaSaltos,1); } operacion  {derPointer = operacionPointer;} |
-             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;} OP_DISTINTO{printf("comparacion por distinto negada\n"); apilar(&pilaSaltos,3); } operacion  {derPointer = operacionPointer;} |
-             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;} OP_IGUALDAD{printf("comparacion por igual negada\n"); apilar(&pilaSaltos,6); } operacion  {derPointer = operacionPointer;} |
+             operacion {izqPointer = operacionPointer; esBetween =0;} OP_MENORIGUAL{printf("comparacion por menor o igual\n"); apilar(&pilaSaltos, CONST_MENOR_I);} operacion {derPointer = operacionPointer;} | 
+             operacion {izqPointer = operacionPointer; esBetween =0;} OP_MAYOR {printf("comparacion por mayor\n");  apilar(&pilaSaltos,CONST_MAYOR) ;} operacion {derPointer = operacionPointer;} | 
+             operacion {izqPointer = operacionPointer; esBetween =0;} OP_MAYORIGUAL{printf("comparacion por mayor o igual\n"); apilar(&pilaSaltos,CONST_MAYOR_I);} operacion  {derPointer = operacionPointer;}| 
+             operacion {izqPointer = operacionPointer; esBetween =0;} OP_DISTINTO{printf("comparacion por distinto\n"); apilar(&pilaSaltos,CONST_DISTINTO);} operacion  {derPointer = operacionPointer;}| 
+             operacion {izqPointer = operacionPointer; esBetween =0;} OP_IGUALDAD{printf("comparacion por igual\n"); apilar(&pilaSaltos,CONST_IGUAL); } operacion  {derPointer = operacionPointer;} |
+             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;}  OP_MENOR {printf("Comparacion por menor negada\n"); apilar(&pilaSaltos,CONST_MAYOR_I); } operacion  {derPointer = operacionPointer;} |
+             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;} OP_MENORIGUAL{printf("comparacion por menor o igual negada\n"); apilar(&pilaSaltos,CONST_MAYOR); } operacion  {derPointer = operacionPointer;} |
+             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;} OP_MAYOR {printf("comparacion por mayor negada\n"); apilar(&pilaSaltos,CONST_MENOR_I); } operacion  {derPointer = operacionPointer;} |
+             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;} OP_MAYORIGUAL{printf("comparacion por mayor o igual negada \n"); apilar(&pilaSaltos,CONST_MENOR); } operacion  {derPointer = operacionPointer;} |
+             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;} OP_DISTINTO{printf("comparacion por distinto negada\n"); apilar(&pilaSaltos,CONST_IGUAL); } operacion  {derPointer = operacionPointer;} |
+             OP_NOT operacion {izqPointer = operacionPointer; esBetween =0;} OP_IGUALDAD{printf("comparacion por igual negada\n"); apilar(&pilaSaltos,CONST_DISTINTO); } operacion  {derPointer = operacionPointer;} |
              between ;
 
 repeticion: WHILE { 
@@ -931,23 +945,23 @@ void guardarTercetosEnArchivo(char *nombreArchivo){//guarda los tercetos en un a
 
 char * devolverSalto(int numero){
 	switch (numero){
-		case 1:
-			return "JNAE";
-			break;
-		case 2:
-			return "JNBE";
-			break;
-		case 3:
+		case CONST_IGUAL:
 			return "JNE";
 			break;
-		case 4:
-			return "JNB";
+		case CONST_DISTINTO:
+			return "JE";
 			break;
-		case 5:
+		case CONST_MAYOR:
 			return "JNA";
 			break;
-		case 6:
-			return "JE";
+		case CONST_MAYOR_I:
+			return "JNAE";
+			break;
+		case CONST_MENOR:
+			return "JNB";
+			break;
+		case CONST_MENOR_I:
+			return "JNBE";
 			break;
     default:
       return "Invalido";
