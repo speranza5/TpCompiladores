@@ -1410,7 +1410,7 @@ int esId(char * elemento){
 
 char* seteoVariablesString (char* str){
 
-char resultado [300] ;
+static char resultado [300] ; //Se agrega el static para que reserve un lugar en memoria para esta variable y no arroje warning. Siempre mantendra su valor, en esta función voy pisando los valores establecidos anteriormente pero despues del \0 final puede quedar basura de otros usos.
  
   int longitud=strlen(str);
   int i =0;
@@ -1437,7 +1437,7 @@ char resultado [300] ;
 
   }
   resultado[contador-delimitador] ='\0';
-return resultado;  
+  return resultado;  
 
 }
 
