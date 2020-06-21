@@ -1260,7 +1260,7 @@ pasarTsAssembler(fp);
 
 //CODE: comienza la seccion de codigo
 fprintf(fp, ".CODE \n");
-fprintf(fp, "\n");
+fprintf(fp, "START: \n");
 fprintf(fp, "\t MOV AX,@DATA 	;inicializa el segmento de datos\n");
 fprintf(fp, "\t MOV DS,AX \n");
 fprintf(fp, "\t MOV ES,AX \n");
@@ -1274,7 +1274,7 @@ for(i=0;i<contadorOperacionesAssember;i++){
 //Final
 fprintf(fp, "mov AX, 4C00h \t ; Genera la interrupcion 21h\n");
 fprintf(fp, "int 21h \t ; Genera la interrupcion 21h\n");
-fprintf(fp, "End\n");
+fprintf(fp, "End START\n");
 fclose(fp);
 
 }

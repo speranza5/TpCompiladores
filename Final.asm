@@ -19,7 +19,7 @@ MAXTEXTSIZE equ 50
 	@aux7 dd ?										 ; Declaracion de Variable Auxiliar real
 	@aux8 dd ?										 ; Declaracion de Variable Auxiliar real
 .CODE 
-
+START: 
 	 MOV AX,@DATA 	;inicializa el segmento de datos
 	 MOV DS,AX 
 	 MOV ES,AX 
@@ -56,3 +56,4 @@ MAXTEXTSIZE equ 50
 	 FFREE  	; Vacio pila
 mov AX, 4C00h 	 ; Genera la interrupcion 21h
 int 21h 	 ; Genera la interrupcion 21h
+End START
