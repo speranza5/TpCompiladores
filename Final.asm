@@ -172,12 +172,12 @@ ETIQ0:	;ETIQUETA
 	 FSTSW AX 		; mueve los bits C a FLAGS
 	 SAHF 			;Almacena el registro AH en el registro FLAGS 
 	JNAE SALTO39 	 ;salto a donde tengo que ir 
-	 mov si,OFFSET "VERDADERA" 	;Cargo en si el origen
+	 mov si,OFFSET T_VERDADERA 	;Cargo en si el origen
 	 mov di,OFFSET @v2 	; cargo en di el destino 
 	 STRCPY	; llamo a la macro para copiar 
 	JMP SALTO50 	 ;salto a donde tengo que ir 
 SALTO39: 	 ;Etiqueta para los saltos 
-	 mov si,OFFSET "FALSA" 	;Cargo en si el origen
+	 mov si,OFFSET T_FALSA 	;Cargo en si el origen
 	 mov di,OFFSET @v2 	; cargo en di el destino 
 	 STRCPY	; llamo a la macro para copiar 
 	 FLD @b 	;Cargo valor 
@@ -205,7 +205,7 @@ SALTO47: 	 ;Etiqueta para los saltos
 	 SAHF 			;Almacena el registro AH en el registro FLAGS 
 	JNE SALTO50 	 ;salto a donde tengo que ir 
 SALTO49: 	 ;Etiqueta para los saltos 
-	 mov si,OFFSET "anidado" 	;Cargo en si el origen
+	 mov si,OFFSET T_anidado 	;Cargo en si el origen
 	 mov di,OFFSET @v2 	; cargo en di el destino 
 	 STRCPY	; llamo a la macro para copiar 
 SALTO50: 	 ;Etiqueta para los saltos 

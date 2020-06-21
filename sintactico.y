@@ -1189,7 +1189,7 @@ for(i=0;i<contadorTercetos;i++){
           contadorOperacionesAssember++;
         }
         else{
-        	sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t mov si,OFFSET %s \t;Cargo en si el origen\n", vectorTercetos[i].elementoDerecha);
+        	sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t mov si,OFFSET %s \t;Cargo en si el origen\n", seteoVariablesString(vectorTercetos[i].elementoDerecha));
           contadorOperacionesAssember++;
 					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t mov di,OFFSET %s \t; cargo en di el destino \n", devolverNombreParaCargar(vectorTercetos[i].elementoIzquierda));
           contadorOperacionesAssember++;
