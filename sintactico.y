@@ -1187,6 +1187,8 @@ for(i=0;i<contadorTercetos;i++){
           contadorOperacionesAssember++;
           sprintf(vectorOperacionesAssembler[contadorOperacionesAssember],"\t FSTP %s \t;Se lo asigno a la variable que va a guardar el resultado \n",devolverNombreParaCargar(vectorTercetos[i].elementoIzquierda));
           contadorOperacionesAssember++;
+          sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FFREE  \t; Vacio pila\n");
+          contadorOperacionesAssember++;
         }
         else{
         	sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t mov si,OFFSET %s \t;Cargo en si el origen\n", seteoVariablesString(vectorTercetos[i].elementoDerecha));
@@ -1205,14 +1207,17 @@ for(i=0;i<contadorTercetos;i++){
 				sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FLD %s\t\t;comparacion, operando2 \n", devolverNombreParaCargar(vectorTercetos[i].elementoDerecha));
         contadorOperacionesAssember++;
 				//falta el fxch
-        sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FCOMP\t\t;Comparo \n");
+        sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FXCH\t\t;intercambio para el fcom\n", devolverNombreParaCargar(vectorTercetos[i].elementoDerecha));
         contadorOperacionesAssember++;
-				sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FFREE ST(0) \t; Vacio ST0\n");
+        sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FCOM\t\t;Comparo \n");
         contadorOperacionesAssember++;
+        //sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FFREE ST(0) \t; Vacio ST0\n");
+        //contadorOperacionesAssember++;
 				sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FSTSW AX \t\t; mueve los bits C a FLAGS\n");
         contadorOperacionesAssember++;
 				sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t SAHF \t\t\t;Almacena el registro AH en el registro FLAGS \n");
         contadorOperacionesAssember++;
+
      }
      else{
        //es una suma o algo de esas mierdas, otra vez a los botes!
@@ -1231,6 +1236,8 @@ for(i=0;i<contadorTercetos;i++){
        //guardamos el resultado en un auxiliar
        sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FSTP @aux%d \t;Almaceno el resultado en una var auxiliar\n", i);
        contadorOperacionesAssember++;
+        sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t FFREE  \t; Vacio pila\n");
+        contadorOperacionesAssember++;
      }
      }
 
@@ -1267,6 +1274,7 @@ for(i=0;i<contadorOperacionesAssember;i++){
 //Final
 fprintf(fp, "mov AX, 4C00h \t ; Genera la interrupcion 21h\n");
 fprintf(fp, "int 21h \t ; Genera la interrupcion 21h\n");
+fprintf(fp, "End\n");
 fclose(fp);
 
 }

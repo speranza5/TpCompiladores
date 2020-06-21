@@ -2,7 +2,7 @@ DEFVAR
 	INT : a1; b1; c1
 ENDEF
 BEGIN
-	a1:=2
-	b1:=2+2
+	a1:=3
+	b1:=5+2
 	c1:= a1 + b1
 END
