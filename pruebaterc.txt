@@ -1,0 +1,15 @@
+DEFVAR
+	INT : a1; b1; c1
+ENDEF
+BEGIN
+	a1:=10
+	b1:=5
+	DISPLAY "HOLA SALGO EN PANTALLA"
+	if(a1<b1){
+		DISPLAY "VERDADERO"
+	}
+	else{
+		DISPLAY "FALSO"
+	}
+	a1:=6
+END
