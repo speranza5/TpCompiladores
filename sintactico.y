@@ -1284,7 +1284,7 @@ fprintf(fp, "\n");
 for(i=0;i<contadorOperacionesAssember;i++){
   fprintf(fp,"%s",vectorOperacionesAssembler[i]);
 }
-fprintf(fp,"SALTO%d \t;Este salto esta por si la ultima instruccion es un if o algo de eso\n",contadorTercetos);
+fprintf(fp,"SALTO%d: \t;Este salto esta por si la ultima instruccion es un if o algo de eso\n",contadorTercetos);
 //Final
 fprintf(fp, "mov AX, 4C00h \t ; Genera la interrupcion 21h\n");
 fprintf(fp, "int 21h \t ; Genera la interrupcion 21h\n");
