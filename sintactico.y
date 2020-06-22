@@ -478,12 +478,12 @@ between: BETWEEN P_A ID {esBetween = 1;
                         } COMA COR_A operacion{
 																					      crearTerceto("CMP",cadenaIDBetween,crearIndice(operacionPointer));
 						                                    apilar(&pilaCompletarAnds,contadorTercetos);
-                                                apilar(&pilaSaltosAnd,4);
+                                                apilar(&pilaSaltosAnd,CONST_MAYOR_I);
 																					      apilar(&condPila, contadorTercetos);
 																					      contadorTercetos ++; 
                                                                             } 
          PUNTO_COMA operacion{
-                    	     apilar(&pilaSaltos, 5);
+                    	     apilar(&pilaSaltos, CONST_MENOR_I);
 		                       cmpPointer = crearTerceto("CMP",cadenaIDBetween,crearIndice(operacionPointer));
 		                       apilar(&condPila, contadorTercetos);
 		                       contadorTercetos ++; 

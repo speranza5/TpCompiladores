@@ -2508,7 +2508,7 @@ yyreduce:
     {
 																					      crearTerceto("CMP",cadenaIDBetween,crearIndice(operacionPointer));
 						                                    apilar(&pilaCompletarAnds,contadorTercetos);
-                                                apilar(&pilaSaltosAnd,4);
+                                                apilar(&pilaSaltosAnd,CONST_MAYOR_I);
 																					      apilar(&condPila, contadorTercetos);
 																					      contadorTercetos ++; 
                                                                             }
@@ -2519,7 +2519,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 485 ".\\sintactico.y"
     {
-                    	     apilar(&pilaSaltos, 5);
+                    	     apilar(&pilaSaltos, CONST_MENOR_I);
 		                       cmpPointer = crearTerceto("CMP",cadenaIDBetween,crearIndice(operacionPointer));
 		                       apilar(&condPila, contadorTercetos);
 		                       contadorTercetos ++; 
