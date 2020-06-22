@@ -1142,14 +1142,14 @@ for(i=0;i<contadorTercetos;i++){
        
 				if (tipo == Real) 
 				{
-					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t DisplayFloat %s,2 \n", vectorTercetos[i].elementoIzquierda);
+					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t DisplayFloat @%s,2 \n", vectorTercetos[i].elementoIzquierda);
           contadorOperacionesAssember ++;
           sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t newLine \n");
           contadorOperacionesAssember ++;
 				}
 				else if (tipo == Int) 
 				{
-					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t DisplayFloat %s.0,2 \n", vectorTercetos[i].elementoIzquierda);
+					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t DisplayFloat @%s.0,2 \n", vectorTercetos[i].elementoIzquierda);
           contadorOperacionesAssember ++;
           sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t newLine \n");
           contadorOperacionesAssember ++;
