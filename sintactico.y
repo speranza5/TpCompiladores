@@ -1155,11 +1155,18 @@ for(i=0;i<contadorTercetos;i++){
           contadorOperacionesAssember ++;
 				} else 
 				{
+          if(esId(vectorTercetos[i].elementoIzquierda)==1){
+              sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t DisplayString @%s \n", vectorTercetos[i].elementoIzquierda);//replace de la primer comilla por un T_, los espacios por _ y la ultima " por un \0
+              contadorOperacionesAssember ++;
+              sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t newLine \n");
+              contadorOperacionesAssember ++;
+          }else{
 					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t DisplayString %s \n", seteoVariablesString(vectorTercetos[i].elementoIzquierda));//replace de la primer comilla por un T_, los espacios por _ y la ultima " por un \0
           contadorOperacionesAssember ++;
           sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t newLine \n");
           contadorOperacionesAssember ++;
-				}
+          }
+        }
     // Siempre inserto nueva linea despues de mostrar msj
       
      }
