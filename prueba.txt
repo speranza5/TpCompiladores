@@ -5,12 +5,9 @@ DEFVAR
 	INT : a; b; uno; dos; tres
 ENDEF 
 BEGIN
-GET a1
-DISPLAY a1
 a3 := 3+12.5 * 4
-a1 := (a1+b1)*((a1-b1)+b1)
-p1:=43.2
-p2:=12.57
+a:=6
+b:=3
 while(BETWEEN (a, [b ; 12])){
 	if(a<45 AND b<13){
 		v2:="VERDADERA"
@@ -21,6 +18,8 @@ while(BETWEEN (a, [b ; 12])){
 		  v2:="anidado"
 		}
 	}
+	DISPLAY v2
+	a := a + 1
 }
 
 ***/Comentario/***

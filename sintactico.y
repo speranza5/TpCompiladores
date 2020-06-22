@@ -1268,6 +1268,7 @@ for(i=0;i<contadorTercetos;i++){
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //Inicio del asm
 fprintf(fp, "include macros2.asm\n");
+fprintf(fp, "include macros.asm\n");
 fprintf(fp, "include number.asm\n"); //Creo que la vamos a necesitar.
 fprintf(fp, ".MODEL	LARGE \n");
 fprintf(fp, ".386\n");
