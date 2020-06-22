@@ -191,7 +191,8 @@ int esReferencia (char * elemento);
 int esId(char * elemento);
 char* getCodOp(char* token);
 char* seteoVariablesString (char* str);
-
+char* reemplazarCaracter(char* str, char actual, char nuevo);
+void recortarCadena (char * cad);
 
 int tipoDatoActual;
 
@@ -251,6 +252,7 @@ asignacion: ID  OP_ASIG {
                            cadenaAsigString = malloc(sizeof(char) * strlen($<str_val>1));
                            parsearCadena($<str_val>1,cadenaAsigString);
                            ultimoTipoLeido = getTipoPorID(cadenaAsigString);
+                           tipoDatoActual = ultimoTipoLeido;
                           
                            
                         }
@@ -267,6 +269,8 @@ asignacion: ID  OP_ASIG {
               parsearCadena($<str_val>1,cadenaAsigString);
               printf("La cadena es: %s \n",cadenaAsigString);
              ultimoTipoLeido = getTipoPorID(cadenaAsigString);
+             tipoDatoActual = ultimoTipoLeido;
+
              
             } CONSTSTRING {
             
@@ -343,8 +347,8 @@ factor: ID {printf("factor es ID: %s\n",$1 );
                        tipoDatoActual = Real; 
                        //validarAsignacionDeTipos();
                        printf("Factor es real: %f \n",$<val>1); agregarCteFloatATabla(yylval.val);
-                       char*cadena = (char *)malloc(sizeof(float));
-                       ftoa($<val>1,cadena,4);
+                       char*cadena = (char *)malloc(sizeof(char)*12);
+                       ftoa($<val>1,cadena,2);
                        factorPointer=crearTerceto(cadena,"","");
                       }
            |P_A{
@@ -916,17 +920,21 @@ int itoaBienPiola(int x, char str[], int d)
 void ftoa(float n, char* res, int afterpoint) 
 { 
     // Saca la parte entera 
-    int ipart = (int)n; 
+    int ipart = (int)n;
+    printf("PARTE ENTERA: %d \n",ipart); 
   
     // Extrae la parte flotante
     float fpart = n - (float)ipart; 
+    printf("PARTE FLOTANTE: %f \n",fpart);
   
     // Convierte la parte entera en string
     int i = itoaBienPiola(ipart, res, 0); 
   
     if (afterpoint != 0) { 
         res[i] = '.'; // add dot 
+        printf("PARTE FLOTANTE ANTES DE POW DE itoa: %f \n",fpart);
         fpart = fpart * pow(10, afterpoint); 
+        printf("PARTE FLOTANTE DESPUDE DE itoa: %f \n",fpart);
   
         itoaBienPiola((int)fpart, res + i + 1, afterpoint); 
     } 
@@ -1325,9 +1333,10 @@ int i=0;
 				fprintf(fp, "\t%s dd %d.0\t\t\t\t\t\t\t\t\t\t;Declaracion de CTEINT \n", tablaSimbolo[i].nombre, tablaSimbolo[i].limite);
 			break;
     case CteFloat:
-      ftoa(tablaSimbolo[i].valorFloat,cadena,4);
+      ftoa(tablaSimbolo[i].valorFloat,cadena,2);
 			if(strstr(cadena,".")){
-				fprintf(fp, "\t%s dd %f\t\t\t\t\t\t\t\t\t\t;Declaracion de CTEREAL\n", tablaSimbolo[i].nombre, tablaSimbolo[i].valorFloat);
+        recortarCadena(tablaSimbolo[i].nombre);
+				fprintf(fp, "\t%s dd %f\t\t\t\t\t\t\t\t\t\t;Declaracion de CTEREAL\n", reemplazarCaracter(tablaSimbolo[i].nombre,'.','_'), tablaSimbolo[i].valorFloat);
 			}else{
 				fprintf(fp, "\t%s dd %f.0\t\t\t\t\t\t\t\t\t\t;Declaracion de CTEREAL\n", tablaSimbolo[i].nombre, tablaSimbolo[i].valorFloat);
       }
@@ -1406,7 +1415,7 @@ int esTercetoSimple(int indice){
 char * devolverNombreParaCargar(char * elemento){
   char * nombre = malloc(sizeof(char) * 50);
   if(esConstante(elemento)==1){
-    sprintf(nombre,"_%s\0",elemento);
+    sprintf(nombre,"_%s\0",reemplazarCaracter(elemento,'.','_'));
   }
   if(esReferencia(elemento)==1){
     sprintf(nombre,"@aux%d\0",devolverIndice(elemento));
@@ -1469,5 +1478,21 @@ static char resultado [300] ; //Se agrega el static para que reserve un lugar en
   resultado[contador-delimitador] ='\0';
   return resultado;  
 
+}
+
+char* reemplazarCaracter(char* str, char actual, char nuevo){
+    char *posActual = strchr(str,actual);
+    while (posActual){
+        *posActual = nuevo;
+        posActual = strchr(posActual,actual);
+    }
+    return str;
+}
+
+void recortarCadena (char * cad){
+  int contador=0,recortado=0;
+  cad = strchr(cad,'.');
+  cad+=3;
+  *cad = '\0';
 }
 

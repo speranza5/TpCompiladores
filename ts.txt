@@ -13,8 +13,11 @@ b                             |INT                           | -                
 uno                           |INT                           | -                            | -                            
 dos                           |INT                           | -                            | -                            
 tres                          |INT                           | -                            | -                            
-_6                            |CTE_INT                       |6                             | -                            
 _3                            |CTE_INT                       |3                             | -                            
+_12.500000                    |CTE_REAL                      |12.500000                     | -                            
+_4                            |CTE_INT                       |4                             | -                            
+_43.200001                    |CTE_REAL                      |43.200001                     | -                            
+_6                            |CTE_INT                       |6                             | -                            
 _12                           |CTE_INT                       |12                            | -                            
 _45                           |CTE_INT                       |45                            | -                            
 _13                           |CTE_INT                       |13                            | -                            

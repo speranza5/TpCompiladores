@@ -6,6 +6,9 @@ DEFVAR
 ENDEF 
 BEGIN
 a3 := 3+12.5 * 4
+a1 := (a1+b1)*((a1-b1)+b1)
+p1:=43.20
+p2:=12.50
 a:=6
 b:=3
 while(BETWEEN (a, [b ; 12])){
