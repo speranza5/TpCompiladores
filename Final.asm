@@ -75,7 +75,7 @@ START:
 	 MOV ES,AX 
 	 FNINIT 
 
-	 GetFloat a1
+	 GetFloat @a1
 	 DisplayFloat @a1,2 
 	 newLine 
 	 FLD _3 	;Cargo valor 
@@ -221,7 +221,7 @@ SALTO49: 	 ;Etiqueta para los saltos
 SALTO50: 	 ;Etiqueta para los saltos 
 	JMP SALTO22 	 ;salto a donde tengo que ir 
 SALTO51: 	 ;Etiqueta para los saltos 
-	 GetFloat b1
+	 GetFloat @b1
 	 DisplayString T_HOLA_SALGO_EN_PANTALLA 
 	 newLine 
 	 FLD @uno 	;Cargo valor 

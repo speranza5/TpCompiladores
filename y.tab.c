@@ -3496,18 +3496,18 @@ for(i=0;i<contadorTercetos;i++){
       
 				if (tipo == Real) 
 				{
-					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t GetFloat %s\n", vectorTercetos[i].elementoIzquierda);
+					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t GetFloat @%s\n", vectorTercetos[i].elementoIzquierda);
           contadorOperacionesAssember ++;
 
 				}
 				else if (tipo == Int) 
 				{
-					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t GetFloat %s\n", vectorTercetos[i].elementoIzquierda);
+					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t GetFloat @%s\n", vectorTercetos[i].elementoIzquierda);
           contadorOperacionesAssember ++;
 
 				} else 
 				{
-					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t GetString %s\n",vectorTercetos[i].elementoIzquierda);
+					sprintf(vectorOperacionesAssembler[contadorOperacionesAssember], "\t GetString @%s\n",vectorTercetos[i].elementoIzquierda);
           contadorOperacionesAssember ++;
 
 				}
