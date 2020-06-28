@@ -1,0 +1,16 @@
+Una vez que se descarguen DosBox lo abren y:
+
+1) Montar la carpeta donde este el proyecto del compilador:
+Z:\> mount h: c:\Users\Carlos\Desktop\Compilador (por ejemplo)
+
+2) Van a seguir estando parados en Z, para cambiar esto solo van a escribir el nombre de la unidad que pusieron arriba. (La que esta entre el mount y la ruta, en mi caso le puse h:)
+
+Z:\> h:
+
+Apretan enter y ya en vez de aparecerles Z:\> les va a aparecer h:\>.
+Quiere decir que ya estan parados sobre la carpeta del compilador.
+
+3)Escriben: "ejec" (sin las comillas) que es como llame al .bat que contiene las instrucciones cargadas.
+
+Y listo, ya compila.
+
